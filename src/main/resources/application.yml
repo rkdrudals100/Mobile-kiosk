@@ -1,0 +1,17 @@
+server:
+    address: localhost
+    port: 8080
+spring:
+    datasource:
+        url: jdbc:mysql://localhost:3306/graduate?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+        username: root
+        password: admin
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+        database: mysql
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        generate-ddl: true
+        show-sql: true
+logging.level:
+    org.hibernate.SQL: debug
+# org.hibernate.type: trace
