@@ -22,7 +22,7 @@ public class MemberController {
 
         log.warn("아이디 {}, 비번1 {}, 비번2 {}", signForm.getUserId(), signForm.getPassword(), signForm.getPasswordCheck());
         if (service.findMember(signForm.getUserId()) != null) {
-            log.warn("이미 있는 아이디 확인 testtest");
+            log.warn("이미 있는 아이디 확인");
             return "seller/sign_up.html";
         }
 
