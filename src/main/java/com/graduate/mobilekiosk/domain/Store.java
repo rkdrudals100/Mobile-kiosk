@@ -37,4 +37,9 @@ public class Store {
         this.getCategories().add(category);
     }
 
+    // 임시 생성자
+    public Store(String url) {
+        this.URL = url;
+    }
+
 }

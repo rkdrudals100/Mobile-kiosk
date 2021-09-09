@@ -31,6 +31,9 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OptionGroup> optionGroups = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
+
     // 연관관계 편의 메소드
     public void addOptionGroup(OptionGroup optionGroup) {
         optionGroup.setItem(this);
