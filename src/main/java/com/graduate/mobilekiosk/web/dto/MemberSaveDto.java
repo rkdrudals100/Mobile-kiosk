@@ -21,6 +21,6 @@ public class MemberSaveDto {
     private String checkPassword;
 
     @NotNull
-    @Pattern(regexp="[a-zA-Z1-9]{1,20}", message = "영어나 숫자로 포함해서 20자리 이내로 입력해주세요.")
+    @Pattern(regexp="[a-z|A-Z|1-9]{1,20}", message = "영어나 숫자로 포함해서 20자리 이내로 입력해주세요.")
     private String url;
 }
