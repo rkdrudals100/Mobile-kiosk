@@ -1,7 +1,6 @@
 package com.graduate.mobilekiosk.web;
 
 import com.graduate.mobilekiosk.service.MemberService;
-import com.graduate.mobilekiosk.web.dto.SignForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,12 +17,7 @@ public class HomeController {
         return "seller/index.html";
     }
 
-    @GetMapping("/sign-up")
-    public String sighUp(Model model) {
-        log.debug("test");
-        model.addAttribute("form", new SignForm());
-        return "seller/sign_up.html";
-    }
+
 
 
 
