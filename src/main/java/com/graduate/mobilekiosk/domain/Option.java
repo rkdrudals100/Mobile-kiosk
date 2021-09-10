@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "options")
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Option {
