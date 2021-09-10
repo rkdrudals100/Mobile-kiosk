@@ -10,16 +10,28 @@
 
     <title>모바일 키오스크</title>
   </head>
+
+  <style>
+    .field-error {
+      border-color: #dc3545;
+      color: #dc3545;
+    }
+  </style>
+
   <body>
 
     <div class="row pt-5 mt-5">
       <div class="container col-lg-3 col-lg-offset-3">
-        <form class="form-signin d-grid gap-2" method="post" action="/login">
+        <form class="form-signin d-grid gap-2" method="post" action="/login" th:object="${member}">
           <h1 class="form-signin-heading text-center">모바일 키오스크</h1>
-          <label for="inputId" class="sr-only pt-4">아이디</label>
-          <input type="text" id="inputId" name="inputId" class="form-control col-lg-4" placeholder="ID" required autofocus>
-          <label for="inputPassword" class="sr-only pt-2">비밀번호</label>
-          <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
+          <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">글로벌 오류 메시지</p>
+          </div>
+          <label for="username" class="sr-only pt-4">아이디</label>
+          <input type="text" id="username" th:field="*{username}" class="form-control col-lg-4" placeholder="ID" required autofocus>
+          <label for="Password" class="sr-only pt-2">비밀번호</label>
+          <input type="password" id="Password" th:field="*{password}" class="form-control" placeholder="Password" required>
           <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
           <label>
             <a href="/sign-up" style="text-decoration: none"> 회원가입

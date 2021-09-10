@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,7 +50,20 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute LoginDto loginDto) {
+    public String login(@Validated @ModelAttribute("member") LoginDto loginDto, BindingResult bindingResult) {
+        Member findMember = memberService.findMember(loginDto.getUsername());
 
+        if (findMember == null) {
+            bindingResult.reject("notexist", "아이디가 존재하지 않습니다.");
+        } else if (!findMember.getPassword().equals(loginDto.getPassword())) {
+            bindingResult.reject("notpassword", "비밀번호가 틀립니다.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "seller/index.html";
+        }
+
+        return "seller/home_main.html";
     }
 }
