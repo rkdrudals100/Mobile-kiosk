@@ -19,8 +19,7 @@ public class MemberService {
     }
 
     public Member findMember(String userId) {
-        Member findMember = memberRepository.findByUserId(userId);
-        return findMember;
+        return memberRepository.findByUserId(userId);
     }
 
 

@@ -1,18 +1,19 @@
 package com.graduate.mobilekiosk.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Data
+@ToString(callSuper = true, exclude = {})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Category {
+@AllArgsConstructor
+@Builder @Accessors(chain = true)
+public class Category extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -22,8 +23,8 @@ public class Category {
     private int sort;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
-    private Store store;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> items = new ArrayList<>();

@@ -1,18 +1,19 @@
 package com.graduate.mobilekiosk.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Data
+@ToString(callSuper = true, exclude = {})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Item {
+@AllArgsConstructor
+@Builder @Accessors(chain = true)
+public class Item extends BaseEntity {
 
     @Id
     @GeneratedValue

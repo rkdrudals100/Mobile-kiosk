@@ -1,19 +1,20 @@
 package com.graduate.mobilekiosk.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity(name = "orders")
-@Getter @Setter
+@Entity @Table(name = "orders")
+@Data
+@ToString(callSuper = true, exclude = {})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+@AllArgsConstructor
+@Builder @Accessors(chain = true)
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -26,8 +27,8 @@ public class Order {
     private Date orderDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
-    private Store store;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();

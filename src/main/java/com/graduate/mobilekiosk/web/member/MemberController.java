@@ -1,7 +1,6 @@
 package com.graduate.mobilekiosk.web.member;
 
 import com.graduate.mobilekiosk.domain.Member;
-import com.graduate.mobilekiosk.domain.Store;
 import com.graduate.mobilekiosk.service.MemberService;
 import com.graduate.mobilekiosk.web.dto.LoginDto;
 import com.graduate.mobilekiosk.web.dto.MemberSaveDto;
@@ -11,25 +10,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/sign-up")
 @RequiredArgsConstructor
 @Slf4j
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/sign-up")
+    @GetMapping("")
     public String sighUpForm(Model model) {
         model.addAttribute("member", new MemberSaveDto());
         return "seller/sign_up.html";
     }
 
-    @PostMapping("/sign-up")
+    @PostMapping("")
     public String sighUp(@Validated @ModelAttribute("member") MemberSaveDto memberSaveDto, BindingResult bindingResult) {
 
         if (memberService.findMember(memberSaveDto.getUsername()) != null) {
@@ -43,8 +40,11 @@ public class MemberController {
             return "seller/sign_up.html";
         }
 
-        Member saveMember = new Member(memberSaveDto.getUsername(), memberSaveDto.getPassword());
-        saveMember.addStroe(new Store(memberSaveDto.getUrl()));
+        Member saveMember = Member.builder()
+                .userId(memberSaveDto.getUsername())
+                .password(memberSaveDto.getPassword())
+                .storeName(memberSaveDto.getUrl()).build();
+
         memberService.join(saveMember);
         return "redirect:/";
     }
