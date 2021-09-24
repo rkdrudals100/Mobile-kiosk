@@ -2,14 +2,11 @@ package com.graduate.mobilekiosk.web.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
-public class MenuSaveDto {
+public class CategoryDto {
 
-    private String menuName;
-
-    private String description;
-
+    @NotBlank
     private String categoryName;
-
-
 }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:replace="~{/seller/template/base :: layout(~{::title}, ~{::section}, ~{::style}, ~{::script})}">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:replace="~{./seller/template/base :: layout(~{::title}, ~{::section}, ~{::style}, ~{::script})}">
 
 <head>
 	<title>모바일 키오스크</title>
@@ -7,132 +7,109 @@
 <style>
 	/* 리스트 css */
 	.column{
-	border: 1px solid #cecece;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	}
-	.container-fluid{
-	margin-top: 20px;
+		border: 1px solid #cecece;
+		padding-top: 10px;
+		padding-bottom: 10px;
 	}
 	.container-fluid .card{
-	margin-left:auto;
-	margin-right:auto;
+		margin-left:auto;
+		margin-right:auto;
 	}
-	/* 이동 타켓 */
-	.card-placeholder {
-	border: 1px dotted black;
-	margin: 0 1em 1em 0;
-	height: 50px;
-	margin-left:auto;
-	margin-right:auto;
-	/* 노란색으로 표신되는 것이 주요 포인트 */
-	background-color: gray;
-	}
+
 	/* 마우스 포인터을 손가락으로 변경 */
 	.card:not(.no-move) .card-header{
-	cursor: pointer;
+		cursor: pointer;
 	}
-	</style>
+	.field-error {
+		border-color: #dc3545;
+		color: #dc3545;
+	}
+</style>
 
 
 <body style="margin-top: 50px; margin-left: 10px; margin-right: 10px; margin-bottom: 50px;">
 
 
 <section>
-<div class="container" style="padding-top: 50px;">
-	<ul class="nav nav-pills m-2" id="pills-tab" role="tablist"
-		<li class="nav-item m-1" role="presentation">
-			<button class="btn btn-outline-secondary active" id="plus-category" data-bs-toggle="modal" data-bs-target="#plusCategoryModal"
-					type="button" role="tab" aria-controls="pills-category1" aria-selected="true">카테고리 추가</button>
-		</li>
-		<li class="nav-item m-1" role="presentation">
-			<button class="btn btn-outline-secondary active" id="pills-category1-tab" data-bs-toggle="pill" data-bs-target="#pills-category1"
-				type="button" role="tab" aria-controls="pills-category1" aria-selected="true">카테고리1</button>
-		</li>
-	</ul>
 
-	<hr>
-	<!-- 카테고리 탭 컨텐츠(카테고리별 음식 메뉴)-->
-	<div class="tab-content" id="pills-tabContent">
-		<div class="tab-pane fade show active" id="pills-category1" role="tabpanel" aria-labelledby="pills-category1-tab">
-			<div class="col-sm-12 column overflow-auto rounded" style="height: 650px;">
-				<div class="card text-black bg-Light m-3">
-				<div class="row g-0">
-					<div class="col-md-1">
-						<div class="card-header" style="height: 100%;"><h5>.</h5><h5>.</h5><h5>.</h5></div>
-					</div>
-					<div class="col">
-						<div class="card-body text-center" type="button" data-bs-toggle="modal" data-bs-target="#plusCategoryModal">
-							<h5 class="card-title">메뉴</h5>
-							<p class="card-text">메뉴추가</p>
-						</div>
-					</div>
-				</div>
-				</div>
+	<div class="container" style="padding-top: 50px;">
+		<div th:if="${param.overlap}" class="alert alert-error field-error text-center timeout">
+		카테고리명이 중복되었습니다. 다른 이름을 사용해주세요.
+		</div>
+		<div th:if="${param.category}" class="alert alert-error field-error text-center timeout">
+			카테고리명에 문제가 있습니다.
+		</div>
+		<div th:if="${param.menu}" class="alert alert-error field-error text-center timeout">
+			메뉴 등록에 문제가 있습니다.
+		</div>
+		<ul class="tab-content nav nav-pills m-2" id="pills-tab" role="tablist">
+			<li class="nav-item m-1" role="presentation">
+				<button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#plusCategoryModal"
+						type="button" role="tab" aria-controls="pills-category" aria-selected="true">카테고리 추가</button>
+			</li>
+			<li th:each="category : ${categories}" role="presentation">
+				<button class="btn btn-outline-secondary m-1" th:field="|${category.name}|" data-bs-toggle="pill" th:data-bs-target="|#God${category.id}|"
+						type="button" role="tab" th:aria-controls="|God${category.id}|">[[${category.name}]]</button>
+			</li>
+		</ul>
 
-				<div class="card text-black bg-Light m-3">
-					<div class="row g-0">
-						<div class="col-md-1">
-							<div class="card-header" style="height: 100%;"><h5>.</h5><h5>.</h5><h5>.</h5></div>
+		<hr>
+		<!-- 카테고리 탭 컨텐츠(카테고리별 음식 메뉴)-->
+		<div class="tab-content" id="pills-tabContent">
+			<th:block th:each="category : ${categories}">
+				<div class="tab-pane fade" th:id="|God${category.id}|" role="tabpanel" th:aria-labelledby="|God${category.id}|">
+					<div class="col-sm-12 column overflow-auto rounded" style="height: 650px;">
+						<div>
+							<div class="text-center" type="button" th:data-test="|${category.name}|" data-bs-toggle="modal" data-bs-target="#Plusmenu"
+							style="width: 100%;">
+								메뉴 추가
+							</div>
 						</div>
-						<div class="col">
-							<div class="card-body text-center"  type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-								<h5 class="card-title">메뉴1</h5>
-							<p class="card-text">맛있는 메뉴</p>
+						<div class="card text-black bg-Light m-3" th:each="menu : ${category.items}">
+							<div class="row g-0">
+								<div class="col-md-1">
+									<div class="card-header" style="height: 100%;"><h5>.</h5><h5>.</h5><h5>.</h5></div>
+								</div>
+								<div class="col">
+									<div class="card-body text-center"  type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+										<h5 class="card-title">[[${menu.name}]]</h5>
+										<p class="card-text">[[${menu.description}]]</p>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+			</th:block>
+		</div>
+	</div>
 
-				<div class="card text-black bg-Light m-3">
-					<div class="row g-0">
-						<div class="col-md-1">
-							<div class="card-header" style="height: 100%;"><h5>.</h5><h5>.</h5><h5>.</h5></div>
+	<!-- 카테고리 추가 -->
+	<div class="modal fade" id="plusCategoryModal" tabindex="-1" aria-labelledby="plusCategoryModal" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">카테고리 추가</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form id="category" method="post" th:action>
+						<div class="mb-3">
+							<label for="categoryName" class="col-form-label">카테고리명</label>
+							<input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="카테고리명을 입력해주세요.">
 						</div>
-						<div class="col-md-auto">
-							<div class="card-body">
-								<h5 class="card-title">메뉴1</h5>
-								<p class="card-text">풍미가 가득한 메뉴1</p>
-							</div>
-						</div>
-					</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+					<button type="submit" form="category" class="btn btn-primary">확인</button>
 				</div>
 			</div>
 		</div>
-
-	
-		<div class="tab-pane fade" id="pills-plus" role="tabpanel" aria-labelledby="plus-tab">
-			plustab
-		</div>
 	</div>
-</div>
 
-<!-- 카테고리 추가 -->
-<div class="modal fade" id="plusCategoryModal" tabindex="-1" aria-labelledby="plusCategoryModal" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">카테고리 추가</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<form method="post" action>
-					<div class="mb-3">
-						<label for="itemname" class="col-form-label">카테고리명</label>
-						<textarea class="form-control" id="itemname">카테고리명을 입력해주세요.</textarea>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="button" class="btn btn-primary">확인</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-	<!-- 메뉴추가 모달 1 -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<!-- 메뉴추가 모달 -->
+	<div class="modal fade" id="Plusmenu" tabindex="-1" aria-labelledby="Plusmenu" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -140,98 +117,58 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form method="post" action>
+					<form id="menuAdd" method="post" th:action="@{menus/add}">
 						<div class="mb-3">
-							<label for="itemname" class="col-form-label">제품명</label>
-							<textarea class="form-control" id="itemname">제품명을 입력해주세요.</textarea>
+							<label for="menuName" class="col-form-label">제품명</label>
+							<input type="text" class="form-control" id="menuName" name="menuName">
 						</div>
 						<div class="mb-3">
 							<label for="description" class="col-form-label">설명</label>
-							<textarea class="form-control" id="description"></textarea>
+							<textarea class="form-control" id="description" name="description"></textarea>
 						</div>
-						<div class="mb-3">
-							<label for="price" class="col-form-label">가격</label>
-							<textarea class="form-control" id="price"></textarea>
-						</div>
-						<div class="mb-3">
-							<label for="category" class="col-form-label">카테고리</label>
-							<textarea class="form-control" id="category"></textarea>
-						</div>
+						<input type="text" hidden="true" id="menuCategoryName" name="categoryName">
 					</form>
 
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary">확인</button>
+					<button type="submit" form="menuAdd" class="btn btn-primary">확인</button>
 				</div>
 			</div>
 		</div>
 	</div>
-
-<!-- 메뉴 수정 모달 2 -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">메뉴 수정</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<form>
-					<div class="mb-3">
-						<label for="message-text" class="col-form-label">제품명</label>
-						<textarea class="form-control" id="foodName">제품명을 입력해주세요.</textarea>
-					</div>
-					<div class="mb-3">
-						<label for="message-text" class="col-form-label">설명</label>
-						<textarea class="form-control" id="foodDescription"></textarea>
-					</div>
-					<div class="mb-3">
-						<label for="message-text" class="col-form-label">가격</label>
-						<textarea class="form-control" id="foodPrice"></textarea>
-					</div>
-					<div class="mb-3">
-						<label for="message-text" class="col-form-label">카테고리</label>
-						<textarea class="form-control" id="foodCategory"></textarea>
-					</div>
-					<div class="mb-3">
-						<label for="message-text" class="col-form-label">부가옵션</label>
-						<textarea class="form-control" id="foodOption"></textarea>
-					</div>
-					<div class="mb-3">
-						<label class="col-form-label" for="inputGroupFile02">사진</label>
-						<input type="file" class="form-control" id="inputGroupFile02">
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="button" class="btn btn-primary">확인</button>
-			</div>
-		</div>
-	</div>
-</div>
 </section>
 
 
 
 
-	<script>
-		$(function() {
+<script>
+	$(function() {
 		$(".column").sortable({
-		// 드래그 앤 드롭 단위 css 선택자
-		connectWith: ".column",
-		// 움직이는 css 선택자
-		handle: ".card-header",
-		// 움직이지 못하는 css 선택자
-		cancel: ".no-move",
-		// 이동하려는 location에 추가 되는 클래스
-		placeholder: "card-placeholder"
+			// 드래그 앤 드롭 단위 css 선택자
+			connectWith: ".column",
+			// 움직이는 css 선택자
+			handle: ".card-header",
+			// 움직이지 못하는 css 선택자
+			cancel: ".no-move",
+			// 이동하려는 location에 추가 되는 클래스
+			placeholder: "card-placeholder"
 		});
 		// 해당 클래스 하위의 텍스트 드래그를 막는다.
 		$( ".column .card" ).disableSelection();
-		});
-	</script>
+	});
+
+	// 메뉴추가 모달에 카테고리 삽입 (띄어쓰기한 카테고리 적용 안됨)
+	$('#Plusmenu').on('show.bs.modal', function (e) {
+		var data = $(e.relatedTarget).data('test');
+		$(".modal #menuCategoryName").val(data)
+	});
+
+	setTimeout(function() {
+		$(".timeout").hide();
+	}, 3000);
+
+</script>
 
 </body>
 

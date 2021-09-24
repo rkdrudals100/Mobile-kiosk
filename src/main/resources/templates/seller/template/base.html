@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:fragment="layout (title, content, style, script)">
 
 <head>
@@ -27,59 +28,61 @@
 <body style="margin-top: 50px; margin-left: 10px; margin-right: 10px; margin-bottom: 50px;">
 <!-- 상단 바 -->
 <header>
-    <div class="navbar fixed-top navbar-dark bg-dark box-shadow">
+    <nav class="navbar fixed-top navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
             <a th:href="@{/}" class="navbar-brand d-flex align-items-center">
                 <img src="./img/logo.png" alt="로고" width="30" height="30">
                 &nbsp;
                 <strong>Mobile Kiosk</strong>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#contollerDropdown"
                     aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation"
                     style="position: fixed; right: 13vw;">
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
-        <div style="position: fixed; right: 2vw;">
-            <p th:text="|${username} 님|" style="color: white" class="d-inline"></p>
-            <button type="button" class="btn btn-danger btn-sm d-inline"
-                    onclick="location.href='/logout' ">로그아웃</button>
-        </div>
-
-
-    </div>
+    </nav>
 
 </header>
 
+
+
 <!-- 상단바 메뉴-->
-<div class="flex-column flex-shrink-0 p-3 text-white bg-dark collapse" id="collapseExample"
+<div class="flex-column flex-shrink-0 p-3 text-white bg-dark collapse dropdown-menu" id="contollerDropdown"
      style="width: 280px; position: fixed; right: 12.5vw;">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-        <svg class="bi me-2" width="40" height="32">
-            <use xlink:href="#bootstrap" /></svg>
-        <span class="fs-4">Mobile Kiosk</span>
-    </a>
-    <hr>
     <ul class="nav nav-pills flex-column mb-auto" >
+        <li>
+            <div sec:authorize-expr="isAuthenticated()" class="text-center">
+                <h5 th:text="|${#authentication.name} 님|" style="color: white" class="d-inline"></h5>
+            </div>
+        </li>
+        <li>
+            <hr>
+        </li>
         <li class="nav-item">
-            <a th:href="@{/}" class="nav-link" style="color: white;">
+            <a th:href="@{/}" class="dropdown-item" style="color: white;">
                 홈으로 가기
             </a>
         </li>
         <li>
-            <a th:href="@{/menu}" class="nav-link" style="color: white;">
+            <a th:href="@{/menus}" class="dropdown-item" style="color: white;">
                 메뉴 관리
             </a>
         </li>
         <li>
-            <a href="../order-management.html" class="nav-link" style="color: white;">
+            <a th:href="@{/order-management}" class="dropdown-item" style="color: white;">
                 주문 관리
             </a>
         </li>
         <li>
-            <a href="../qr.html" class="nav-link" style="color: white;">
+            <a th:href="@{/qr}" class="dropdown-item" style="color: white;">
                 QR 코드
             </a>
+        </li>
+        <li>
+            <form th:action="@{/logout}" method="POST">
+                <button type="submit" class="dropdown-item" style="color: white;">로그아웃</button>
+            </form>
         </li>
     </ul>
 </div>
