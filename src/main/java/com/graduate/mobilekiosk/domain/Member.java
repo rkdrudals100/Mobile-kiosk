@@ -2,6 +2,7 @@ package com.graduate.mobilekiosk.domain;
 
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class Member extends BaseEntity {
         this.getCategories().add(category);
     }
 
-    public void encodePassworde() {
-        this.password = "{noop}" + this.password;
+    public void encodePassworde(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
     }
 }

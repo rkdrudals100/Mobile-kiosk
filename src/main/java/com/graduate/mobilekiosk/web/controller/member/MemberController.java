@@ -1,4 +1,4 @@
-package com.graduate.mobilekiosk.web.member;
+package com.graduate.mobilekiosk.web.controller.member;
 
 import com.graduate.mobilekiosk.domain.Member;
 import com.graduate.mobilekiosk.service.MemberService;
@@ -42,7 +42,8 @@ public class MemberController {
         Member saveMember = Member.builder()
                 .userId(memberSaveDto.getUsername())
                 .password(memberSaveDto.getPassword())
-                .storeName(memberSaveDto.getUrl()).build();
+                .storeName(memberSaveDto.getUrl())
+                .role("USER").build();
 
         memberService.join(saveMember);
         return "redirect:/login?join";
@@ -52,25 +53,6 @@ public class MemberController {
     public String loginform(Model model) {
         model.addAttribute("member", new LoginDto());
         return "seller/index.html";
-    }
-
-    @PostMapping("/login")
-    public String login(@Validated @ModelAttribute("member") LoginDto loginDto, BindingResult bindingResult) {
-        Member findMember = memberService.findMember(loginDto.getUsername());
-
-        if (findMember == null) {
-            bindingResult.reject("notexist", "아이디가 존재하지 않습니다.");
-        } else if (!findMember.getPassword().equals(loginDto.getPassword())) {
-            bindingResult.reject("notpassword", "비밀번호가 틀립니다.");
-        }
-
-        if (bindingResult.hasErrors()) {
-            log.info("errors={}", bindingResult);
-            return "seller/index.html";
-        }
-
-        log.warn("통과는됨");
-        return "redirect:/sign-up";
     }
 
 }
