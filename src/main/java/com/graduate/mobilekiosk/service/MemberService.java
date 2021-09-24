@@ -35,7 +35,7 @@ public class MemberService implements UserDetailsService {
 
     @Transactional
     public void join(Member member) {
-        member.encodePassworde(passwordEncoder);
+        member.encodePassword(passwordEncoder);
         memberRepository.save(member);
 
     }

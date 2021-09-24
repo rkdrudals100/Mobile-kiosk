@@ -47,7 +47,7 @@ public class Member extends BaseEntity {
         this.getCategories().add(category);
     }
 
-    public void encodePassworde(PasswordEncoder passwordEncoder) {
+    public void encodePassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
     }
 }

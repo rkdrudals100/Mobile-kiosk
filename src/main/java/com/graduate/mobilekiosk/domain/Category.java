@@ -2,6 +2,7 @@ package com.graduate.mobilekiosk.domain;
 
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.common.reflection.XMember;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Data
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"member", "items"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder @Accessors(chain = true)
@@ -19,8 +20,14 @@ public class Category extends BaseEntity {
     @GeneratedValue
     @Column(name = "category_id")
     private Long id;
+
     private String name;
+
+    private String userName;
+
     private int sort;
+
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
