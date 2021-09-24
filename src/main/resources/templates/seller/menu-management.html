@@ -57,43 +57,29 @@
 			<th:block th:each="category : ${categories}">
 				<div class="tab-pane fade" th:id="${category.name}" role="tabpanel" th:aria-labelledby="${category.name}">
 					<div class="col-sm-12 column overflow-auto rounded" style="height: 650px;">
+
 						<div class="card text-black bg-Light m-3">
 							<div class="row g-0">
 								<div class="col-md-1">
 									<div class="card-header" style="height: 100%;"><h5>.</h5><h5>.</h5><h5>.</h5></div>
 								</div>
 								<div class="col">
-									<div class="card-body text-center" type="button" data-bs-toggle="modal" data-bs-target="#plusCategoryMl">
-										<h5 class="card-title">[[${category.name}]]</h5>
-										<p class="card-text">메뉴추가</p>
+									<div class="card-body text-center" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+										<h5 class="card-title">메뉴 추가 버튼</h5>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="card text-black bg-Light m-3">
+						<div class="card text-black bg-Light m-3" th:each="menu : ${category.items}">
 							<div class="row g-0">
 								<div class="col-md-1">
 									<div class="card-header" style="height: 100%;"><h5>.</h5><h5>.</h5><h5>.</h5></div>
 								</div>
 								<div class="col">
 									<div class="card-body text-center"  type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-										<h5 class="card-title">메뉴1</h5>
-										<p class="card-text">맛있는 메뉴</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="card text-black bg-Light m-3">
-							<div class="row g-0">
-								<div class="col-md-1">
-									<div class="card-header" style="height: 100%;"><h5>.</h5><h5>.</h5><h5>.</h5></div>
-								</div>
-								<div class="col-md-auto">
-									<div class="card-body">
-										<h5 class="card-title">메뉴1</h5>
-										<p class="card-text">풍미가 가득한 메뉴1</p>
+										<h5 class="card-title">[[${menu.name}]]</h5>
+										<p class="card-text">[[${menu.description}]]</p>
 									</div>
 								</div>
 							</div>
@@ -102,75 +88,6 @@
 				</div>
 
 			</th:block>
-			<div class="tab-pane fade" id="테스트2" role="tabpanel" aria-labelledby="테스트2">
-				<div class="col-sm-12 column overflow-auto rounded" style="height: 650px;">
-					<div class="card text-black bg-Light m-3">
-						<div class="row g-0">
-							<div class="col-md-1">
-								<div class="card-header" style="height: 100%;"><h5>.</h5><h5>.</h5><h5>.</h5></div>
-							</div>
-							<div class="col">
-								<div class="card-body text-center" type="button" data-bs-toggle="modal" data-bs-target="#plusCategoryMl">
-									<h5 class="card-title">메뉴</h5>
-									<p class="card-text">메뉴추가</p>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="card text-black bg-Light m-3">
-						<div class="row g-0">
-							<div class="col-md-1">
-								<div class="card-header" style="height: 100%;"><h5>.</h5><h5>.</h5><h5>.</h5></div>
-							</div>
-							<div class="col">
-								<div class="card-body text-center"  type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-									<h5 class="card-title">메뉴1</h5>
-									<p class="card-text">맛있는 메뉴</p>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="card text-black bg-Light m-3">
-						<div class="row g-0">
-							<div class="col-md-1">
-								<div class="card-header" style="height: 100%;"><h5>.</h5><h5>.</h5><h5>.</h5></div>
-							</div>
-							<div class="col-md-auto">
-								<div class="card-body">
-									<h5 class="card-title">메뉴1</h5>
-									<p class="card-text">풍미가 가득한 메뉴1</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="tab-pane fade" id="tttt" role="tabpanel" aria-labelledby="tttt">
-				<div class="col-sm-12 column overflow-auto rounded" style="height: 650px;">
-
-					<div class="card text-black bg-Light m-3">
-						<div class="row g-0">
-							<div class="col-md-1">
-								<div class="card-header" style="height: 100%;"><h5>.</h5><h5>.</h5><h5>.</h5></div>
-							</div>
-							<div class="col-md-auto">
-								<div class="card-body">
-									<h5 class="card-title">메뉴1</h5>
-									<p class="card-text">풍미가 가득한 메뉴1</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-
-			<div class="tab-pane fade" id="pills-plus" role="tabpanel" aria-labelledby="plus-tab">
-				plustab
-			</div>
 		</div>
 	</div>
 
@@ -193,6 +110,39 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 					<button type="submit" form="category" class="btn btn-primary">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 메뉴수정 모달 1 -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">메뉴 추가</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form id="menuAdd" method="post" th:action="@{menus/add}">
+						<div class="mb-3">
+							<label for="menuName" class="col-form-label">제품명</label>
+							<textarea class="form-control" id="menuName" name="menuName"></textarea>
+						</div>
+						<div class="mb-3">
+							<label for="description" class="col-form-label">설명</label>
+							<textarea class="form-control" id="description" name="description"></textarea>
+						</div>
+						<div class="mb-3">
+							<label for="categoryName" class="col-form-label">카테고리</label>
+							<textarea class="form-control" id="categoryName" name="categoryName"></textarea>
+						</div>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+					<button type="submit" form="menuAdd" class="btn btn-primary">확인</button>
 				</div>
 			</div>
 		</div>

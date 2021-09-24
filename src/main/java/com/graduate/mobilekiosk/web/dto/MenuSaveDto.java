@@ -9,5 +9,7 @@ public class MenuSaveDto {
 
     private String description;
 
+    private String categoryName;
+
 
 }
