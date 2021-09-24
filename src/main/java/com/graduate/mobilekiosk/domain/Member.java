@@ -19,11 +19,15 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
+    @Column(unique = true)
     private String userId;
 
     private String password;
 
+    @Column(unique = true)
     private String storeName;
+
+    private String role;
 
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
@@ -40,5 +44,9 @@ public class Member extends BaseEntity {
     public void addCategories(Category category) {
         category.setMember(this);
         this.getCategories().add(category);
+    }
+
+    public void encodePassworde() {
+        this.password = "{noop}" + this.password;
     }
 }

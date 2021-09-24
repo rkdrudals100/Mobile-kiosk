@@ -13,20 +13,19 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/sign-up")
 @RequiredArgsConstructor
 @Slf4j
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("")
+    @GetMapping("sign-up")
     public String sighUpForm(Model model) {
         model.addAttribute("member", new MemberSaveDto());
-        return "seller/sign_up.html";
+        return "seller/sign-up.html";
     }
 
-    @PostMapping("")
+    @PostMapping("sign-up")
     public String sighUp(@Validated @ModelAttribute("member") MemberSaveDto memberSaveDto, BindingResult bindingResult) {
 
         if (memberService.findMember(memberSaveDto.getUsername()) != null) {
@@ -37,7 +36,7 @@ public class MemberController {
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            return "seller/sign_up.html";
+            return "seller/sign-up.html";
         }
 
         Member saveMember = Member.builder()
@@ -46,7 +45,13 @@ public class MemberController {
                 .storeName(memberSaveDto.getUrl()).build();
 
         memberService.join(saveMember);
-        return "redirect:/";
+        return "redirect:/login?join";
+    }
+
+    @GetMapping("/login")
+    public String loginform(Model model) {
+        model.addAttribute("member", new LoginDto());
+        return "seller/index.html";
     }
 
     @PostMapping("/login")
@@ -64,6 +69,8 @@ public class MemberController {
             return "seller/index.html";
         }
 
-        return "seller/home_main.html";
+        log.warn("통과는됨");
+        return "redirect:/sign-up";
     }
+
 }

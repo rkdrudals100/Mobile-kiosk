@@ -16,8 +16,7 @@ public class HomeController {
 
     @GetMapping("")
     public String home(Model model) {
-        model.addAttribute("member", new LoginDto());
-        return "seller/index.html";
+        return "seller/home-main.html";
 
     }
 
