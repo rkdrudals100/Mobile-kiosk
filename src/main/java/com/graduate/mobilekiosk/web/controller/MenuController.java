@@ -37,7 +37,7 @@ public class MenuController {
     @PostMapping("")
     public String categoryAdd(@Validated @ModelAttribute CategoryDto categoryDto, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/menu";
+            return "redirect:/menus";
         }
 
         Member member = memberRepository.findByUserId(principal.getName());
@@ -50,6 +50,6 @@ public class MenuController {
 
         categoryRepository.save(category);
 
-        return "redirect:/menu";
+        return "redirect:/menus";
     }
 }
