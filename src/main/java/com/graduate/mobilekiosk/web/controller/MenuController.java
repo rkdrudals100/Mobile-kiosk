@@ -52,7 +52,11 @@ public class MenuController {
                 .userName(principal.getName())
                 .build();
 
-        categoryRepository.save(category);
+        try {
+            categoryRepository.save(category);
+        }catch (Exception e) {
+            return "redirect:/menus?overlap";
+        }
 
         return "redirect:/menus";
     }

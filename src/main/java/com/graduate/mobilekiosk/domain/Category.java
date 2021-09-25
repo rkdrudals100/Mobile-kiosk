@@ -9,6 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(
+        name = "category",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        columnNames = {"name", "userName"}
+                )
+        }
+)
 @Data
 @ToString(callSuper = true, exclude = {"member", "items"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

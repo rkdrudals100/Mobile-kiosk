@@ -42,8 +42,10 @@
         </div>
         <div style="position: fixed; right: 2vw;">
             <p th:text="|${username} 님|" style="color: white" class="d-inline"></p>
-            <button type="button" class="btn btn-danger btn-sm d-inline"
-                    onclick="location.href='/logout' ">로그아웃</button>
+            <form th:action="@{/logout}" method="POST" class="d-inline">
+                <input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">
+                <button type="submit" class="btn btn-danger btn-sm">로그아웃</button>
+            </form>
         </div>
 
 
