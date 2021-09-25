@@ -31,7 +31,7 @@ public class MemberController {
         if (memberService.findMember(memberSaveDto.getUsername()) != null) {
             bindingResult.reject("exist", "아이디가 이미 존재합니다.");
         } else if (!memberSaveDto.getPassword().equals(memberSaveDto.getCheckPassword())) {
-            bindingResult.reject("diffrentPassword", "패스워드가 일치하지 않습니다.");
+            bindingResult.reject("differentPassword", "패스워드가 일치하지 않습니다.");
         }
 
         if (bindingResult.hasErrors()) {
