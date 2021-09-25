@@ -8,13 +8,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/menu")
+@RequestMapping
 public class MenuController {
 
-    @GetMapping
-    public String menu(Model model, Principal principal) {
+    @GetMapping("/menu-management")
+    public String moveMenu(Model model, Principal principal) {
         model.addAttribute("username", principal.getName());
         return "seller/menu-management.html";
+
+    }
+
+    @GetMapping("/order-management")
+    public String moveOrder(Model model, Principal principal) {
+        model.addAttribute("username", principal.getName());
+        return "seller/order-management.html";
+
+    }
+
+    @GetMapping("/qr")
+    public String moveQr(Model model, Principal principal) {
+        model.addAttribute("username", principal.getName());
+        return "seller/qr.html";
 
     }
 }
