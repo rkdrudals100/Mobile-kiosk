@@ -20,12 +20,6 @@ spring:
         hibernate:
             ddl-auto: none
 
-
-
-# logging.level:
-   # org.hibernate.SQL: debug
-# org.hibernate.type: trace
-
 ---
 server:
     address: localhost
@@ -44,8 +38,3 @@ spring:
         hibernate:
             ddl-auto: none
 
-
-
-    # logging.level:
-    # org.hibernate.SQL: debug
-# org.hibernate.type: trace
