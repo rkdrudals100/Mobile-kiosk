@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:fragment="layout (title, content, style, script)">
 
 <head>
@@ -41,9 +42,11 @@
             </button>
         </div>
         <div style="position: fixed; right: 2vw;">
-            <p th:text="|${username} 님|" style="color: white" class="d-inline"></p>
+            <div sec:authorize-expr="isAuthenticated()" class="d-inline">
+                <p th:text="|${#authentication.name} 님|" style="color: white" class="d-inline"></p>
+            </div>
             <form th:action="@{/logout}" method="POST" class="d-inline">
-                <input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">
+<!--                <input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">-->
                 <button type="submit" class="btn btn-danger btn-sm">로그아웃</button>
             </form>
         </div>

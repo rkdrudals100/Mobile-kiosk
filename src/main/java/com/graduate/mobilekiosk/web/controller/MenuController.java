@@ -32,8 +32,6 @@ public class MenuController {
     @GetMapping
     public String menu(Model model, Principal principal) {
         List<Category> categories = categoryRepository.findByUserName(principal.getName());
-
-        model.addAttribute("username", principal.getName());
         model.addAttribute("categories", categories);
         return "seller/menu-management.html";
     }

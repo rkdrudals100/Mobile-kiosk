@@ -17,8 +17,7 @@ import java.security.Principal;
 public class HomeController {
 
     @GetMapping("")
-    public String home(Model model, Principal principal) {
-        model.addAttribute("username", principal.getName());
+    public String home() {
         return "seller/home-main.html";
 
     }

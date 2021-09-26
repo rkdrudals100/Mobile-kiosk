@@ -1,7 +1,13 @@
+spring:
+  profiles:
+      active: local
+
+---
 server:
     address: localhost
     port: 8080
 spring:
+    profiles: local
     datasource:
         url: jdbc:mysql://localhost:3306/graduate?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
         username: root
@@ -18,4 +24,28 @@ spring:
 
 # logging.level:
    # org.hibernate.SQL: debug
+# org.hibernate.type: trace
+
+---
+server:
+    address: localhost
+    port: 8080
+spring:
+    profiles: prov
+    datasource:
+        url: jdbc:mysql://localhost:3306/graduate?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+        username: root
+        password: admin
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+        database: mysql
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        generate-ddl: true
+        hibernate:
+            ddl-auto: none
+
+
+
+    # logging.level:
+    # org.hibernate.SQL: debug
 # org.hibernate.type: trace
