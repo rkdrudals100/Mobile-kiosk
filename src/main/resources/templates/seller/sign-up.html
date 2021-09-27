@@ -21,7 +21,7 @@
 
     <div class="row pt-5 mt-5">
       <div class="container col-lg-3 col-lg-offset-3">
-        <form class="form-signin d-grid gap-2" method="post" action th:object="${member}">
+        <form class="form-signin d-grid gap-2" method="post" th:action="sign-up" th:object="${member}">
           <h1 class="form-signin-heading text-center">회원가입</h1>
           <div th:if="${#fields.hasGlobalErrors()}">
             <p class="field-error" th:each="err : ${#fields.globalErrors()}"
