@@ -29,7 +29,7 @@ public class MenuController {
     private final CategoryRepository categoryRepository;
     private final ItemRepository itemRepository;
 
-    @GetMapping
+    @GetMapping("")
     public String menu(Model model, Principal principal) {
         List<Category> categories = categoryRepository.findByUserName(principal.getName());
         model.addAttribute("categories", categories);
@@ -39,7 +39,7 @@ public class MenuController {
     @PostMapping("")
     public String categoryAdd(@Validated @ModelAttribute CategoryDto categoryDto, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/menus";
+            return "redirect:/menus?category";
         }
 
         Member member = memberRepository.findByUserId(principal.getName());
@@ -74,6 +74,6 @@ public class MenuController {
 
         itemRepository.save(item);
         return "redirect:/menus";
-
     }
 }
+

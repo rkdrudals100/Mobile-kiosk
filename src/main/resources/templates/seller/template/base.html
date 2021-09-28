@@ -46,7 +46,6 @@
                 <p th:text="|${#authentication.name} 님|" style="color: white" class="d-inline"></p>
             </div>
             <form th:action="@{/logout}" method="POST" class="d-inline">
-<!--                <input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }">-->
                 <button type="submit" class="btn btn-danger btn-sm">로그아웃</button>
             </form>
         </div>
@@ -72,17 +71,17 @@
             </a>
         </li>
         <li>
-            <a th:href="@{/menu}" class="nav-link" style="color: white;">
+            <a th:href="@{/menus}" class="nav-link" style="color: white;">
                 메뉴 관리
             </a>
         </li>
         <li>
-            <a href="../order-management.html" class="nav-link" style="color: white;">
+            <a th:href="@{/order-management}" class="nav-link" style="color: white;">
                 주문 관리
             </a>
         </li>
         <li>
-            <a href="../qr.html" class="nav-link" style="color: white;">
+            <a th:href="@{/qr}" class="nav-link" style="color: white;">
                 QR 코드
             </a>
         </li>

@@ -33,10 +33,13 @@
 <section>
 
 	<div class="container" style="padding-top: 50px;">
-		<div th:if="${param.overlap}" class="alert alert-error field-error text-center">
+		<div th:if="${param.overlap}" class="alert alert-error field-error text-center timout">
 		카테고리명이 중복되었습니다. 다른 이름을 사용해주세요.
 		</div>
-		<div th:if="${param.menu}" class="alert alert-error field-error text-center">
+		<div th:if="${param.category}" class="alert alert-error field-error text-center timout">
+			카테고리명에 문제가 있습니다.
+		</div>
+		<div th:if="${param.menu}" class="alert alert-error field-error text-center timout">
 			메뉴 등록에 문제가 있습니다.
 		</div>
 		<ul class="tab-content nav nav-pills m-2" id="pills-tab" role="tablist">
@@ -160,6 +163,11 @@
 		var data = $(e.relatedTarget).data('test');
 		$(".modal #menuCategoryName").val(data)
 	});
+
+	setTimeout(function() {
+		$(".timout").hide();
+	}, 5000);
+
 </script>
 
 </body>

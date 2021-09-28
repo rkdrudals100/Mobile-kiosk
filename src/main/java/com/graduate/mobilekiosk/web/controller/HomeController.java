@@ -19,11 +19,11 @@ public class HomeController {
     @GetMapping("")
     public String home() {
         return "seller/home-main.html";
-
     }
 
+    @GetMapping("/qr")
+    public String moveQr(Model model) {
+        return "seller/qr.html";
 
-
-
-
+    }
 }

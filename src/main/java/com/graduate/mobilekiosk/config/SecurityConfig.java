@@ -24,7 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/");
 
         http.httpBasic();
-      //  http.csrf().disable();
     }
 
     @Override
