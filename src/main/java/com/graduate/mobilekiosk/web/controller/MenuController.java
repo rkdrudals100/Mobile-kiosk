@@ -60,7 +60,11 @@ public class MenuController {
     }
 
     @PostMapping("add")
-    public String menuAdd(@ModelAttribute MenuSaveDto menuSaveDto, Principal principal) {
+    public String menuAdd(@Validated @ModelAttribute MenuSaveDto menuSaveDto, BindingResult bindingResult, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/menus?menu";
+        }
+
         Category findCategory = categoryRepository.findByNameAndUserName(menuSaveDto.getCategoryName(), principal.getName());
         Item item = Item.builder()
                 .category(findCategory)

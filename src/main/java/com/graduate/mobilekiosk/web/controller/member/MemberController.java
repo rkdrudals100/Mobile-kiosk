@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -20,7 +22,10 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("sign-up")
-    public String sighUpForm(Model model) {
+    public String sighUpForm(Model model, Principal principal) {
+        if (principal != null) {
+            return "redirect:/";
+        }
         model.addAttribute("member", new MemberSaveDto());
         return "seller/sign-up.html";
     }
@@ -50,7 +55,10 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public String loginform(Model model) {
+    public String loginform(Model model, Principal principal) {
+        if (principal != null) {
+            return "redirect:/";
+        }
         model.addAttribute("member", new LoginDto());
         return "seller/index.html";
     }
