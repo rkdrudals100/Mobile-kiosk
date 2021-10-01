@@ -23,7 +23,7 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/menus")
 @RequiredArgsConstructor
-public class MenuController {
+public class ItemController {
 
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
