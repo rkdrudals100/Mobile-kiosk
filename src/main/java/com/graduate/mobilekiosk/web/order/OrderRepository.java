@@ -1,4 +1,4 @@
-package com.graduate.mobilekiosk.repository;
+package com.graduate.mobilekiosk.web.order;
 
 import com.graduate.mobilekiosk.domain.Order;
 import org.springframework.data.jpa.repository.JpaRepository;

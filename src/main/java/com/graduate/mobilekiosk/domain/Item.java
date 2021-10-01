@@ -21,6 +21,7 @@ public class Item extends BaseEntity {
     private Long id;
     private String name;
     private String description;
+    @Lob
     private String image;
     private boolean visable;
     private int price;

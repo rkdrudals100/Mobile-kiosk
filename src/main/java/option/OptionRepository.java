@@ -1,4 +1,4 @@
-package com.graduate.mobilekiosk.repository;
+package option;
 
 
 import com.graduate.mobilekiosk.domain.Option;

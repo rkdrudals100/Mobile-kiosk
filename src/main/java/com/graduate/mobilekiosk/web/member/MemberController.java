@@ -1,9 +1,8 @@
-package com.graduate.mobilekiosk.web.controller.member;
+package com.graduate.mobilekiosk.web.member;
 
 import com.graduate.mobilekiosk.domain.Member;
-import com.graduate.mobilekiosk.service.MemberService;
-import com.graduate.mobilekiosk.web.dto.LoginDto;
-import com.graduate.mobilekiosk.web.dto.MemberSaveDto;
+import com.graduate.mobilekiosk.web.member.form.LoginDto;
+import com.graduate.mobilekiosk.web.member.form.MemberSaveDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package com.graduate.mobilekiosk.web.dto;
+package com.graduate.mobilekiosk.web.member.form;
 
 import lombok.Getter;
 import lombok.Setter;

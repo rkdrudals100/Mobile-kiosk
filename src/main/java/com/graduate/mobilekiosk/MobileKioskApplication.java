@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @EnableJpaAuditing
-public class MobileKioskApplication {
+public class MobileKioskApplication{
 
     @Bean
     public PasswordEncoder passwordEncoder() {

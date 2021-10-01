@@ -1,4 +1,4 @@
-package com.graduate.mobilekiosk.repository;
+package com.graduate.mobilekiosk.web.member;
 
 
 import com.graduate.mobilekiosk.domain.Member;

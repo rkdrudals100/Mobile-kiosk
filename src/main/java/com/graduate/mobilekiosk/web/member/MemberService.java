@@ -1,7 +1,6 @@
-package com.graduate.mobilekiosk.service;
+package com.graduate.mobilekiosk.web.member;
 
 import com.graduate.mobilekiosk.domain.Member;
-import com.graduate.mobilekiosk.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package com.graduate.mobilekiosk.web.controller;
+package com.graduate.mobilekiosk.web.order;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

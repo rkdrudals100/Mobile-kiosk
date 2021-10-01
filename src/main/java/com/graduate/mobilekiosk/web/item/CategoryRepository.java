@@ -1,4 +1,4 @@
-package com.graduate.mobilekiosk.repository;
+package com.graduate.mobilekiosk.web.item;
 
 import com.graduate.mobilekiosk.domain.Category;
 import org.springframework.data.jpa.repository.EntityGraph;
