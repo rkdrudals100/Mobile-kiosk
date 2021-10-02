@@ -2,7 +2,6 @@ package com.graduate.mobilekiosk.domain;
 
 import lombok.*;
 import lombok.experimental.Accessors;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,19 +9,21 @@ import java.util.List;
 
 @Entity @Table(name = "orders")
 @Data
-@ToString(callSuper = true, exclude = {})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true, exclude = {"orderItems", "customer"})
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder @Accessors(chain = true)
 public class Order extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue()
     @Column(name = "order_id")
     private Long id;
     private int totalPrice;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+    @Enumerated(EnumType.STRING)
+    private SaleStatus saleStatus;
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 
@@ -30,11 +31,23 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "order")
+    private Long orderNum;
+
+//    @OneToMany(mappedBy = "order")
+//    private List<OrderItem> orderItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+
+    }
+
 
 }
