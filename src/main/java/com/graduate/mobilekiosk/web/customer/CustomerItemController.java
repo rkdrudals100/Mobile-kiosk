@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 @Controller
 @RequestMapping("/customer")
-public class CustomerProductController {
+public class CustomerItemController {
 
     @GetMapping("/{item_id}")
     public String moveProduct() {
