@@ -39,6 +39,9 @@
 
 <div class="fixed-top bg-white" style="margin-top: 55px;">
     <ul class="tab-content" id="pills-tab" role="tablist" style="white-space:nowrap; overflow: auto;" >
+        <li th:each="category : ${categories}" class="nav-item m-1 d-inline" role="presentation">
+            <a class="btn btn-outline-secondary" href="#main_dish">[[${category.name}]]</a>
+        </li>
         <li class="nav-item m-1 d-inline" role="presentation">
             <a class="btn btn-outline-secondary" href="#main_dish">식사 메뉴</a>
         </li>

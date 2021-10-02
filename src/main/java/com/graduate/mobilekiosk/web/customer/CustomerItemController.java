@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/customer")
 public class CustomerItemController {
 
-    @GetMapping("/{item_id}")
+    //  @GetMapping("/{item_id}")
     public String moveProduct() {
         return"customer/customer-product.html";
     }

@@ -1,4 +1,4 @@
-package com.graduate.mobilekiosk.web.customerController;
+package com.graduate.mobilekiosk.web.customer;
 
 public class CustomerPaymentController {
 }
