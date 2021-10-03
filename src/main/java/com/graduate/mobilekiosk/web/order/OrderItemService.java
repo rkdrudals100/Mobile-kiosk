@@ -28,4 +28,8 @@ public class OrderItemService {
 
         orderItemRepository.save(orderItem);
     }
+
+    public void deleteOrderItem(Long orderItemId) {
+        orderItemRepository.deleteById(orderItemId);
+    }
 }

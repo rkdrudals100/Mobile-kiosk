@@ -39,6 +39,6 @@ spring:
         database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         generate-ddl: true
         hibernate:
-            ddl-auto: create
+            ddl-auto: none
 
 file.dir: /home/ec2-user/img/

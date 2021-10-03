@@ -3,6 +3,7 @@ package com.graduate.mobilekiosk.domain;
 import lombok.*;
 import lombok.experimental.Accessors;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +24,8 @@ public class Order extends BaseEntity {
     private int totalPrice;
 
     private String user;
+
+    private String purchase;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
@@ -55,5 +58,8 @@ public class Order extends BaseEntity {
 
     }
 
-
+    public void purchase() {
+        this.orderDate = new Date();
+        this.purchase = "purchase";
+    }
 }

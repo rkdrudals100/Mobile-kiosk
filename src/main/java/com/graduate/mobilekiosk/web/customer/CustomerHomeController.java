@@ -33,8 +33,6 @@ public class CustomerHomeController {
 
         List<Category> categories = categoryRepository.findByUserName(url);
         model.addAttribute("categories", categories);
-
-        log.warn("{}", categories);
         return "customer/customer-home.html";
     }
 

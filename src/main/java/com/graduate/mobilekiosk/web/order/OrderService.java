@@ -37,4 +37,10 @@ public class OrderService {
         }
         return order;
     }
+
+    public Order purchase(String user) {
+        Order order = orderRepository.findByUser(user);
+        order.purchase();
+        return order;
+    }
 }

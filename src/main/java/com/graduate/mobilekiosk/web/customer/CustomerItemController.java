@@ -45,10 +45,4 @@ public class CustomerItemController {
 
         return "redirect:/customer/" + url;
     }
-
-//    @PostMapping("{url}")
-//    public String storedItem(@PathVariable String url, Model model){
-//
-//
-//    }
 }

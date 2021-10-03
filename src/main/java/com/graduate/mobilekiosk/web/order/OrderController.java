@@ -1,7 +1,9 @@
 package com.graduate.mobilekiosk.web.order;
 
+import com.graduate.mobilekiosk.domain.Member;
 import com.graduate.mobilekiosk.domain.Order;
 import com.graduate.mobilekiosk.domain.OrderStatus;
+import com.graduate.mobilekiosk.web.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -17,15 +20,16 @@ import java.security.Principal;
 public class OrderController {
 
     private final OrderRepository orderRepository;
+    private final MemberRepository memberRepository;
 
     @GetMapping
     public String moveOrder(Model model, Principal principal) {
 
-        model.addAttribute("username", principal.getName());
-        model.addAttribute("orders", orderRepository.findAll());
-        log.warn("orderrepository 확인: " + orderRepository.findAll());
+        Member member = memberRepository.findByUserId(principal.getName());
+        List<Order> orders = orderRepository.findByMemberAndPurchase(member, "purchase");
 
-        return "seller/order-management.html";
+        model.addAttribute("orders", orders);
+        return "seller/order-management";
     }
     /****자세히 버튼 누를 시 세부 내용 출력****/
 
