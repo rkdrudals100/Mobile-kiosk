@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity @Table(name = "orders")
 @Data
-@ToString(callSuper = true, exclude = {"orderItems", "customer"})
+@ToString(callSuper = true, exclude = {"orderItems", "member"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder @Accessors(chain = true)
@@ -19,11 +19,17 @@ public class Order extends BaseEntity {
     @GeneratedValue()
     @Column(name = "order_id")
     private Long id;
+
     private int totalPrice;
+
+    private String user;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
     @Enumerated(EnumType.STRING)
     private SaleStatus saleStatus;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 

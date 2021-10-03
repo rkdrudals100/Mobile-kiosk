@@ -17,7 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/sign-up", "/login").permitAll()
+                .mvcMatchers("/sign-up", "/login", "/customer/**").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin()
@@ -32,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().mvcMatchers("/Users/**")
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .antMatchers("/favicon.ico", "/resources/**", "/error");
     }
 
     @Bean

@@ -17,8 +17,11 @@ public class OrderItem extends BaseEntity {
     @GeneratedValue
     @Column(name = "orderItem_id")
     private Long id;
-    private int orderPrice;
-    private int count1;
+
+    private int orderItemPrice;
+
+    private int itemCount;
+
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,7 +33,4 @@ public class OrderItem extends BaseEntity {
     private Item item;
 
 
-    public String toString() {
-        return "OrderItem(super=" + super.toString() + ", id=" + this.getId() + ", orderPrice=" + this.getOrderPrice() + ", count1=" + this.getCount1() + ", description=" + this.getDescription() + ", order=" + this.getOrder() + ", item=" + this.getItem() + ")";
-    }
 }

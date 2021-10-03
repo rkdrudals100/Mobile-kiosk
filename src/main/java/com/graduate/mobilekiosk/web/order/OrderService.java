@@ -1,6 +1,8 @@
 package com.graduate.mobilekiosk.web.order;
 
+import com.graduate.mobilekiosk.domain.Member;
 import com.graduate.mobilekiosk.domain.Order;
+import com.graduate.mobilekiosk.web.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,11 +15,26 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final MemberRepository memberRepository;
 
     public void save(Order order1) {
         long count = orderRepository.count();
         log.warn("count: =========== {}",count);
         order1.setOrderNum(count+1);
         orderRepository.save(order1);
+    }
+
+    public Order createOrder(String user, String url) {
+        Order order = orderRepository.findByUser(user);
+
+        if (order == null) {
+            Member member = memberRepository.findByUserId(url);
+            Order newOrder = Order.builder()
+                    .member(member)
+                    .user(user)
+                    .build();
+            return orderRepository.save(newOrder);
+        }
+        return order;
     }
 }

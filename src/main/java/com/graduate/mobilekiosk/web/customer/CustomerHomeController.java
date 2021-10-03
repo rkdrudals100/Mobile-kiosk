@@ -5,14 +5,18 @@ package com.graduate.mobilekiosk.web.customer;
 import com.graduate.mobilekiosk.domain.Category;
 import com.graduate.mobilekiosk.web.item.CategoryRepository;
 import com.graduate.mobilekiosk.web.item.ItemRepository;
+import com.graduate.mobilekiosk.web.order.OrderItemService;
+import com.graduate.mobilekiosk.web.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -24,7 +28,9 @@ public class CustomerHomeController {
     private final CategoryRepository categoryRepository;
 
     @GetMapping("/{url}")
-    public String CustomerHome(@PathVariable String url, Model model){
+    public String CustomerHome(@PathVariable String url, Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
         List<Category> categories = categoryRepository.findByUserName(url);
         model.addAttribute("categories", categories);
 
@@ -32,4 +38,14 @@ public class CustomerHomeController {
         return "customer/customer-home.html";
     }
 
+
+    @GetMapping("/test")
+    @ResponseBody
+    public String test(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Object map = session.getAttribute("map");
+
+        return "ok";
+
+    }
 }
