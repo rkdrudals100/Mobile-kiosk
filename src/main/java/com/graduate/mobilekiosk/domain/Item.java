@@ -19,13 +19,18 @@ public class Item extends BaseEntity {
     @GeneratedValue
     @Column(name = "item_id")
     private Long id;
+
     private String name;
+
+    private String shortDescription;
+
     private String description;
-    @Lob
+
     private String image;
-    private boolean visable;
+
+    private boolean visible;
+
     private int price;
-    private int sort;
 
     @OneToMany(mappedBy = "item")
     private List<OrderItem> orderItems = new ArrayList<>();

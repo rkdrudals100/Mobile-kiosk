@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:replace="~{./seller/template/base :: layout(~{::title}, ~{::section}, ~{::style}, ~{::script})}">
+
+<head>
+	<title>모바일 키오스크</title>
+</head>
+<style></style>
+<script></script>
+<body style="margin-top: 50px; margin-left: 10px; margin-right: 10px; margin-bottom: 50px;">
+	<section>
+		<div class="container" style="padding-top: 50px;">
+			<h1 class="text-center">[[${category}]]에 메뉴추가</h1>
+			<div class="row mt-5 justify-content-center">
+				<div class="col-md-8">
+					<form id="menuAdd" method="post" th:action="@{/menus/add-menu}" enctype="multipart/form-data">
+						<div class="mb-3">
+							<label for="name" class="col-form-label">제품명</label>
+							<input type="text" class="form-control" id="name" name="name">
+						</div>
+						<div class="mb-3">
+							<label for="price" class="col-form-label">가격</label>
+							<input type="text" class="form-control" id="price" name="price">
+						</div>
+						<div class="mb-3">
+							<label for="shortDescription" class="col-form-label">짧은 메뉴 소개</label>
+							<input type="text" class="form-control" id="shortDescription" name="shortDescription">
+						</div>
+						<div class="mb-3">
+							<label for="description" class="col-form-label">메뉴 설명</label>
+							<textarea class="form-control" id="description" name="description"></textarea>
+						</div>
+						<input type="text" hidden="true" name="categoryName" th:value="${category}">
+						<input type="file" name="image">
+					</form>
+
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="submit" form="menuAdd" class="btn btn-primary">확인</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</body>
+</html>

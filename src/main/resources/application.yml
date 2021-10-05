@@ -15,7 +15,9 @@ spring:
 
 servlet:
     multipart:
-        max-file-size: 10MB
+        max-file-size: 5MB
+
+file.dir: /Users/jaegeon/IdeaProjects/img/
 
 ---
 
@@ -39,6 +41,6 @@ spring:
         database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         generate-ddl: true
         hibernate:
-            ddl-auto: none
+            ddl-auto: create
 
 file.dir: /home/ec2-user/img/

@@ -8,15 +8,21 @@ import com.graduate.mobilekiosk.web.item.form.CategoryDto;
 import com.graduate.mobilekiosk.web.item.form.MenuSaveDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -28,6 +34,7 @@ public class ItemController {
     private final CategoryRepository categoryRepository;
     private final ItemRepository itemRepository;
     private final CategoryService categoryService;
+    private final FileStore fileStore;
 
     @GetMapping("")
     public String menu(Model model, Principal principal) {
@@ -36,24 +43,38 @@ public class ItemController {
         return "seller/menu-management.html";
     }
 
+    @GetMapping("/add-menu")
+    public String menuForm(Model model, @RequestParam String category) {
+        model.addAttribute("category", category);
+        return "seller/menu-form";
+    }
 
-    @PostMapping("")
-    public String menuAdd(@Validated @ModelAttribute MenuSaveDto menuSaveDto, BindingResult bindingResult,Principal principal) throws IOException {
+
+    @PostMapping("/add-menu")
+    public String menuAdd(@Validated @ModelAttribute MenuSaveDto menuSaveDto, BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
             return "redirect:/menus?menu";
         }
 
         Category findCategory = categoryService.findByCategoryName(menuSaveDto.getCategoryName());
-
+        String image = fileStore.storeFile(menuSaveDto.getImage());
         Item item = Item.builder()
                 .category(findCategory)
-                .name(menuSaveDto.getMenuName())
+                .name(menuSaveDto.getName())
+                .shortDescription(menuSaveDto.getShortDescription())
                 .description(menuSaveDto.getDescription())
-                .price(menuSaveDto.getMenuPrice())
+                .price(menuSaveDto.getPrice())
+                .image(image)
                 .build();
 
         itemRepository.save(item);
         return "redirect:/menus";
+    }
+
+    @ResponseBody
+    @GetMapping("/images/{filename}")
+    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource("file:" + fileStore.getFullPath(filename));
     }
 
     @PostMapping("/add-category")

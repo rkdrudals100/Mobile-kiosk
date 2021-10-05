@@ -14,6 +14,7 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    // 사용자 정보를 사용하여 검색
     public Category findByCategoryName(String categoryName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return categoryRepository.findByNameAndUserName(categoryName, authentication.getName());
