@@ -57,13 +57,13 @@
 		<!-- 카테고리 탭 컨텐츠(카테고리별 음식 메뉴)-->
 		<div class="tab-content" id="pills-tabContent">
 			<th:block th:each="category : ${categories}">
-				<form method="get" th:action="@{/menus/add-menu}">
-					<input type="text" th:value="${category.name}" name="category" hidden="true">
-					<button class="text-center" type="submit" style="width: 100%;">
-						메뉴 추가
-					</button>
-				</form>
 				<div class="tab-pane fade" th:id="|God${category.id}|" role="tabpanel" th:aria-labelledby="|God${category.id}|">
+					<form method="get" th:action="@{/menus/add-menu}">
+						<input type="text" th:value="${category.name}" name="category" hidden="true">
+						<button class="text-center" type="submit" style="width: 100%;">
+							메뉴 추가
+						</button>
+					</form>
 					<div class="col-sm-12 column overflow-auto rounded" style="height: 650px;">
 						<div>
 
