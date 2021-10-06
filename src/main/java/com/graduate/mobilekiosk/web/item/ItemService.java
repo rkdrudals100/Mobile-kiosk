@@ -32,4 +32,9 @@ public class ItemService {
             item.setImage(fileStore.storeFile(menuEditDto.getImage()));
         }
     }
+
+    public void deleteImage(Long menuId) {
+        Item item = itemRepository.findById(menuId).get();
+        item.setImage(null);
+    }
 }

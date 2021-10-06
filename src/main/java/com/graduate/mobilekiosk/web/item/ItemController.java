@@ -46,10 +46,10 @@ public class ItemController {
     }
 
 
-    @PostMapping("/add-category")
+    @PostMapping("/category")
     public String categoryAdd(@Validated @ModelAttribute CategoryDto categoryDto, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/menus?category";
+            return "redirect:/menus?fail_category";
         }
 
         Member member = memberRepository.findByUserId(principal.getName());
@@ -66,10 +66,16 @@ public class ItemController {
             return "redirect:/menus?overlap";
         }
 
-        return "redirect:/menus";
+        return "redirect:/menus?add_category";
     }
 
-    @GetMapping("/add-menu")
+    @DeleteMapping("/category/{categoryID}")
+    public String categoryDelete(@PathVariable Long categoryID) {
+        categoryRepository.deleteById(categoryID);
+        return "redirect:/menus?delete_category";
+    }
+
+    @GetMapping("/menu")
     public String menuForm(Model model, @RequestParam String category) {
         model.addAttribute("category", category);
         model.addAttribute("item", new MenuSaveDto());
@@ -77,10 +83,10 @@ public class ItemController {
     }
 
 
-    @PostMapping("/add-menu")
+    @PostMapping("/menu")
     public String menuAdd(@Validated @ModelAttribute MenuSaveDto menuSaveDto, BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
-            return "redirect:/menus?menu";
+            return "redirect:/menus?fail";
         }
 
         Category findCategory = categoryService.findByCategoryName(menuSaveDto.getCategoryName());
@@ -106,6 +112,7 @@ public class ItemController {
         return "seller/menu-edit";
     }
 
+
     @PostMapping("/{menuId}")
     public String editMenu(@PathVariable Long menuId, @Validated @ModelAttribute MenuEditDto menuEditDto, Model model) throws IOException {
         if (menuId != menuEditDto.getId()) {
@@ -113,7 +120,19 @@ public class ItemController {
         }
 
         itemService.save(menuEditDto);
-        return "redirect:/menus";
+        return "redirect:/menus?add";
+    }
+
+    @DeleteMapping("/{menuId}")
+    public String deleteMenu(@PathVariable Long menuId) {
+        itemRepository.deleteById(menuId);
+        return "redirect:/menus?delete";
+    }
+
+    @DeleteMapping("/{menuId}/image")
+    public String editMenu(@PathVariable Long menuId) throws IOException {
+        itemService.deleteImage(menuId);
+        return "redirect:/menus/" + menuId;
     }
 
     @ResponseBody

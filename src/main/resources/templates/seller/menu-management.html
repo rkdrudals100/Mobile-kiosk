@@ -36,11 +36,23 @@
 		<div th:if="${param.overlap}" class="alert alert-error field-error text-center timeout">
 		카테고리명이 중복되었습니다. 다른 이름을 사용해주세요.
 		</div>
-		<div th:if="${param.category}" class="alert alert-error field-error text-center timeout">
+		<div th:if="${param.fail_category}" class="alert alert-error field-error text-center timeout">
 			카테고리명에 문제가 있습니다.
 		</div>
-		<div th:if="${param.menu}" class="alert alert-error field-error text-center timeout">
+		<div th:if="${param.add_category}" class="alert alert-success text-center timeout">
+			카테고리가 생성되었습니다.
+		</div>
+		<div th:if="${param.delete_category}" class="alert alert-success text-center timeout">
+			카테고리가 삭제되었습니다.
+		</div>
+		<div th:if="${param.fail}" class="alert alert-error field-error text-center timeout">
 			메뉴 등록에 문제가 있습니다.
+		</div>
+		<div th:if="${param.add}" class="alert alert-success text-center timeout">
+			메뉴가 등록되었습니다.
+		</div>
+		<div th:if="${param.delete}" class="alert alert-success text-center timeout">
+			메뉴가 삭제되었습니다.
 		</div>
 		<ul class="tab-content nav nav-pills m-2" id="pills-tab" role="tablist">
 			<li class="nav-item m-1" role="presentation">
@@ -58,12 +70,22 @@
 		<div class="tab-content" id="pills-tabContent">
 			<th:block th:each="category : ${categories}">
 				<div class="tab-pane fade" th:id="|God${category.id}|" role="tabpanel" th:aria-labelledby="|God${category.id}|">
-					<form method="get" th:action="@{/menus/add-menu}">
-						<input type="text" th:value="${category.name}" name="category" hidden="true">
-						<button class="text-center" type="submit" style="width: 100%;">
-							메뉴 추가
-						</button>
-					</form>
+					<div class="row">
+						<div class="col-md-10">
+							<form method="get" th:action="@{/menus/menu}">
+								<input type="text" th:value="${category.name}" name="category" hidden="true">
+								<button class="text-center" type="submit" style="width: 100%;">
+									메뉴 추가
+								</button>
+							</form>
+						</div>
+						<div class="col-md-2">
+							<form id="categoryDelete" th:method="delete" th:action="|/menus/category/${category.id}|">
+								<button type="button" class="text-center" style="CURSOR:hand; width: 100%;"
+										th:title="|${category.name} 카테고리 삭제|" onclick="delete_category()">카테고리 삭제</button>
+							</form>
+						</div>
+					</div>
 					<div class="col-sm-12 column overflow-auto rounded" style="height: 650px;">
 						<div>
 
@@ -100,7 +122,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form id="category" method="post" th:action="@{/menus/add-category}">
+					<form id="category" method="post" th:action="@{/menus/category}">
 						<div class="mb-3">
 							<label for="categoryName" class="col-form-label">카테고리명</label>
 							<input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="카테고리명을 입력해주세요.">
@@ -120,6 +142,14 @@
 	setTimeout(function() {
 		$(".timeout").hide();
 	}, 3000);
+
+	function delete_category(){
+		if (confirm("카테고리를 삭제하시겠습니까?") == true){
+			document.getElementById('categoryDelete').submit();
+		}else{
+			return;
+		}
+	}
 </script>
 
 </body>
