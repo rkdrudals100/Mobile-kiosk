@@ -49,7 +49,7 @@
 		<div class="row mt-2">
 			<div class="col">
 				<div class="form-check">
-					<input type="radio" class="form-check-input" th:field="*{mealCode}" th:value="${type.name()}">
+					<input type="radio" class="form-check-input" <!--th:field="${mealCode}"--> th:value="${type.name()}">
 					<label class="form-check-label" th:for="${#ids.prev('mealCode')}" th:text="${type.description}">
 						매장에서 식사
 					</label>
