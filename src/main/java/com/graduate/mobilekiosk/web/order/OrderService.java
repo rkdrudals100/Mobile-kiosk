@@ -2,6 +2,7 @@ package com.graduate.mobilekiosk.web.order;
 
 import com.graduate.mobilekiosk.domain.Member;
 import com.graduate.mobilekiosk.domain.Order;
+import com.graduate.mobilekiosk.domain.OrderItem;
 import com.graduate.mobilekiosk.web.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,15 @@ public class OrderService {
     public Order purchase(String user) {
         Order order = orderRepository.findByUser(user);
         order.purchase();
+        return order;
+    }
+
+    public Order updateOrderItem(String user, OrderItem orderItem){
+        Order order = orderRepository.findByUser(user);
+
+        for(OrderItem each: order.getOrderItems()){
+            if(each.getId() == orderItem.getId()){ each.updateOrderItem(orderItem);}
+        }
         return order;
     }
 }

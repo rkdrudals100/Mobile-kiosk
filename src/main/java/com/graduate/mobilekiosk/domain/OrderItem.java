@@ -35,5 +35,9 @@ public class OrderItem extends BaseEntity {
     @JoinColumn(name = "item_id")
     private Item item;
 
-
+    public void updateOrderItem(OrderItem orderItem){
+        this.orderItemPrice = orderItem.orderItemPrice;
+        this.itemCount = orderItem.itemCount;
+        this.description = orderItem.description;
+    }
 }
