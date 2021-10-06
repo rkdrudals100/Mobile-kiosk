@@ -1,5 +1,6 @@
 package com.graduate.mobilekiosk.web.customer;
 
+import com.graduate.mobilekiosk.domain.MealCode;
 import com.graduate.mobilekiosk.domain.Order;
 import com.graduate.mobilekiosk.web.order.OrderItemService;
 import com.graduate.mobilekiosk.web.order.OrderRepository;
@@ -35,5 +36,10 @@ public class CustomerStoreController {
         orderItemService.deleteOrderItem(orderItemId);
 
         return "redirect:";
+    }
+
+    @ModelAttribute("mealCodes")
+    public MealCode[] mealCodes() {
+        return MealCode.values();
     }
 }

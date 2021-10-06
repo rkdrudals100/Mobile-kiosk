@@ -24,6 +24,9 @@ public class OrderItem extends BaseEntity {
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    private MealCode mealCode;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
