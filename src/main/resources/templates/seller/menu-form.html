@@ -5,11 +5,18 @@
 	<title>모바일 키오스크</title>
 </head>
 <style>
+	.field-error {
+		border-color: #dc3545;
+		color: #dc3545;
+	}
 </style>
 <body style="margin-top: 50px; margin-left: 10px; margin-right: 10px; margin-bottom: 50px;">
 	<section>
 		<div class="container" style="padding-top: 50px;">
 			<h1 class="text-center">[[${category}]]에 메뉴추가</h1>
+			<div th:if="${param.fail}" class="alert alert-error field-error text-center timeout">
+				메뉴 등록에 문제가 있습니다.
+			</div>
 			<div class="row mt-5 justify-content-center">
 				<div class="col-md-8">
 					<form id="menuAdd" method="post" th:action="@{/menus/menu}" enctype="multipart/form-data"
@@ -76,6 +83,9 @@
 		reader.readAsDataURL(event.target.files[0]);
 	}
 
+	setTimeout(function() {
+		$(".timeout").hide();
+	}, 3000);
 </script>
 </body>
 </html>

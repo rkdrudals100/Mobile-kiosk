@@ -86,7 +86,7 @@ public class ItemController {
     @PostMapping("/menu")
     public String menuAdd(@Validated @ModelAttribute MenuSaveDto menuSaveDto, BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
-            return "redirect:/menus?fail";
+            return "redirect:/menus/menu?fail&category=" + menuSaveDto.getCategoryName();
         }
 
         Category findCategory = categoryService.findByCategoryName(menuSaveDto.getCategoryName());
