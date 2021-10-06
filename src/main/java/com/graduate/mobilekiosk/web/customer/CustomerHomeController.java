@@ -31,19 +31,9 @@ public class CustomerHomeController {
     public String CustomerHome(@PathVariable String url, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
 
-        List<Category> categories = categoryRepository.findByUserName(url);
+        List<Category> categories = categoryRepository.findVisibleByUserName(url);
         model.addAttribute("categories", categories);
         return "customer/customer-home.html";
     }
 
-
-    @GetMapping("/test")
-    @ResponseBody
-    public String test(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Object map = session.getAttribute("map");
-
-        return "ok";
-
-    }
 }

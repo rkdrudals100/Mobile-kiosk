@@ -29,12 +29,14 @@ public class ItemService {
         item.setPrice(menuEditDto.getPrice());
 
         if (!menuEditDto.getImage().isEmpty()) {
+            fileStore.deleteFile(item.getImage());
             item.setImage(fileStore.storeFile(menuEditDto.getImage()));
         }
     }
 
     public void deleteImage(Long menuId) {
         Item item = itemRepository.findById(menuId).get();
+        fileStore.deleteFile(item.getImage());
         item.setImage(null);
     }
 }

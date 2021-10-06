@@ -30,6 +30,12 @@ public class FileStore {
         return storeFileName;
     }
 
+    public void deleteFile(String fileName) {
+        String fullPath = getFullPath(fileName);
+        File file = new File(fullPath);
+        file.delete();
+    }
+
     private String createStoreFileName(String originalFilename) {
         String ext = extractExt(originalFilename);
         String uuid = UUID.randomUUID().toString();
