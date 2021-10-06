@@ -44,19 +44,43 @@
 </div>
 
 
-	<div class="container mt-3" style="margin-left: 2px; margin-right: 2px;">
-		<th:block th:each="type : ${mealCodes}">
-		<div class="row mt-2">
-			<div class="col">
-				<div class="form-check">
-					<input type="radio" class="form-check-input" <!--th:field="${mealCode}"--> th:value="${type.name()}">
-					<label class="form-check-label" th:for="${#ids.prev('mealCode')}" th:text="${type.description}">
-						매장에서 식사
-					</label>
-				</div>
+<!--	<div class="container mt-3" style="margin-left: 2px; margin-right: 2px;">-->
+<!--		<th:block th:each="type : ${mealCodes}">-->
+<!--		<div class="row mt-2">-->
+<!--			<div class="col">-->
+<!--				<div class="form-check">-->
+<!--					<input type="radio" class="form-check-input" &lt;!&ndash;th:field="${mealCode}"&ndash;&gt; th:value="${type.name()}">-->
+<!--					<label class="form-check-label" th:for="${#ids.prev('mealCode')}" th:text="${type.description}">-->
+<!--						매장에서 식사-->
+<!--					</label>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		</th:block>-->
+<!--	</div>-->
+<!--</div>-->
+
+<div class="container mt-3" style="margin-left: 2px; margin-right: 2px;">
+	<div class="row mt-2">
+		<div class="col">
+			<div class="form-check">
+				<label class="form-check-label">
+					<input class="form-check-input" type="radio" name="check" id="here" checked="checked">
+					매장에서 식사
+				</label>
 			</div>
 		</div>
-		</th:block>
+	</div>
+
+	<div class="row mt-2">
+		<div class="col">
+			<div class="form-check">
+				<label class="form-check-label">
+					<input class="form-check-input" type="radio" name="check" id="takeaway">
+					포장
+				</label>
+			</div>
+		</div>
 	</div>
 </div>
 

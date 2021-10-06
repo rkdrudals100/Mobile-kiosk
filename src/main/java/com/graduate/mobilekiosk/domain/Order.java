@@ -33,6 +33,9 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SaleStatus saleStatus;
 
+    @Enumerated(EnumType.STRING)
+    private MealCode mealCode;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 

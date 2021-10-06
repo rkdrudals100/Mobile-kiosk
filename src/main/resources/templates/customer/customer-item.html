@@ -19,46 +19,40 @@
 </head>
 
 <script>
+	window.onload = function () {
+		const totalPrice = document.getElementById('totalPrice');
+		let elements = document.querySelectorAll('.total');
+		const _price1 = document.getElementById('_price1');
+
+
+		totalPrice.innerText = parseInt(totalPrice.innerText) + parseInt(_price1.innerText);
+
+
+	}
+
+
 	function goBack() {
 		window.history.back();
 	}
-</script>
-<script>
-	window.onload = function () {
-		const menuPrice = document.getElementById('menu_price');
-		const totalPrice = document.getElementById('total');
 
-		total.innerText = parseInt(menuPrice.innerText);
+	function checking(thisid, thisvalue) {
+		// 결과를 표시할 element
+		const totalPrice = document.getElementById('totalPrice');
 
+		// 체크 상태
+		if (document.getElementById(thisid).checked == true) {
+			totalPrice.innerText = parseInt(totalPrice.innerText) + parseInt(thisvalue);
+		}
+		else{
+			totalPrice.innerText = parseInt(totalPrice.innerText) - parseInt(thisvalue);
+		}
 	}
 
-	function count(type, seq) {
-		// 결과를 표시할 element
-		const resultElement = document.getElementById('result' + seq);
-		const priceElement = document.getElementById('price' + seq);
-		const fixPriceElement = document.getElementById('_price' + seq);
-		const totalPrcie = document.getElementById('totalPrcie');
-		const totalPrcie2 = document.getElementById('totalPrcie2');
-		// 현재 화면에 표시된 값
-		let number = resultElement.innerText;
-		let price = priceElement.innerText;
-		let priceFix = fixPriceElement.innerText;
-		// 더하기/빼기
-		if (type === 'plus') {
-			number = parseInt(number) + 1;
-			totalPrcie.innerText = parseInt(totalPrcie.innerText) + parseInt(priceFix);
-		} else if (type === 'minus') {
-			if (number > 1) {
-				number = parseInt(number) - 1;
-				totalPrcie.innerText = parseInt(totalPrcie.innerText) - parseInt(priceFix);
-			}
-		}
+</script>
 
-		// 결과 출력
-		resultElement.innerText = number;
-		priceElement.innerText = priceFix * number;
-		totalPrcie2.innerText = parseInt(totalPrcie.innerText);
-
+<script>
+	function goBack() {
+		window.history.back();
 	}
 </script>
 
@@ -74,81 +68,95 @@
 			</a>
 			<div></div>
 			<!--
-                <a href="./customer-product.html" class="navbar-brand d-flex justify-content-center align-items-center text-dark text-decoration-none">
-                    <strong>KPL치킨 한경대점</strong>
-                </a>-->
+            <a href="./customer_sub.html" class="navbar-brand d-flex justify-content-center align-items-center text-dark text-decoration-none">
+                <strong>KPL치킨 한경대점</strong>
+            </a>-->
 			<div></div>
 		</div>
 	</nav>
 </header>
 
-<div class="card" style="width: 100%;">
-	<img src="https://t1.daumcdn.net/cfile/tistory/99FF8B385CA5F8352B"
-		 style="position: relative; width: 100%; height: auto;">
+<div class="card" style="width: 100%; margin-right: 1vh;">
+	<img th:if="${item.image != null}"
+		 field="image + ${item.id}" th:src="|/menus/images/${item.getImage()}|" style="position: relative; width: 100%; height: auto;">
+	<img th:if="${item.image == null}"
+		 field="image + ${item.id}" src="/img/logo.png" style="position: relative; width: 100%; height: auto;">
 </div>
 
 <div class="card-body bg-white border-top border-bottom" style="position: sticky; top: 0; z-index: 1;">
-	<h5 class="card-text text-center"><strong>[[${item.name}]]</strong></h5>
+	<h5 class="card-text text-center" th:field="itemName + ${item.id}" th:text="${item.name}"><strong>새우볶음밥</strong></h5>
 </div>
 
 <!-- 가격 -->
-<div class="row mt-4" style="margin-left: 2px; margin-right: 2px;">
+<div class="row mt-4" style="margin-left: 1vh; margin-right: 1vh;">
 	<div class="col">
 		<h4><strong>가격</strong></h4>
 	</div>
 	<div class="col">
-		<h4 class="text-end"><strong name="price"> [[${item.price}]]</strong><strong>원</strong></h4>
+		<div id='_price1' class="total" style="display:none;">0</div>
+		<h4 th:field="price + ${item.id}" th:text="${item.price} + 원" class="text-end" style="font-weight: bold">0</h4>
 	</div>
 </div>
 
 <hr>
-<!-- 추가 메뉴 -->
-<div class="container mt-4" style="margin-bottom: 51px; margin-left: 2px; margin-right: 2px;">
-	<div class="row">
-		<div class="col">
-			<h4><strong>토핑 추가</strong></h4>
-		</div>
-		<div class="col">
-			<h4 class="text-end"><strong>최대 2개 선택</strong></h4>
-		</div>
-	</div>
+<!--&lt;!&ndash; 추가 메뉴 &ndash;&gt;-->
+<!--<div class="container mt-4" style="margin-bottom: 51px; margin-left: 1vh; margin-right: 1vh;">-->
+<!--	<div class="row">-->
+<!--		<div class="col">-->
+<!--			<h4><strong>토핑 추가</strong></h4>-->
+<!--		</div>-->
+<!--		<div class="col" style="margin-right: 1vh;">-->
+<!--			<h4 class="text-end"><strong>최대 2개 선택</strong></h4>-->
+<!--		</div>-->
+<!--	</div>-->
 
-	<div class="row mt-2">
-		<div class="col">
-			<div class="form-check">
-				<label class="form-check-label">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					새우 추가
-				</label>
-			</div>
-		</div>
-		<div class="col">
-			<p class="text-end">+4,000원</p>
-		</div>
-	</div>
+<!--	<div class="row mt-2">-->
+<!--		<div class="col">-->
+<!--			<div class="form-check">-->
+<!--				<label class="form-check-label">-->
+<!--					<input class="form-check-input" type="checkbox" id="checked1" value="4000" onclick='checking(this.id, this.value)'>-->
+<!--					새우 추가-->
+<!--				</label>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		<div class="col" style="margin-right: 1vh;">-->
+<!--			<div id='_price2' class= "total" style="display:none;">4000</div>-->
+<!--			<p class="text-end">+4,000원</p>-->
+<!--		</div>-->
+<!--	</div>-->
 
-	<div class="row">
-		<div class="col">
-			<div class="form-check">
-				<label class="form-check-label">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					밥 추가
-				</label>
-			</div>
-		</div>
-		<div class="col">
-			<p class="text-end">+2,000원</p>
-		</div>
+<!--	<div class="row">-->
+<!--		<div class="col">-->
+<!--			<div class="form-check">-->
+<!--				<label class="form-check-label">-->
+<!--					<input class="form-check-input" type="checkbox" id="checked2" value="2000" onclick='checking(this.id, this.value)'>-->
+<!--					밥 추가-->
+<!--				</label>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		<div class="col" style="margin-right: 1vh;">-->
+<!--			<div id='_price3' class= "total" style="display:none;">2000</div>-->
+<!--			<p class="text-end">+2,000원</p>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--</div>-->
+
+<!-- 가격 -->
+<div class="row mt-4" style="margin-left: 1vh; margin-right: 1vh;">
+	<div class="col">
+		<h4><strong>상품 설명</strong></h4>
+	</div>
+	<div>
+		<div id='_price1' class="total" style="display:none;">10000</div>
+		<div th:field="description + ${item.id}" style="font-size:large; word-break:break-all" th:text="${item.description}">상품 설명</div>
 	</div>
 </div>
-
-
 
 <form method="post" th:action>
 	<input type="text" hidden="true" name="url" th:value="${item.getCategory.userName}">
 	<button type="submit" class="btn btn-primary fixed-bottom" style="width: 100%; height: 50px; border-radius: 0;">
 		<div class="row">
-			<p class="col"><strong>장바구니 담기</strong> <strong class="text-end" id="total">10000</strong><strong>원</strong> </p>
+			<p class="col"><strong>장바구니 담기</strong> <strong class="text-end" id="totalPrice" th:text="${item.price}">0</strong><strong>원</strong> </p>
 		</div>
 	</button>
 </form>

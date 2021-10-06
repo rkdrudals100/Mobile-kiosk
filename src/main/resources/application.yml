@@ -18,7 +18,7 @@ servlet:
         max-file-size: 1MB
 
 file.dir: /Users/jaegeon/IdeaProjects/img/
-
+#file.dir: C:\Users\kkm\Documents\The_Graduate_Project_c\file
 ---
 
 servlet:
