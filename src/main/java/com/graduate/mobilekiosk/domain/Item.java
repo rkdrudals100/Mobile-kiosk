@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"orderItems"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder @Accessors(chain = true)

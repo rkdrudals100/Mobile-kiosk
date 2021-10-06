@@ -3,6 +3,7 @@ package com.graduate.mobilekiosk.web.item;
 import com.graduate.mobilekiosk.domain.Category;
 import com.graduate.mobilekiosk.domain.Item;
 import com.graduate.mobilekiosk.domain.Member;
+import com.graduate.mobilekiosk.web.item.form.MenuEditDto;
 import com.graduate.mobilekiosk.web.member.MemberRepository;
 import com.graduate.mobilekiosk.web.item.form.CategoryDto;
 import com.graduate.mobilekiosk.web.item.form.MenuSaveDto;
@@ -32,8 +33,9 @@ public class ItemController {
 
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
-    private final ItemRepository itemRepository;
     private final CategoryService categoryService;
+    private final ItemRepository itemRepository;
+    private final ItemService itemService;
     private final FileStore fileStore;
 
     @GetMapping("")
@@ -43,39 +45,6 @@ public class ItemController {
         return "seller/menu-management.html";
     }
 
-    @GetMapping("/add-menu")
-    public String menuForm(Model model, @RequestParam String category) {
-        model.addAttribute("category", category);
-        return "seller/menu-form";
-    }
-
-
-    @PostMapping("/add-menu")
-    public String menuAdd(@Validated @ModelAttribute MenuSaveDto menuSaveDto, BindingResult bindingResult) throws IOException {
-        if (bindingResult.hasErrors()) {
-            return "redirect:/menus?menu";
-        }
-
-        Category findCategory = categoryService.findByCategoryName(menuSaveDto.getCategoryName());
-        String image = fileStore.storeFile(menuSaveDto.getImage());
-        Item item = Item.builder()
-                .category(findCategory)
-                .name(menuSaveDto.getName())
-                .shortDescription(menuSaveDto.getShortDescription())
-                .description(menuSaveDto.getDescription())
-                .price(menuSaveDto.getPrice())
-                .image(image)
-                .build();
-
-        itemRepository.save(item);
-        return "redirect:/menus";
-    }
-
-    @ResponseBody
-    @GetMapping("/images/{filename}")
-    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
-        return new UrlResource("file:" + fileStore.getFullPath(filename));
-    }
 
     @PostMapping("/add-category")
     public String categoryAdd(@Validated @ModelAttribute CategoryDto categoryDto, BindingResult bindingResult, Principal principal) {
@@ -98,6 +67,59 @@ public class ItemController {
         }
 
         return "redirect:/menus";
+    }
+
+    @GetMapping("/add-menu")
+    public String menuForm(Model model, @RequestParam String category) {
+        model.addAttribute("category", category);
+        model.addAttribute("item", new MenuSaveDto());
+        return "seller/menu-form";
+    }
+
+
+    @PostMapping("/add-menu")
+    public String menuAdd(@Validated @ModelAttribute MenuSaveDto menuSaveDto, BindingResult bindingResult) throws IOException {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/menus?menu";
+        }
+
+        Category findCategory = categoryService.findByCategoryName(menuSaveDto.getCategoryName());
+        String image = fileStore.storeFile(menuSaveDto.getImage());
+        Item item = Item.builder()
+                .category(findCategory)
+                .name(menuSaveDto.getName())
+                .shortDescription(menuSaveDto.getShortDescription())
+                .description(menuSaveDto.getDescription())
+                .price(menuSaveDto.getPrice())
+                .image(image)
+                .visible(menuSaveDto.isVisible())
+                .build();
+
+        itemRepository.save(item);
+        return "redirect:/menus";
+    }
+
+    @GetMapping("/{menuId}")
+    public String editMenuForm(@PathVariable Long menuId, Model model) {
+        Item item = itemRepository.findById(menuId).get();
+        model.addAttribute("item", item);
+        return "seller/menu-edit";
+    }
+
+    @PostMapping("/{menuId}")
+    public String editMenu(@PathVariable Long menuId, @Validated @ModelAttribute MenuEditDto menuEditDto, Model model) throws IOException {
+        if (menuId != menuEditDto.getId()) {
+            return "redirect:/menus?menu";
+        }
+
+        itemService.save(menuEditDto);
+        return "redirect:/menus";
+    }
+
+    @ResponseBody
+    @GetMapping("/images/{filename}")
+    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource("file:" + fileStore.getFullPath(filename));
     }
 
 }

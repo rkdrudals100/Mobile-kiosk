@@ -69,18 +69,21 @@
 
 						</div>
 						<div class="card text-black bg-Light m-3" th:each="menu : ${category.items}">
-							<div class="row g-0">
-								<div class="col-md-4">
-									<img th:src="|/menus/images/${menu.getImage()}|" width="150" height="150"/>
-								</div>
-								<div class="col-md-8">
-									<div class="card-body"  type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-										<h5 class="card-title">메뉴 이름: [[${menu.name}]]</h5>
-										<p class="card-text">간단한 설명: [[${menu.description}]]</p>
-										<p class="card-text">금액: [[${menu.price}]]원</p>
+							<a th:href="|/menus/${menu.id}|" style="text-decoration: none; color: #0f0f0f">
+								<div class="row g-0">
+									<div class="col-md-4">
+										<img th:if="*{menu.image == null}" id="img" src="/img/logo.png" alt="이미지" style="width: 150px; height: 150px;" border="2">
+										<img th:if="*{menu.image != null}" id="img" th:src="|/menus/images/${menu.getImage()}|" alt="이미지" style="width: 150px; height: 150px;" border="2">
+									</div>
+									<div class="col-md-8">
+										<div class="card-body"  type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+											<h5 class="card-title">메뉴 이름: [[${menu.name}]]</h5>
+											<p class="card-text">간단한 설명: [[${menu.description}]]</p>
+											<p class="card-text">금액: [[${menu.price}]]원</p>
+										</div>
 									</div>
 								</div>
-							</div>
+							</a>
 						</div>
 					</div>
 				</div>
