@@ -33,11 +33,11 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SaleStatus saleStatus;
 
-    @Enumerated(EnumType.STRING)
-    private MealCode mealCode;
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
+
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

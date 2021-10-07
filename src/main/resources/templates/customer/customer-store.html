@@ -43,48 +43,24 @@
 	<h5 class="card-text text-center"><strong>장바구니</strong></h5>
 </div>
 
-
-<!--	<div class="container mt-3" style="margin-left: 2px; margin-right: 2px;">-->
-<!--		<th:block th:each="type : ${mealCodes}">-->
-<!--		<div class="row mt-2">-->
-<!--			<div class="col">-->
-<!--				<div class="form-check">-->
-<!--					<input type="radio" class="form-check-input" &lt;!&ndash;th:field="${mealCode}"&ndash;&gt; th:value="${type.name()}">-->
-<!--					<label class="form-check-label" th:for="${#ids.prev('mealCode')}" th:text="${type.description}">-->
-<!--						매장에서 식사-->
-<!--					</label>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--		</th:block>-->
-<!--	</div>-->
-<!--</div>-->
-
 <div class="container mt-3" style="margin-left: 2px; margin-right: 2px;">
-	<div class="row mt-2">
-		<div class="col">
-			<div class="form-check">
-				<label class="form-check-label">
-					<input class="form-check-input" type="radio" name="check" id="here" checked="checked">
-					매장에서 식사
-				</label>
+	<th:block th:each="type : ${orderTypes}">
+		<div class="row mt-2">
+			<div class="col">
+				<div class="form-check">
+					<input th:if="${#strings.equals(type, 'EAT')}" type="radio" class="form-check-input" th:id='EAT' name='ordertype' value='0' checked="checked" onclick="orderTypeChecking()">
+					<input th:unless="${#strings.equals(type, 'EAT')}" type="radio" class="form-check-input" th:id="${type}" name='ordertype' value='1' onclick="orderTypeChecking()">
+						<label class="form-check-label" th:text="${type.description}">
+						매장에서 식사
+						</label>
+				</div>
 			</div>
 		</div>
-	</div>
-
-	<div class="row mt-2">
-		<div class="col">
-			<div class="form-check">
-				<label class="form-check-label">
-					<input class="form-check-input" type="radio" name="check" id="takeaway">
-					포장
-				</label>
-			</div>
-		</div>
-	</div>
+	</th:block>
 </div>
 
 <hr style="border: solid 3px gray;">
+
 <!-- 추가 메뉴 -->
 <div class="container mt-4" style="margin-bottom: 51px; margin-left: 2px; margin-right: 2px;">
 	<th:block th:each="orderItem : ${order.getOrderItems()}">
@@ -135,27 +111,16 @@
 </div>
 <hr>
 
-
-
-<!--	<form method="get" th:action="@{/customer/payment}">-->
-<!--		<button type="submit" class="btn btn-primary fixed-bottom" style="width: 100%; height: 50px; border-radius: 0;">-->
-<!--			<strong>-->
-<!--				<span>결제하기(</span><div class="d-inline" id='totalPrice2'>0000</div><span>원)</span>-->
-<!--			</strong>-->
-<!--		</button>-->
-<!--	</form>-->
-
 <form method="post" name="register_order_items" th:action="@{/customer/shopping-basket}">
 	<button type="submit" class="btn btn-primary fixed-bottom" style="width: 100%; height: 50px; border-radius: 0;">
 		<strong>
 			<span>결제하기(</span><div class="d-inline" id='totalPrice2'>0000</div><span>원)</span>
 		</strong>
 	</button>
-	<!--		<input type="hidden" th:name="orderItems" th:value="${order.getOrderItems()}">-->
+
 	<th:block th:each="orderItem : ${order.getOrderItems()}">
-		<!--			<input type="hidden" th:name="orderItem + ${orderItem.id}" th:id="orderItem + ${orderItem.id}" th:value="${orderItem.id}">-->
-		<!--			<input type="hidden" th:id="orderItemQuantity + ${orderItem.id}" th:name="orderItemQuantity + ${orderItem.id}" th:value="|count('printNum', ${orderItem.id})|">-->
 		<input type="hidden" th:id="orderItemQuantity + ${orderItem.id}" th:name="orderItemQuantity + ${orderItem.id}" value='1'>
+		<input type="hidden" id='orderTypeCheck' name='orderTypeCheck' value='true'>
 	</th:block>
 </form>
 
@@ -179,6 +144,14 @@
 
 	function goBack() {
 		window.history.back();
+	}
+
+	function orderTypeChecking() {
+		const orderType = document.getElementById('orderTypeCheck');
+		const checking = document.getElementById('EAT');
+
+		orderType.value = checking.checked;
+		// orderType.value = document.querySelector('input[name="ordertype"]').checked;
 	}
 
 	function count(type, seq) {

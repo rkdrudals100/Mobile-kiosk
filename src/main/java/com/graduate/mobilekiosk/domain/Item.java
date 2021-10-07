@@ -31,6 +31,7 @@ public class Item extends BaseEntity {
     private boolean visible;
 
     private int price;
+    private int sort;
 
     @OneToMany(mappedBy = "item")
     private List<OrderItem> orderItems = new ArrayList<>();

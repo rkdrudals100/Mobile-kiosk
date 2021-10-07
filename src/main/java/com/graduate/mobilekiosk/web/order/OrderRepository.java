@@ -1,5 +1,6 @@
 package com.graduate.mobilekiosk.web.order;
 
+import com.graduate.mobilekiosk.domain.OrderType;
 import com.graduate.mobilekiosk.domain.Member;
 import com.graduate.mobilekiosk.domain.Order;
 import org.hibernate.annotations.Where;
@@ -20,6 +21,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Order findWithOrderItemByUser(String user);
 
     Order findByUser(String user);
+
+    Order findByOrderType(OrderType mealCode);
 
     List<Order> findByMemberAndPurchase(Member id, String purchase);
 }

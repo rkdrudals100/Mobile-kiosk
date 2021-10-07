@@ -1,6 +1,6 @@
 package com.graduate.mobilekiosk.web.customer;
 
-import com.graduate.mobilekiosk.domain.MealCode;
+import com.graduate.mobilekiosk.domain.OrderType;
 import com.graduate.mobilekiosk.domain.Order;
 import com.graduate.mobilekiosk.domain.OrderItem;
 import com.graduate.mobilekiosk.web.order.OrderItemService;
@@ -31,7 +31,9 @@ public class CustomerStoreController {
         String user = request.getSession().getId();
 
         Order order = orderRepository.findWithOrderItemByUser(user);
+
         model.addAttribute("order", order);
+        model.addAttribute("orderTypes", OrderType.values());
 
         return "customer/customer-store";
     }
@@ -41,6 +43,8 @@ public class CustomerStoreController {
         String user = request.getSession().getId();
         Order order = orderRepository.findWithOrderItemByUser(user);
 
+        log.warn(request.getParameter("orderTypeCheck"));
+
         log.warn("폼에서 넘어온 값");
 
         List<OrderItem> orderItems = order.getOrderItems();
@@ -49,22 +53,16 @@ public class CustomerStoreController {
             orderItem.setItemCount(Integer.parseInt(request.getParameter(nameOfOrderItem)));
             orderService.updateOrderItem(user, orderItem);
         }
+        order.setOrderType(OrderType.EAT); // 연관관계의 주인에 함수 만들고 대체
 
         return "redirect:/customer/payment";
 
     }
-
-
 
     @DeleteMapping("/{orderItemId}")
     public String shoppingBasket(HttpServletRequest request, Model model, @PathVariable Long orderItemId) {
         orderItemService.deleteOrderItem(orderItemId);
 
         return "redirect:";
-    }
-
-    @ModelAttribute("mealCodes")
-    public MealCode[] mealCodes() {
-        return MealCode.values();
     }
 }
