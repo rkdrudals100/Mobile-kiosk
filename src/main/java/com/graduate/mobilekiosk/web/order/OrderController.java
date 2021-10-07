@@ -53,10 +53,10 @@ public class OrderController {
 
         /** 변경 객체를 리포지토리에 저장 **/
         Order changedOrder = orderRepository.getById(Long.parseLong(order));
-        changedOrder.setStatus(OrderStatus.ACCEPT);
+//        changedOrder.setStatus(OrderStatus.ACCEPT);
 
         // OrderRepository 업데이트 방법 찾으면 아래 코드 변경
-        orderRepository.save(changedOrder);
+//        orderRepository.save(changedOrder);
 
 //        log.warn("리포지토리 내용 확인: " + TestOrderRepository.findALL());
 

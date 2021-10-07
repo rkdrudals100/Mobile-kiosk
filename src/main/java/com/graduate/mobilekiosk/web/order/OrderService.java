@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.Date;
 
 @Service
 @Transactional
@@ -124,4 +125,13 @@ public class OrderService {
 
         return order;
     }
+
+    // sale_status 관련 메소드
+    public Order changeOrderStatus(String user, OrderStatus orderStatus){
+        Order order = orderRepository.findByUser(user);
+        order.setOrderStatus(orderStatus);
+
+        return order;
+    }
+    
 }

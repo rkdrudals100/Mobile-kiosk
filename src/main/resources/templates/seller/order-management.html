@@ -22,8 +22,8 @@
                      <div>
                         <h1 class="text-center" th:text="${order.orderNum}">001</h1>
                         <hr>
-                        <h6 class="btn btn-primary" style="text-align: center; width: 100%;" th:if="${#strings.equals(order.status, 'ACCEPT')}">판매하기</h6>
-                        <h6 class="btn btn-primary disabled" style="text-align: center; width: 100%;" th:unless="${#strings.equals(order.status, 'ACCEPT')}">판매하기</h6>
+                        <h6 class="btn btn-primary" style="text-align: center; width: 100%;" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}">판매하기</h6>
+                        <h6 class="btn btn-primary disabled" style="text-align: center; width: 100%;" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}">판매하기</h6>
                      </div>
                   </div>
                </div>
@@ -32,7 +32,7 @@
                      <h5 class="card-title" th:text="${order.orderItems}">반반 치킨, 콜라 2L</h5>
                      <hr>
                      <p class="card-text" th:text="${order.id}">치킨 무 많이 주세요</p>
-                     <p class="card-text" th:text="${order.saleStatus}">결제 완료 or 현장 결제</p>
+<!--                     <p class="card-text" th:text="${order.saleStatus}">결제 완료 or 현장 결제</p>-->
                   </div>
                </div>
                <div class="col-sm-2">
@@ -42,8 +42,8 @@
                   </div>
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                      <!-- <p th:for="${#ids.prev('regions')} /p> -->
-                     <button class="btn btn-primary disabled" onclick="location.href='/order-management/agree?order=' + id" style="margin-bottom: 2ch;" th:id="${order.id}" th:if="${#strings.equals(order.status, 'ACCEPT')}" type="button">수락</button>
-                     <button class="btn btn-primary" onclick="location.href='/order-management/agree?order=' + id" style="margin-bottom: 2ch;" th:id="${order.id}" th:unless="${#strings.equals(order.status, 'ACCEPT')}" type="button">수락</button>
+                     <button class="btn btn-primary disabled" onclick="location.href='/order-management/agree?order=' + id" style="margin-bottom: 2ch;" th:id="${order.id}" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
+                     <button class="btn btn-primary" onclick="location.href='/order-management/agree?order=' + id" style="margin-bottom: 2ch;" th:id="${order.id}" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
                      <button type="button" style="margin-right: 2ch; margin-bottom: 2ch;" class="btn btn-danger"
                              data-bs-target="#rejectModal" data-bs-toggle="modal">거절</button>
                   </div>

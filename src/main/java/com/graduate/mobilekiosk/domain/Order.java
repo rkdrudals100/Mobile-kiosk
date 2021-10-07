@@ -33,10 +33,7 @@ public class Order extends BaseEntity {
     private WhichPayment whichPayment;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
-
-    @Enumerated(EnumType.STRING)
-    private SaleStatus saleStatus;
+    private OrderStatus orderStatus;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
@@ -67,5 +64,9 @@ public class Order extends BaseEntity {
         this.orderDate = new Date();
         this.purchase = "purchase";
     }
+
+//    public void drchase() {
+//        this.orderDate.
+//    }
 
 }

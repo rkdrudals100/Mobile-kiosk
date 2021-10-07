@@ -42,10 +42,12 @@ public class CustomerItemController {
     public String customerAdd(@PathVariable Long itemId, Model model, HttpServletRequest request, @RequestParam String url) {
         String user = request.getSession().getId();
 
+        // 같은 아이템이 장바구니에 추가되지 않게 검증
         if (orderService.checkOrderItem(user, itemId)) {
             Order order = orderService.createOrder(user, url);
             orderItemService.createOrderItem(order, itemId);
         }
+
         return "redirect:/customer/" + url;
     }
 }

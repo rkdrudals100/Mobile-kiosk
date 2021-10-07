@@ -26,6 +26,8 @@ public class CustomerStoreController {
     private final OrderItemService orderItemService;
     private final OrderService orderService;
 
+
+
     @GetMapping("")
     public String shoppingBasket(HttpServletRequest request, Model model) {
         String user = request.getSession().getId();
@@ -38,12 +40,12 @@ public class CustomerStoreController {
         return "customer/customer-store";
     }
 
+
+
     @PostMapping("")
     public String moveToPayment(HttpServletRequest request){
         String user = request.getSession().getId();
         Order order = orderRepository.findWithOrderItemByUser(user);
-
-        log.warn("폼에서 넘어온 값");
 
         // 주문의 수량 업데이트
         List<OrderItem> orderItems = order.getOrderItems();
