@@ -26,20 +26,20 @@ public class CustomerPaymentController {
     @GetMapping("")
     public String paymentHome(HttpServletRequest request, Model model) {
         String user = request.getSession().getId();
-
         Order order = orderRepository.findWithOrderItemByUser(user);
+
         model.addAttribute("order", order);
 
         return "customer/customer-payment";
     }
 
     @PostMapping("")
-    public String payment(HttpServletRequest request, Model model) {
+    public String payment(HttpServletRequest request) {
         String user = request.getSession().getId();
 
         Order order = orderService.purchase(user);
-        model.addAttribute("order", order);
+        log.warn(request.getParameter("requirements"));
 
-        return "customer/customer-alert";
+        return "redirect:/customer/customer-alert";
     }
 }

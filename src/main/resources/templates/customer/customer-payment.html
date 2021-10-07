@@ -49,11 +49,12 @@
 	<div class="card-body bg-white border-top border-bottom" style="position: sticky; top: 0; z-index: 1;">
 		<h5 class="card-text text-center"><strong>결제</strong></h5>
 	</div>
-
-	<div class="container mt-4" style="margin-bottom: 51px; margin-left: 2px; margin-right: 2px;">
-		<label for="exampleFormControlTextarea1" class="form-label">요청사항</label>
-		<input class="form-control" id="exampleFormControlTextarea1" placeholder="예) 피클 빼주세요, 덜 맵게 해주세요."></input>
-	</div>
+	<form method="post" th:action>
+		<div class="container mt-4" style="margin-bottom: 51px; margin-left: 2px; margin-right: 2px;">
+			<label for="requirements" class="form-label">요청사항</label>
+			<input class="form-control" id="requirements" name="requirements" placeholder="예) 피클 빼주세요, 덜 맵게 해주세요.">
+		</div>
+	</form>
 	<hr style="border: solid 3px gray;">
 	<!-- 추가 메뉴 -->
 	<div class="container mt-4" style="margin-bottom: 51px; margin-left: 2px; margin-right: 2px;">
