@@ -18,12 +18,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
 
-    public void save(Order order1) {
-        long count = orderRepository.count();
-        log.warn("count: =========== {}",count);
-        order1.setOrderNum(count+1);
-        orderRepository.save(order1);
-    }
+//    public void save(Order order1) {
+//        long count = orderRepository.count();
+//        log.warn("count: =========== {}",count);
+//        order1.setOrderNum(count+1);
+//        orderRepository.save(order1);
+//    }
 
     public Order createOrder(String user, String url) {
         Order order = orderRepository.findByUser(user);
