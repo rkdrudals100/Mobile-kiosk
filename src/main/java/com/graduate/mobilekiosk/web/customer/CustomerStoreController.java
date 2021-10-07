@@ -1,6 +1,6 @@
 package com.graduate.mobilekiosk.web.customer;
 
-import com.graduate.mobilekiosk.domain.OrderType;
+import com.graduate.mobilekiosk.domain.PurchaseType;
 import com.graduate.mobilekiosk.domain.Order;
 import com.graduate.mobilekiosk.domain.OrderItem;
 import com.graduate.mobilekiosk.web.order.OrderItemService;
@@ -33,7 +33,7 @@ public class CustomerStoreController {
         Order order = orderRepository.findWithOrderItemByUser(user);
 
         model.addAttribute("order", order);
-        model.addAttribute("orderTypes", OrderType.values());
+        model.addAttribute("purchaseTypes", PurchaseType.values());
 
         return "customer/customer-store";
     }
@@ -43,17 +43,22 @@ public class CustomerStoreController {
         String user = request.getSession().getId();
         Order order = orderRepository.findWithOrderItemByUser(user);
 
-        log.warn(request.getParameter("orderTypeCheck"));
-
         log.warn("폼에서 넘어온 값");
 
+        // 주문의 수량 업데이트
         List<OrderItem> orderItems = order.getOrderItems();
         for (OrderItem orderItem: orderItems) {
             String nameOfOrderItem = "orderItemQuantity" + orderItem.getId();
             orderItem.setItemCount(Integer.parseInt(request.getParameter(nameOfOrderItem)));
             orderService.updateOrderItem(user, orderItem);
         }
-        order.setOrderType(OrderType.EAT); // 연관관계의 주인에 함수 만들고 대체
+
+        // 주문의 총액 업데이트
+        orderService.updateTotalPrice(user);
+
+        // 주문의 매장식사, 포장 여부 업데이트
+        PurchaseType purchaseType = orderService.convertTypeOfOrderType(request.getParameter("purchaseTypeCheck"));
+        orderService.selectPurchaseType(user,purchaseType);
 
         return "redirect:/customer/payment";
 

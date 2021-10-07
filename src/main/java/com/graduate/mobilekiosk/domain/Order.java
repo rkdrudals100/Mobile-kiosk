@@ -37,7 +37,7 @@ public class Order extends BaseEntity {
     private Date orderDate;
 
     @Enumerated(EnumType.STRING)
-    private OrderType orderType;
+    private PurchaseType purchaseType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -65,4 +65,5 @@ public class Order extends BaseEntity {
         this.orderDate = new Date();
         this.purchase = "purchase";
     }
+
 }

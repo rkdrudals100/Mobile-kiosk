@@ -44,12 +44,12 @@
 </div>
 
 <div class="container mt-3" style="margin-left: 2px; margin-right: 2px;">
-	<th:block th:each="type : ${orderTypes}">
+	<th:block th:each="type : ${purchaseTypes}">
 		<div class="row mt-2">
 			<div class="col">
 				<div class="form-check">
-					<input th:if="${#strings.equals(type, 'EAT')}" type="radio" class="form-check-input" th:id='EAT' name='ordertype' value='0' checked="checked" onclick="orderTypeChecking()">
-					<input th:unless="${#strings.equals(type, 'EAT')}" type="radio" class="form-check-input" th:id="${type}" name='ordertype' value='1' onclick="orderTypeChecking()">
+					<input th:if="${#strings.equals(type, 'EAT')}" type="radio" class="form-check-input" th:id='EAT' name='purchasetype' value='0' checked="checked" onclick="purchaseTypeChecking()">
+					<input th:unless="${#strings.equals(type, 'EAT')}" type="radio" class="form-check-input" th:id="${type}" name='purchasetype' value='1' onclick="purchaseTypeChecking()">
 						<label class="form-check-label" th:text="${type.description}">
 						매장에서 식사
 						</label>
@@ -120,7 +120,7 @@
 
 	<th:block th:each="orderItem : ${order.getOrderItems()}">
 		<input type="hidden" th:id="orderItemQuantity + ${orderItem.id}" th:name="orderItemQuantity + ${orderItem.id}" value='1'>
-		<input type="hidden" id='orderTypeCheck' name='orderTypeCheck' value='true'>
+		<input type="hidden" id='purchaseTypeCheck' name='purchaseTypeCheck' value='true'>
 	</th:block>
 </form>
 
@@ -146,12 +146,12 @@
 		window.history.back();
 	}
 
-	function orderTypeChecking() {
-		const orderType = document.getElementById('orderTypeCheck');
+	function purchaseTypeChecking() {
+		const purchaseType = document.getElementById('purchaseTypeCheck');
 		const checking = document.getElementById('EAT');
 
-		orderType.value = checking.checked;
-		// orderType.value = document.querySelector('input[name="ordertype"]').checked;
+		purchaseType.value = checking.checked;
+		// purchaseType.value = document.querySelector('input[name="purchasetype"]').checked;
 	}
 
 	function count(type, seq) {
