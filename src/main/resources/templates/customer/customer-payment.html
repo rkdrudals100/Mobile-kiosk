@@ -49,12 +49,12 @@
 	<div class="card-body bg-white border-top border-bottom" style="position: sticky; top: 0; z-index: 1;">
 		<h5 class="card-text text-center"><strong>결제</strong></h5>
 	</div>
-	<form method="post" th:action>
+	<form method="post" th:action th:object="${GetPaymentFormDto}">
 		<div class="container mt-4" style="margin-bottom: 51px; margin-left: 2px; margin-right: 2px;">
 			<label for="requirements" class="form-label">요청사항</label>
-			<input class="form-control" id="requirements" name="requirements" placeholder="예) 피클 빼주세요, 덜 맵게 해주세요.">
+			<input class="form-control" id=requirements th:field="*{requirements}" placeholder="예) 피클 빼주세요, 덜 맵게 해주세요.">
 		</div>
-	</form>
+<!--	</form>-->
 	<hr style="border: solid 3px gray;">
 	<!-- 추가 메뉴 -->
 	<div class="container mt-4" style="margin-bottom: 51px; margin-left: 2px; margin-right: 2px;">
@@ -73,11 +73,11 @@
 						<div class="col offset-1">
 							<div class="form-check">
 								<label class="form-check-label d-block">
-									<input class="form-check-input" type="radio" name="check">
+									<input class="form-check-input" type="radio" name=whichPayment value="card" checked="checked">
 									카드
 								</label>
 								<label class="form-check-label d-block">
-									<input class="form-check-input" type="radio" name="check">
+									<input class="form-check-input" type="radio" name=whichPayment value="cash">
 									현금
 								</label>
 							</div>
@@ -92,11 +92,11 @@
 							<div class="col offset-1">
 								<div class="form-check">
 									<label class="form-check-label d-block">
-										<input class="form-check-input" type="radio" name="check">
+										<input class="form-check-input" type="radio" name=whichPayment value="kakaoPay">
 										카카오 페이
 									</label>
 									<label class="form-check-label d-block">
-										<input class="form-check-input" type="radio" name="check">
+										<input class="form-check-input" type="radio" name=whichPayment value="naverPay">
 										네이버 페이
 									</label>
 								</div>
@@ -118,7 +118,7 @@
 
 
 
-	<form method="post" th:action>
+<!--	<form method="post" th:action>-->
 		<button type="submit" class="btn btn-primary fixed-bottom" style="width: 100%; height: 50px; border-radius: 0;">
 			<strong>결제</strong>
 		</button>

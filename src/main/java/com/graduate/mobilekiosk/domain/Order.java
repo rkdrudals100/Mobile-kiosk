@@ -27,7 +27,10 @@ public class Order extends BaseEntity {
 
     private String purchase;
 
-    private String customerRequirements;
+    private String requirements;
+
+    @Enumerated(EnumType.STRING)
+    private WhichPayment whichPayment;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;

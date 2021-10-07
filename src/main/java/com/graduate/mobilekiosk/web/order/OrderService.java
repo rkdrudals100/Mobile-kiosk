@@ -1,12 +1,10 @@
 package com.graduate.mobilekiosk.web.order;
 
-import com.graduate.mobilekiosk.domain.Member;
-import com.graduate.mobilekiosk.domain.Order;
-import com.graduate.mobilekiosk.domain.OrderItem;
-import com.graduate.mobilekiosk.domain.PurchaseType;
+import com.graduate.mobilekiosk.domain.*;
 import com.graduate.mobilekiosk.web.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,5 +98,30 @@ public class OrderService {
         if (orderType.equals("true")){
             return PurchaseType.EAT;
         } else return PurchaseType.WRAP;
+    }
+
+    // 요구사항 관련 메소드
+    public Order changeRequirements(String user, String requirements){
+        Order order = orderRepository.findByUser(user);
+        order.setRequirements(requirements);
+
+        return order;
+    }
+
+    // 결제수단 관련 메소드
+    public WhichPayment convertTypeOfWhichPayment(String whichPayment){
+        if (whichPayment.equals("card")){return WhichPayment.CARD;
+        }else if (whichPayment.equals("cash")){return WhichPayment.CASH;
+        }else if (whichPayment.equals("kakaoPay")){return WhichPayment.KAKAOPAY;
+        }else if (whichPayment.equals("naverPay")){return WhichPayment.NAVERPAY;
+        }else {log.warn("결제수단에 예기치 못한 값이 들어왔습니다");
+        return null;}
+    }
+
+    public Order changeWhichPayment(String user, WhichPayment whichPayment){
+        Order order = orderRepository.findByUser(user);
+        order.setWhichPayment(whichPayment);
+
+        return order;
     }
 }
