@@ -64,10 +64,26 @@ public class OrderService {
     public Order updateOrderItem(String user, OrderItem orderItem){
         Order order = orderRepository.findByUser(user);
 
-        for(OrderItem each: order.getOrderItems()){
+        for(OrderItem each : order.getOrderItems()){
             if(each.getId() == orderItem.getId()){ each.changeOrderItem(orderItem);}
         }
         return order;
+    }
+
+
+    public Boolean checkOrderItem(String user, Long itemId){
+        Order order = orderRepository.findByUser(user);
+
+        try {
+            for (OrderItem each : order.getOrderItems()) {
+                log.warn("확인: "+ each.getItem());
+                if (each.getItem().getId() == itemId){
+                    return Boolean.FALSE;}
+            }
+            return Boolean.TRUE;
+        }catch (Exception e){}
+
+        return Boolean.TRUE;
     }
 
 

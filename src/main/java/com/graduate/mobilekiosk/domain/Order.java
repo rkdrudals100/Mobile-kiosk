@@ -47,9 +47,6 @@ public class Order extends BaseEntity {
 
     private Long orderNum;
 
-//    @OneToMany(mappedBy = "order")
-//    private List<OrderItem> orderItems = new ArrayList<>();
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
