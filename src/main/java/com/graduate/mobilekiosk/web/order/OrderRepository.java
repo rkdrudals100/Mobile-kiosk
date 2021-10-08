@@ -2,12 +2,17 @@ package com.graduate.mobilekiosk.web.order;
 
 import com.graduate.mobilekiosk.domain.Member;
 import com.graduate.mobilekiosk.domain.Order;
+import com.graduate.mobilekiosk.domain.OrderStatus;
 import com.graduate.mobilekiosk.domain.PurchaseType;
+import org.aspectj.weaver.ast.Or;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,4 +28,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Order findByUser(String user);
 
     List<Order> findByMemberAndPurchase(Member id, String purchase);
+
+    @Query("select o from Order o where o.purchase = 'purchase' and o.orderStatus in ('ACCEPT', 'ORDER') and o.member = :member")
+    List<Order> findByMemberAndEffectiveOrders(@Param("member") Member member);
 }

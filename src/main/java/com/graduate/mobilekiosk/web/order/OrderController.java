@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -28,9 +30,11 @@ public class OrderController {
     public String moveOrder(Model model, Principal principal) {
 
         Member member = memberRepository.findByUserId(principal.getName());
-        List<Order> orders = orderRepository.findByMemberAndPurchase(member, "purchase");
+
+        List<Order> orders = orderRepository.findByMemberAndEffectiveOrders(member);
 
         model.addAttribute("orders", orders);
+
         return "seller/order-management";
     }
     /****자세히 버튼 누를 시 세부 내용 출력****/
@@ -54,11 +58,12 @@ public class OrderController {
     }
 
     @GetMapping("/refuse")
-    public String orderRefuse(HttpServletRequest request, @RequestParam String selbox, @RequestParam String selboxDirect) {
-//        public String orderRefuse(HttpServletRequest request, @RequestParam String selbox, @RequestParam String selboxDirect, @RequestParam String OrderId) {
-        log.warn(request.getParameter("selbox"));
-        log.warn(request.getParameter("selboxDirect"));
-//        orderService.changeReasonOfRefuse()
+    public String orderRefuse(HttpServletRequest request, @RequestParam String selbox, @RequestParam String selboxDirect, @RequestParam Long orderId) {
+
+        Order order = orderRepository.getById(orderId);
+
+        orderService.changeReasonOfRefuse(order, selbox, selboxDirect);
+        orderService.changeOrderStatus(order, OrderStatus.REFUSE);
 
         return "redirect:";
     }

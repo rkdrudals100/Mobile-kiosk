@@ -49,8 +49,7 @@
                      <!-- <p th:for="${#ids.prev('regions')} /p> -->
                      <button class="btn btn-primary disabled" style="margin-bottom: 2ch;" th:id="${order.id}" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
                      <button class="btn btn-primary" th:onclick="'location.href=\''+ @{/order-management/agree?orderId=} + ${order.id} + '\''" style="margin-bottom: 2ch;" th:id="${order.id}" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
-                     <button type="button" style="margin-right: 2ch; margin-bottom: 2ch;" class="btn btn-danger"
-                             data-bs-target="#rejectModal" data-bs-toggle="modal">거절</button>
+                     <button type="button" style="margin-right: 2ch; margin-bottom: 2ch;" class="btn btn-danger" data-bs-target="#rejectModal" data-bs-toggle="modal" id="rejectBtn" th:data-rejectbtn="${order.id}">거절</button>
                   </div>
                </div>
             </div>
@@ -98,7 +97,8 @@
             <div class="modal-body">
 
                <form action="#" id=reject th:action="@{/order-management/refuse}">
-                  <input class="hidden" id="getOrderId" name="getOrderId" th:value="dfsa"></input>
+                  <input type="hidden" id="orderId" name="orderId"></input>
+<!--                  <button th:field="${data}" th:text="${data}"></button>-->
                   <select id="selbox" name="selbox" class="d-block" style="width: 100%;">
                      <option value="soldOut">메뉴가 매진되었습니다.</option>
                      <option value="storeClosed">주방이 마감되었습니다.</option>
@@ -129,6 +129,12 @@
                $("#selboxDirect").hide();
             }
          })
+      });
+   </script>
+   <script>
+      $('#rejectModal').on('show.bs.modal', function (e) {
+         var data = $(e.relatedTarget).data('rejectbtn');
+         $('#orderId').val(data)
       });
    </script>
 </section>
