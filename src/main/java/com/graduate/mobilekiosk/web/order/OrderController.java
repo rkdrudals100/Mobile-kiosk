@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class OrderController {
 
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
+    private final OrderService orderService;
 
     @GetMapping
     public String moveOrder(Model model, Principal principal) {
@@ -34,35 +36,32 @@ public class OrderController {
     /****자세히 버튼 누를 시 세부 내용 출력****/
 
 
-    /*********** 오더 데이터를 가져와서 모델에 추가***********/
+    @GetMapping("/agree")
+    public String orderAgree(@RequestParam Long orderId) {
 
-
-
-    /****수락 누를 시 ******/
-    /***************서버로 OrderStatus 상태 변경 후 DB 전송 , 판매하기 버튼 활성화 ,리다이렉트 *******************/
-/*    @PostMapping("/agree")
-    public String orderAgree(Model model){
-
-    }
-*/
-    @RequestMapping("/agree")
-    public String orderAgree(Model model, @RequestParam String order) {
-
-        log.warn("리다이렉트 접속");
-        log.warn("파라미터 전달 " + order );
-
-        /** 변경 객체를 리포지토리에 저장 **/
-        Order changedOrder = orderRepository.getById(Long.parseLong(order));
-//        changedOrder.setStatus(OrderStatus.ACCEPT);
-
-        // OrderRepository 업데이트 방법 찾으면 아래 코드 변경
-//        orderRepository.save(changedOrder);
-
-//        log.warn("리포지토리 내용 확인: " + TestOrderRepository.findALL());
+        Order changedOrder = orderRepository.getById(orderId);
+        orderService.changeOrderStatus(changedOrder, OrderStatus.ACCEPT);
 
         return "redirect:";
     }
 
+    @GetMapping("/sold")
+    public String orderSold(@RequestParam Long orderId) {
+
+        Order changedOrder = orderRepository.getById(orderId);
+        orderService.sold(changedOrder);
+        return  "redirect:";
+    }
+
+    @GetMapping("/refuse")
+    public String orderRefuse(HttpServletRequest request, @RequestParam String selbox, @RequestParam String selboxDirect) {
+//        public String orderRefuse(HttpServletRequest request, @RequestParam String selbox, @RequestParam String selboxDirect, @RequestParam String OrderId) {
+        log.warn(request.getParameter("selbox"));
+        log.warn(request.getParameter("selboxDirect"));
+//        orderService.changeReasonOfRefuse()
+
+        return "redirect:";
+    }
 
 
 

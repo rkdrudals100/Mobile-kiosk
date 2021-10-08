@@ -18,13 +18,6 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
 
-//    public void save(Order order1) {
-//        long count = orderRepository.count();
-//        log.warn("count: =========== {}",count);
-//        order1.setOrderNum(count+1);
-//        orderRepository.save(order1);
-//    }
-
     public Order createOrder(String user, String url) {
         Order order = orderRepository.findByUser(user);
 
@@ -43,6 +36,11 @@ public class OrderService {
     public Order purchase(String user) {
         Order order = orderRepository.findByUser(user);
         order.purchase();
+        return order;
+    }
+
+    public Order sold(Order order){
+        order.setPurchase("sold");
         return order;
     }
 
@@ -126,12 +124,28 @@ public class OrderService {
         return order;
     }
 
-    // sale_status 관련 메소드
+    // orderStatus 관련 메소드
     public Order changeOrderStatus(String user, OrderStatus orderStatus){
         Order order = orderRepository.findByUser(user);
         order.setOrderStatus(orderStatus);
 
         return order;
     }
-    
+
+    public Order changeOrderStatus(Order order, OrderStatus orderStatus){
+        order.setOrderStatus(orderStatus);
+
+        return order;
+    }
+
+
+    // 거절 사유 관련 메소드
+    public Order changeReasonOfRefuse(Order order, String selbox, String ReasonOfRefuse){
+        if (selbox.equals("direct")){ order.setReasonOfRefuse(ReasonOfRefuse);
+        }else if (selbox.equals("soldOut")){ order.setReasonOfRefuse("메뉴가 매진되었습니다.");
+        }else if (selbox.equals("storeClosed")){ order.setReasonOfRefuse("주방이 마감되었습니다.");
+        }else {log.warn("잘못된 파라미터 접근입니다");}
+
+        return order;
+    }
 }

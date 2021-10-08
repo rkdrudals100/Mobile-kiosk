@@ -20,68 +20,41 @@
                <div class="col-md-2">
                   <div class="card-header" style="height: 100%;">
                      <div>
-                        <h1 class="text-center" th:text="${order.orderNum}">001</h1>
+                        <h1 class="text-center" th:text="${order.id}">001</h1>
                         <hr>
-                        <h6 class="btn btn-primary" style="text-align: center; width: 100%;" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}">판매하기</h6>
+                        <h6 class="btn btn-primary" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}" th:onclick="'location.href=\''+ @{/order-management/sold?orderId=} + ${order.id} + '\''" style="text-align: center; width: 100%;">판매하기</h6>
                         <h6 class="btn btn-primary disabled" style="text-align: center; width: 100%;" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}">판매하기</h6>
                      </div>
                   </div>
                </div>
                <div class="col">
                   <div class="card-body text-left">
-                     <h5 class="card-title" th:text="${order.orderItems}">반반 치킨, 콜라 2L</h5>
+                     <span th:each="orderItem : ${order.orderItems}">
+                        <span class="card-title list-inline" th:text="${orderItem.getItem().getName()}" style="font-size: 1.7em">상품명</span>
+                        <span th:text="'&#40' + ${orderItem.itemCount}" style="font-size: 1.7em"></span><span style="font-size: 1.7em">개)</span><span style="font-size: 1.7em">&nbsp;&nbsp;</span>
+                     </span>
                      <hr>
-                     <p class="card-text" th:text="${order.id}">치킨 무 많이 주세요</p>
-<!--                     <p class="card-text" th:text="${order.saleStatus}">결제 완료 or 현장 결제</p>-->
+                     <p class="card-text" th:text="${order.requirements}" style="font-size: 1.2em; overflow:hidden; width: 70%; height: 1.2em;">치킨 무 많이 주세요</p>
+                     <button class="btn" th:text="${order.totalPrice} + '원'" style="font-size: 1.5em; font-weight: bolder; width: 25%"></button>
+                     <button class="btn" th:text="${order.purchaseType.description}" style="font-size: 1.5em; font-weight: bolder; width: 25%; float: right">매장식사 or 포장</button>
+                     <button class="btn" th:text="${order.whichPayment.description}" style="font-size: 1.5em; font-weight: bolder; width: 25%; float: right">결제 상태</button>
                   </div>
                </div>
                <div class="col-sm-2">
                   <div class="card-body text-left">
-                     <h5 class="text-end" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">자세히</h5>
+                     <h5 class="text-end" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-bottom: 18%">자세히</h5>
                      <hr>
                   </div>
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                      <!-- <p th:for="${#ids.prev('regions')} /p> -->
-                     <button class="btn btn-primary disabled" onclick="location.href='/order-management/agree?order=' + id" style="margin-bottom: 2ch;" th:id="${order.id}" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
-                     <button class="btn btn-primary" onclick="location.href='/order-management/agree?order=' + id" style="margin-bottom: 2ch;" th:id="${order.id}" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
+                     <button class="btn btn-primary disabled" style="margin-bottom: 2ch;" th:id="${order.id}" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
+                     <button class="btn btn-primary" th:onclick="'location.href=\''+ @{/order-management/agree?orderId=} + ${order.id} + '\''" style="margin-bottom: 2ch;" th:id="${order.id}" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
                      <button type="button" style="margin-right: 2ch; margin-bottom: 2ch;" class="btn btn-danger"
                              data-bs-target="#rejectModal" data-bs-toggle="modal">거절</button>
                   </div>
                </div>
             </div>
          </div>
-         <!--        <div class="card text-black bg-Light m-3">
-                    <div class="row g-1">
-                       <div class="col-md-2">
-                          <div class="card-header" style="height: 100%;">
-                             <div>
-                                <h1 class="text-center">001</h1>
-                                <hr>
-                                <h6 class="btn" style="text-align: center; background-color: gray; width: 100%;">판매하기</h6>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="col">
-                          <div class="card-body text-left">
-                             <h5 class="card-title">반반 치킨, 콜라 2L</h5>
-                             <hr>
-                             <p class="card-text">치킨 무 많이 주세요</p>
-                             <p class="card-text">결제 완료 or 현장 결제(10,000원)</p>
-                          </div>
-                       </div>
-                       <div class="col-sm-2">
-                          <div class="card-body text-left">
-                             <h5 class="text-end" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">자세히</h5>
-                             <hr>
-                          </div>
-                          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                             <button type="button" style="margin-bottom: 2ch;" class="btn btn-primary">수락</button>
-                             <button type="button" style="margin-right: 2ch; margin-bottom: 2ch;" class="btn btn-danger"
-                                     data-bs-toggle="modal" data-bs-target="#rejectModal">거절</button>
-                          </div>
-                       </div>
-                    </div>
-                 </div>-->
       </div>
    </div>
 
@@ -119,16 +92,18 @@
       <div class="modal-dialog">
          <div class="modal-content">
             <div class="modal-header">
-               <h5 class="modal-title" id="exampleModalLabel">거절</h5>
+               <h5 class="modal-title" id="ModalLabel">거절</h5>
                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
-               <form action="#" id=reject>
+               <form action="#" id=reject th:action="@{/order-management/refuse}">
+                  <input class="hidden" id="getOrderId" name="getOrderId" th:value="dfsa"></input>
                   <select id="selbox" name="selbox" class="d-block" style="width: 100%;">
-                     <option value="">메뉴가 매진되었습니다.</option>
-                     <option value="1">주방이 마감되었습니다.</option>
+                     <option value="soldOut">메뉴가 매진되었습니다.</option>
+                     <option value="storeClosed">주방이 마감되었습니다.</option>
                      <option value="direct">사유 직접입력</option>
+<!--                     <option value="test" th:text="${order.id}"></option>-->
                   </select>
                   <span> </span>
                   <textarea name="selboxDirect" id="selboxDirect" cols="30" rows="2" style="width: 100%;"></textarea>
@@ -145,6 +120,7 @@
    <!-- JavaScript Bundle with Popper -->
    <script>
       $(function () {
+         $("#getOrderId").hide();
          $("#selboxDirect").hide();
          $("#selbox").change(function () {
             if ($("#selbox").val() == "direct") {

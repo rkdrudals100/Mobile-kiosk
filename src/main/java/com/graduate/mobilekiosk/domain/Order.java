@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 @Entity @Table(name = "orders")
+@SequenceGenerator(
+        name = "ORDER_SEQ_GEN", sequenceName = "ORDER_SEQ", initialValue = 1, allocationSize = 1)
 @Data
 @ToString(callSuper = true, exclude = {"orderItems", "member"})
 @NoArgsConstructor
@@ -17,7 +20,7 @@ import java.util.List;
 public class Order extends BaseEntity {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ORDER_SEQ_GEN")
     @Column(name = "order_id")
     private Long id;
 
@@ -28,6 +31,8 @@ public class Order extends BaseEntity {
     private String purchase;
 
     private String requirements;
+
+    private String reasonOfRefuse;
 
     @Enumerated(EnumType.STRING)
     private WhichPayment whichPayment;
@@ -64,9 +69,5 @@ public class Order extends BaseEntity {
         this.orderDate = new Date();
         this.purchase = "purchase";
     }
-
-//    public void drchase() {
-//        this.orderDate.
-//    }
 
 }
