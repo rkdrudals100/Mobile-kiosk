@@ -42,7 +42,10 @@
                </div>
                <div class="col-sm-2">
                   <div class="card-body text-left">
-                     <h5 class="text-end" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-bottom: 18%">자세히</h5>
+                     <h5 class="text-end" type="button" data-bs-toggle="modal" data-bs-target="#orderDetailModal"  style="margin-bottom: 18%"
+                         th:data-id="${order.id}" th:data-totalprice="${order.totalPrice}" th:data-orderitems="${order.orderItems}"
+                     th:data-whichpayment="${order.whichPayment}" th:data-purchasetype="${order.purchaseType}" th:data-orderstatus="${order.orderStatus}"
+                     th:data-requirements="${order.requirements}" th:data-createat="${order.createAt}">자세히</h5>
                      <hr>
                   </div>
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -58,7 +61,7 @@
    </div>
 
    <!-- 주문 메뉴 자세히 보기 모달-->
-   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
          <div class="modal-content">
             <div class="modal-header">
@@ -66,18 +69,23 @@
                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-               <pre>
-               주문 목록 내용들
-               메뉴1
-               메뉴2
-               메뉴3
-               메뉴4
-            </pre>
+               <span style="font-size: 1.4em; font-weight: bold">주문 번호:<span> <span id="dataId" style="font-size: 1em; font-weight: bold"></span>
                <hr>
-               <pre>
-               요청사항 ...
-            </pre>
-
+<!--               <th:block id="dataOrderItems">-->
+               <span id="dataOrderItems"></span>
+<!--               </th:block>>-->
+               <hr>
+               <span style="font-size: 1em; font-weight: bold">주문 총액:<span> <span id="dataTotalPrice" style="font-size: 1em; font-weight: bold"></span>
+               <hr>
+               <span style="font-size: 1em; font-weight: bold">결제 수단:<span> <span id="dataWhichPayment" style="font-size: 1em; font-weight: bold"></span>
+               <hr>
+               <span style="font-size: 1em; font-weight: bold">식사 형태:<span> <span id="dataPurchaseType" style="font-size: 1em; font-weight: bold"></span>
+               <hr>
+               <span style="font-size: 1em; font-weight: bold">주문 상태:<span> <span id="dataOrderStatus" style="font-size: 1em; font-weight: bold"></span>
+               <hr>
+               <span style="font-size: 1em; font-weight: bold">요구 사항:<span><br> <span id="dataRequirements" style="font-size: 1em; font-weight: bold; word-wrap: break-word"></span>
+               <hr>
+               <span style="font-size: 1em; font-weight: bold">주문 시간:<span> <span id="dataCreateAt" style="font-size: 1em; font-weight: bold"></span>
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
@@ -135,6 +143,44 @@
       $('#rejectModal').on('show.bs.modal', function (e) {
          var data = $(e.relatedTarget).data('rejectbtn');
          $('#orderId').val(data)
+      });
+   </script>
+
+   <script th:inline="javascript">
+       //거절이 눌린 주문의 필요한 정보 받아와서 대입
+      $('#orderDetailModal').on('show.bs.modal', function (e) {
+         var dataId = $(e.relatedTarget).data('id');
+         var dataTotalPrice = $(e.relatedTarget).data('totalprice');
+         var dataOrderItems = $(e.relatedTarget).data('orderitems');
+         var dataWhichPayment = $(e.relatedTarget).data('whichpayment');
+         var dataPurchaseType = $(e.relatedTarget).data('purchasetype');
+         var dataOrderStatus = $(e.relatedTarget).data('orderstatus');
+         var dataRequirements = $(e.relatedTarget).data('requirements');
+         var dataCreateAt = $(e.relatedTarget).data('createat');
+
+         $('#dataId').text(dataId);
+         $('#dataOrderItems').text(dataOrderItems);
+         $('#dataTotalPrice').text(dataTotalPrice);
+         $('#dataWhichPayment').text(dataWhichPayment);
+         $('#dataPurchaseType').text(dataPurchaseType);
+         $('#dataOrderStatus').text(dataOrderStatus);
+         $('#dataRequirements').text(dataRequirements);
+         $('#dataCreateAt').text(dataCreateAt);
+
+
+         //오더 아이템 보기좋게 다듬기
+
+          var orderItemString = "";
+          var orderItemArray = dataOrderItems.split(',');
+
+          for(var i = 0; i < orderItemArray.length; i++){
+              var value = orderItemArray[i].split('=');
+
+              if(i%4 == 0){
+                  console.log(value[1]);
+              }
+          }
+
       });
    </script>
 </section>

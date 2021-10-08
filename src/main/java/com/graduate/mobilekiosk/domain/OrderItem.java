@@ -2,12 +2,12 @@ package com.graduate.mobilekiosk.domain;
 
 import lombok.*;
 import lombok.experimental.Accessors;
+
 import javax.persistence.*;
 
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(exclude = {"order", "item"})
 @AllArgsConstructor
 @Builder @Accessors(chain = true)
 public class OrderItem extends BaseEntity {
@@ -36,5 +36,9 @@ public class OrderItem extends BaseEntity {
         this.orderItemPrice = orderItem.orderItemPrice;
         this.itemCount = orderItem.itemCount;
         this.description = orderItem.description;
+    }
+
+    public String toString() {
+        return  item.getName() + ": " + itemCount;
     }
 }
