@@ -30,7 +30,7 @@ public class OrderItemService {
             List<Option> checkOptions = optionRepository.findWithCheckOptionsById(option);
             totalPrice = checkOptions.stream().mapToInt(Option::getPrice).sum();
             for (Option op : checkOptions) {
-                stringOption += op.getName() + " ";
+                stringOption += op.getName() +  "  ";
             }
         }
 
@@ -45,6 +45,20 @@ public class OrderItemService {
 
         orderItemRepository.save(orderItem);
     }
+
+
+    public String makeStringOption(List<Long> option) {
+
+        String stringOption = "";
+        if (!option.isEmpty()) {
+            List<Option> checkOptions = optionRepository.findWithCheckOptionsById(option);
+            for (Option op : checkOptions) {
+                stringOption += op.getName() + "  ";
+            }
+        }
+        return stringOption;
+    }
+
 
     public void deleteOrderItem(Long orderItemId) {
         orderItemRepository.deleteById(orderItemId);

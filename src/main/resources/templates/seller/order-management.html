@@ -31,7 +31,7 @@
                   <div class="card-body text-left">
                      <span th:each="orderItem : ${order.orderItems}">
                         <span class="card-title list-inline" th:text="${orderItem.getItem().getName()}" style="font-size: 1.7em">상품명</span>
-                        <span th:text="'&#40' + ${orderItem.itemCount}" style="font-size: 1.7em"></span><span style="font-size: 1.7em">개)</span><span style="font-size: 1.7em">&nbsp;&nbsp;</span>
+                        <span th:text="'&#40' + ${orderItem.itemCount} + '개) ' + ' '" style="font-size: 1.7em"></span>
                      </span>
                      <hr>
                      <p th:if="${order.requirements.length() > 25}" class="card-text" th:text="|${order.requirements.substring(0,25)}...|" style="font-size: 1.2em; height: 1.2em;">치킨 무 많이 주세요</p>
@@ -84,25 +84,21 @@
                <hr>
                <div class="row">
                   <div class="col">
-                     <p style="font-size: 1.5em; font-weight: bold">주문 상품<span>
+                     <span style="font-size: 1.5em; font-weight: bold">주문 상품<span>
                   </div>
                </div>
                <div class="row">
                   <div class="col">
-                     <p id="dataOrderItems" style="font-size: 1.5em; font-weight: bold"></p>
-                     <span style="font-size: 1.5em; font-weight: bold">옵션 상품</span>
+                     <pre id="dataOrderItems" style="font-size: 1.5em; font-weight: bold"></pre>
                   </div>
                </div>
-<!--               <th:block id="dataOrderItems">-->
-               <span id="dataOrderItems" style="font-size: 1.5em; font-weight: bold"></span>
-<!--               </th:block>>-->
                <hr>
                <div class="row">
                   <div class="col">
                      <span style="font-size: 1.5em; font-weight: bold">주문 총액<span>
                   </div>
                   <div class="col text-end">
-                     <span id="dataTotalPrice" style="font-size: 1.5em; font-weight: bold"></span>
+                     <span id="dataTotalPrice" style="font-size: 1.5em; font-weight: bold"></span><span style="font-size: 1.5em; font-weight: bold">원</span>
                   </div>
                </div>
                <hr>
@@ -225,29 +221,27 @@
          var dataRequirements = $(e.relatedTarget).data('requirements');
          var dataCreateAt = $(e.relatedTarget).data('createat');
 
+
+         //오더 아이템 보기좋게 다듬기
+         dataOrderItems = dataOrderItems.substring(1,dataOrderItems.length - 1);
+
+         var orderItemString = "";
+         var orderItemArray = dataOrderItems.split(', ');
+
+         for(var i = 0; i < orderItemArray.length; i++){
+            orderItemArray[i].trim();
+            orderItemString = orderItemString + orderItemArray[i]
+         }
+
+
          $('#dataId').text(dataId);
-         $('#dataOrderItems').text(dataOrderItems);
          $('#dataTotalPrice').text(dataTotalPrice);
          $('#dataWhichPayment').text(dataWhichPayment);
          $('#dataPurchaseType').text(dataPurchaseType);
          $('#dataOrderStatus').text(dataOrderStatus);
          $('#dataRequirements').text(dataRequirements);
          $('#dataCreateAt').text(dataCreateAt);
-
-
-         //오더 아이템 보기좋게 다듬기
-
-          // var orderItemString = "";
-          // var orderItemArray = dataOrderItems.split(',');
-          //
-          // for(var i = 0; i < orderItemArray.length; i++){
-          //     var value = orderItemArray[i].split('=');
-          //
-          //     if(i%4 == 0){
-          //         console.log(value[1]);
-          //     }
-          // }
-
+         $('#dataOrderItems').text(orderItemString);
       });
    </script>
 </section>

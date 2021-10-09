@@ -3,8 +3,10 @@ package com.graduate.mobilekiosk.web.customer;
 import com.graduate.mobilekiosk.domain.Category;
 import com.graduate.mobilekiosk.domain.Item;
 import com.graduate.mobilekiosk.domain.Order;
+import com.graduate.mobilekiosk.domain.OrderItem;
 import com.graduate.mobilekiosk.web.item.ItemRepository;
 import com.graduate.mobilekiosk.web.order.OrderItemService;
+import com.graduate.mobilekiosk.web.order.OrderRepository;
 import com.graduate.mobilekiosk.web.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class CustomerItemController {
     private final ItemRepository itemrepository;
     private final OrderItemService orderItemService;
     private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
     @GetMapping("items/{itemId}")
     public String moveItem(@PathVariable Long itemId, Model model, HttpServletRequest request) {
@@ -48,9 +51,21 @@ public class CustomerItemController {
                 ops.add(Long.parseLong(op));
             });
         }
-
-
         Order order = orderService.createOrder(user, url);
+
+        if (order.getOrderItems() != null) {
+            for (OrderItem each : order.getOrderItems()) {
+                log.warn("아이디: {}", each.getItem().getId());
+                if(each.getItem().getId() == itemId){
+                    log.warn("같은 아이디의 아이템 있음");
+                    if(each.getOptions().equals(orderItemService.makeStringOption(ops))){
+                        log.warn("같은 옵션 있음");
+                        return "redirect:/customer/" + url;
+                    }
+                }
+            }
+        }
+
         orderItemService.createOrderItem(order, itemId, ops);
 
         return "redirect:/customer/" + url;
