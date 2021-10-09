@@ -148,4 +148,22 @@ public class OrderService {
 
         return order;
     }
+
+//    public Order orderTypeSelect(String user, OrderType orderType) {
+//        Order order = orderRepository.findByUser(user);
+//
+//        order.setOrderType(orderType);
+//
+//        return order;
+//    }
+
+    public Order orderNum(String user) {
+        Order order = orderRepository.findByUser(user);
+        return order;
+    }
+
+    public Order updateOrderStatus(String user) {
+        Order order = orderRepository.findByUser(user);
+        return order;
+    }
 }
