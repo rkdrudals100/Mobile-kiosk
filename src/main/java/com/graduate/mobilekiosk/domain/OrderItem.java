@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(exclude = {"order", "item"})
 @AllArgsConstructor
 @Builder @Accessors(chain = true)
 public class OrderItem extends BaseEntity {
@@ -20,9 +21,12 @@ public class OrderItem extends BaseEntity {
 
     private int orderItemPrice;
 
+    private String options;
+
     private int itemCount;
 
     private String description;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")

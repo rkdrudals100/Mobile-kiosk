@@ -22,6 +22,6 @@ public class MemberSaveDto {
     private String checkPassword;
 
     @NotBlank
-    @Pattern(regexp="[a-z|A-Z|1-9]{1,20}", message = "영어나 숫자를 이용하여 20자리 이내로 입력해주세요.")
-    private String url;
+    @Pattern(regexp="[ㄱ-ㅎ|가-힣|a-z|A-Z|1-9| ]{1,10}", message = "특수문자는 사용할 수 없습니다.")
+    private String storeName;
 }

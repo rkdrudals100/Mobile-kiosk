@@ -21,7 +21,7 @@ public class OptionGroup {
     private Long id;
     private String name;
     private boolean essential;
-    private boolean mutilple;
+    private boolean multiple;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")

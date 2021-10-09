@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity @Table(name = "options")
 @Data
-@ToString(callSuper = true, exclude = {})
+@ToString(callSuper = true, exclude = {"optionGroup"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder @Accessors(chain = true)

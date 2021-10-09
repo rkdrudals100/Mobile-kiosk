@@ -46,7 +46,7 @@ public class MemberController {
         Member saveMember = Member.builder()
                 .userId(memberSaveDto.getUsername())
                 .password(memberSaveDto.getPassword())
-                .storeName(memberSaveDto.getUrl())
+                .storeName(memberSaveDto.getStoreName())
                 .role("USER").build();
 
         memberService.join(saveMember);

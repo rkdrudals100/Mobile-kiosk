@@ -3,10 +3,11 @@ package com.graduate.mobilekiosk.web.item;
 import com.graduate.mobilekiosk.domain.Category;
 import com.graduate.mobilekiosk.domain.Item;
 import com.graduate.mobilekiosk.domain.Member;
-import com.graduate.mobilekiosk.web.item.form.MenuEditDto;
+import com.graduate.mobilekiosk.domain.OptionGroup;
+import com.graduate.mobilekiosk.web.item.form.*;
 import com.graduate.mobilekiosk.web.member.MemberRepository;
-import com.graduate.mobilekiosk.web.item.form.CategoryDto;
-import com.graduate.mobilekiosk.web.item.form.MenuSaveDto;
+import com.graduate.mobilekiosk.web.option.OptionGroupService;
+import com.graduate.mobilekiosk.web.option.OptionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -36,6 +37,8 @@ public class ItemController {
     private final CategoryService categoryService;
     private final ItemRepository itemRepository;
     private final ItemService itemService;
+    private final OptionGroupService optionGroupService;
+    private final OptionService optionService;
     private final FileStore fileStore;
 
     @GetMapping("")
@@ -106,8 +109,12 @@ public class ItemController {
     }
 
     @GetMapping("/{menuId}")
-    public String editMenuForm(@PathVariable Long menuId, Model model) {
-        Item item = itemRepository.findById(menuId).get();
+    public String editMenuForm(@PathVariable Long menuId, Model model, Principal principal) {
+        Item item = itemRepository.findWithOptionById(menuId);
+
+        if (!item.getCategory().getUserName().equals(principal.getName())) {
+            return "redirect:/menus";
+        }
         model.addAttribute("item", item);
         return "seller/menu-edit";
     }
@@ -120,7 +127,7 @@ public class ItemController {
         }
 
         itemService.save(menuEditDto);
-        return "redirect:/menus?add";
+        return "redirect:/menus?change";
     }
 
     @DeleteMapping("/{menuId}")
@@ -141,5 +148,43 @@ public class ItemController {
         return new UrlResource("file:" + fileStore.getFullPath(filename));
     }
 
+    @PostMapping("/options")
+    public String optionsAdd(@Validated @ModelAttribute OptionGroupDto optionGroupDto, BindingResult bindingResult) {
+        if (optionGroupDto.isEssential() == true && optionGroupDto.isMultiple() == true) {
+            return "redirect:/menus/" + optionGroupDto.getItemId() + "?fail_options";
+        }
+        if (bindingResult.hasErrors()) {
+            return "redirect:/menus/" + optionGroupDto.getItemId() + "?fail_options";
+        }
+
+        optionGroupService.save(optionGroupDto);
+
+        return "redirect:/menus/" + optionGroupDto.getItemId() + "?success_options";
+    }
+
+    @PostMapping("/options/option")
+    public String optionAdd(@Validated @ModelAttribute OptionDto optionDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/menus/" + optionDto.getItemId() + "?fail_option";
+        }
+
+        optionService.save(optionDto);
+
+        return "redirect:/menus/" + optionDto.getItemId() + "?success_option";
+    }
+
+    @DeleteMapping("/options/option/{optionId}")
+    public String optionDelete(@PathVariable Long optionId, @RequestParam String itemId) {
+        optionService.delete(optionId);
+
+        return "redirect:/menus/" + itemId + "?delete_option";
+    }
+
+    @DeleteMapping("/options/{optionGroupId}")
+    public String optionsDelete(@PathVariable Long optionGroupId, @RequestParam String itemId) {
+        optionGroupService.delete(optionGroupId);
+
+        return "redirect:/menus/" + itemId + "?delete_options";
+    }
 }
 

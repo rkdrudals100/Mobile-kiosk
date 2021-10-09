@@ -32,11 +32,11 @@
               아이디 에러
             </div>
           <input type="text" autocomplete="off" id="username" th:field="*{username}" th:errorclass="field-error" class="form-control col-lg-4" placeholder="ID" required autofocus>
-          <label for="url" class="sr-only">url 주소</label>
-          <div class="field-error" th:errors="*{url}">
-            url 에러
+          <label for="storeName" class="sr-only">지점명</label>
+          <div class="field-error" th:errors="*{storeName}">
+            지점명 에러
           </div>
-          <input type="text" autocomplete="off" id="url" th:field="*{url}" th:errorclass="field-error"  class="form-control col-lg-4" placeholder="url 주소(영어+숫자)" required autofocus>
+          <input type="text" autocomplete="off" id="storeName" th:field="*{storeName}" th:errorclass="field-error"  class="form-control col-lg-4" placeholder="지점명을 입력해주세요" required autofocus>
           <label for="password" class="sr-only">비밀번호</label>
           <div class="field-error" th:errors="*{password}">
             password 에러

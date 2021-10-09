@@ -19,6 +19,12 @@
 </head>
 
 <style>
+    .menuImage {
+        border-radius: 7px;
+        width: 12vh;
+        height: 12vh;
+    }
+
     body{ -ms-overflow-style: none; } ::-webkit-scrollbar { display: none; }
 </style>
     
@@ -28,49 +34,58 @@
             <div class="container-fluid">
                 <div></div>
                 <a href="customer-home.html" th:href="|/customer/${url}|" class="navbar-brand d-flex justify-content-center align-items-center text-dark text-decoration-none">
-                    <strong>모바일 키오스크</strong>
+                    <strong>[[${storeName}]]</strong>
                 </a>
-                <form class="d-flex justify-content-end0">
-                    <button type="button" class="btn-close btn-sm" aria-label="Close"></button>
-                </form>
+                <div></div>
             </div>
         </nav>
     </header>
 
-<div class="fixed-top bg-white" style="margin-top: 55px;">
-    <ul class="tab-content" id="pills-tab" role="tablist" style="white-space:nowrap; overflow: auto;" >
-        <li th:each="category : ${categories}" class="nav-item m-1 d-inline" role="presentation">
-            <a class="btn btn-outline-secondary" th:href="|#${category.name}|">[[${category.name}]]</a>
-        </li>
-    </ul>
-</div>
-
-<!--본문-->
-
-<div class="container row" style="margin-bottom: 51px;">
-    <th:block th:each="category : ${categories}">
-    <div style="height: 14vh; margin-top: -14vh;" th:id="${category.name}"></div>
-    <div>
-        <h2><strong>[[${category.name}]]</strong></h2>
+    <div class="fixed-top bg-white" style="margin-top: 55px;">
+        <ul class="tab-content" id="pills-tab" role="tablist" style="white-space:nowrap; overflow: auto;" >
+            <li th:each="category : ${categories}" class="nav-item m-1 d-inline" role="presentation">
+                <a class="btn btn-outline-secondary" th:href="|#${category.name}|">[[${category.name}]]</a>
+            </li>
+        </ul>
     </div>
-    <div class="column rounded" style="border: 0px solid #cecece; margin-left: -7vw;" th:each="menu : ${category.items}">
-        <div class="card text-black bg-Light mx-3 my-1" style="width: 95vw;">
-            <a class="row g-1" th:href="|items/${menu.id}|" style="text-decoration: none; color: black;">
-                <div class="col-7">
-                    <div class="card-body" style="height: 15vh;">
-                        <div>
-                            <h5><strong>[[${menu.name}]]</strong></h5>
-                            <h6>[[${menu.description}]]</h6>
-                            <h6>[[${menu.price}]]</h6>
-                        </div>
+
+    <!--본문-->
+    <th:block th:each="category : ${categories}">
+        <div class="row">
+            <div style="height: 14vh; margin-top: -14vh;" th:id="${category.name}"></div>
+            <div class="mx-4">
+                <h1><strong>[[${category.name}]]</strong></h1>
+            </div>
+            <div th:each="menu : ${category.items}">
+                    <div class="container row" style="height: 12vh;">
+                        <a th:href="|items/${menu.id}|" style="text-decoration: none; position: relative; color: black;" class="row">
+                            <div class="col-9">
+                                <h5><strong>[[${menu.name}]]</strong></h5>
+                                <p style="color: gray; font-size: 15px; line-height: 50%;">[[${menu.shortDescription}]]</p>
+                                <h6 style="line-height: 50%;">[[${menu.price}]]원</h6>
+                            </div>
+                            <div class="col-3">
+                                <img th:if="${menu.image != null}"
+                                     field="image + ${item.id}" th:src="|/menus/images/${menu.getImage()}|" class="menuImage">
+                            </div>
+                            <span th:if="${menuStat.last}">&nbsp;</span>
+                        </a>
                     </div>
-                </div>
-            </a>
+                <hr th:if="${!menuStat.last}">
+                <hr th:if="${menuStat.last}" class="mb-0">
+            </div>
+            <hr th:if="${!categoryStat.last}" style="border: solid 3px gray;">
+        </div>
+    </th:block>
+    <div style="background-color: lightgray; color: gray; height: 100vh;">
+        <div class="mx-2 py-2">
+            <p>유의 사항</p>
+            <div style="font-size: 15px;">
+                <p>* 본 웹은 실제로 결제가 되지 않습니다.</p>
+                <p>* 한경대학교 캡스톤 디자인을 위해 만들어진 웹 입니다.</p>
+            </div>
         </div>
     </div>
-    </th:block>
-</div>
-
 
     
     <button type="button" class="btn btn-primary fixed-bottom" onclick="location.href='/customer/shopping-basket'" style="width: 100%; height: 50px; border-radius: 0;">

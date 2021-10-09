@@ -39,6 +39,9 @@
 		<div th:if="${param.add}" class="alert alert-success text-center timeout">
 			메뉴가 등록되었습니다.
 		</div>
+		<div th:if="${param.change}" class="alert alert-success text-center timeout">
+			메뉴가 수정되었습니다.
+		</div>
 		<div th:if="${param.delete}" class="alert alert-success text-center timeout">
 			메뉴가 삭제되었습니다.
 		</div>
@@ -98,34 +101,35 @@
 								<div class="col-md-8">
 									<div class="mb-3">
 										<label for="displayName" class="col-form-label">제품명</label>
-										<input type="text" class="form-control" id="displayName" disabled>
+										<input type="text" class="form-control displayName" id="displayName" disabled>
 									</div>
 									<div class="mb-3">
 										<label for="displayPrice" class="col-form-label">가격</label>
-										<input type="text" class="form-control" id="displayPrice" disabled>
+										<input type="text" class="form-control displayPrice" id="displayPrice" disabled>
 									</div>
 								</div>
 								<div class="col-md-1"></div>
 								<div class="col-md-2">
 									<div>
-										<input type="checkbox" id="displayVisible"class="form-check-input" disabled>
+										<input type="checkbox" id="displayVisible"class="form-check-input displayVisible" disabled>
 										<label for="displayVisible" class="form-check-label">판매 여부</label>
 									</div>
 									<div class="mt-3 " style="width: 10vw; height: 10vw;">
-										<img id="displayImage" src="/img/logo.png" alt="이미지" style="width: 100%; height: 100%;" border="2">
+										<img id="displayImage" src="/img/logo.png" alt="이미지" style="width: 100%; height: 100%;" border="2"
+										class="displayImage">
 									</div>
 								</div>
 							</div>
 							<div class="mb-3">
 								<label for="displayShortDescription" class="col-form-label">짧은 메뉴 소개</label>
-								<input type="text" class="form-control" id="displayShortDescription" disabled>
+								<input type="text" class="form-control displayShortDescription" id="displayShortDescription" disabled>
 							</div>
 							<div class="mb-3">
 								<label for="displayDescription" class="col-form-label">메뉴 설명</label>
-								<textarea class="form-control" id="displayDescription" disabled></textarea>
+								<textarea class="form-control displayDescription" id="displayDescription" disabled></textarea>
 							</div>
 
-							<form id="edit-form" method="get">
+							<form id="edit-form" method="get" class="edit-form">
 								<button class="btn btn-primary text-center" type="submit" style="width: 100%;">수정하로 가기</button>
 							</form>
 						</div>
@@ -175,24 +179,46 @@
 
 	function click_test(click_id){
 		let element = document.getElementById(click_id);
-		document.getElementById('displayName').value = element.getElementsByTagName('input')[0].value;
-		document.getElementById('displayPrice').value = element.getElementsByTagName('input')[1].value;
-		document.getElementById('displayShortDescription').value = element.getElementsByTagName('input')[2].value;
-		document.getElementById('displayDescription').value = element.getElementsByTagName('input')[3].value;
+		for (const elementsByClassNameElement of document.getElementsByClassName('displayName')) {
+			elementsByClassNameElement.value = element.getElementsByTagName('input')[0].value;
+		}
+
+		for (const elementsByClassNameElement of document.getElementsByClassName('displayPrice')) {
+			elementsByClassNameElement.value = element.getElementsByTagName('input')[1].value;
+		}
+
+		for (const elementsByClassNameElement of document.getElementsByClassName('displayShortDescription')) {
+			elementsByClassNameElement.value = element.getElementsByTagName('input')[2].value;
+		}
+
+		for (const elementsByClassNameElement of document.getElementsByClassName('displayDescription')) {
+			elementsByClassNameElement.value = element.getElementsByTagName('input')[3].value;
+		}
+
 
 		if (element.getElementsByTagName('input')[4].value != "") {
-			document.getElementById('displayImage').setAttribute("src", "/menus/images/" + element.getElementsByTagName('input')[4].value);
+			for (const elementsByClassNameElement of document.getElementsByClassName('displayImage')) {
+				elementsByClassNameElement.setAttribute("src", "/menus/images/" + element.getElementsByTagName('input')[4].value);
+			}
 		}else {
-			document.getElementById('displayImage').setAttribute("src", "/img/logo.png");
+			for (const elementsByClassNameElement of document.getElementsByClassName('displayImage')) {
+				elementsByClassNameElement.setAttribute("src", "/img/logo.png");
+			}
 		}
 
-		if (element.getElementsByTagName('input')[5].value == 'true'){
-			document.getElementById('displayVisible').checked = true;
+		if (element.getElementsByTagName('input')[5].value == 'true') {
+			for (const elementsByClassNameElement of document.getElementsByClassName('displayVisible')) {
+				elementsByClassNameElement.checked = true;
+			}
 		}else {
-			document.getElementById('displayVisible').checked = false;
+			for (const elementsByClassNameElement of document.getElementsByClassName('displayVisible')) {
+				elementsByClassNameElement.checked = false;
+			}
 		}
 
-		document.getElementById('edit-form').setAttribute("action", "/menus/" + click_id);
+		for (const elementsByClassNameElement of document.getElementsByClassName('edit-form')) {
+			elementsByClassNameElement.setAttribute("action", "/menus/" + click_id);
+		}
 	}
 </script>
 
