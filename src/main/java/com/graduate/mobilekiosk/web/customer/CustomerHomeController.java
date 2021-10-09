@@ -32,6 +32,8 @@ public class CustomerHomeController {
 
     @GetMapping("/{url}")
     public String CustomerHome(@PathVariable String url, Model model, HttpServletRequest request) {
+
+        log.warn(request.getSession().getId());
         HttpSession session = request.getSession();
 
         Member member = memberRepository.findByUserId(url);
