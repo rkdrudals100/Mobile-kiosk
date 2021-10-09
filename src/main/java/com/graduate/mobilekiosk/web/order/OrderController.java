@@ -6,15 +6,16 @@ import com.graduate.mobilekiosk.domain.OrderStatus;
 import com.graduate.mobilekiosk.web.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
 
 @Slf4j
 @Controller
@@ -30,8 +31,7 @@ public class OrderController {
     public String moveOrder(Model model, Principal principal) {
 
         Member member = memberRepository.findByUserId(principal.getName());
-
-        List<Order> orders = orderRepository.findByMemberAndEffectiveOrders(member);
+        List<Order> orders = orderRepository.findByMemberAndEffectiveOrders(member, Sort.by(Sort.Direction.DESC, "id"));
 
         model.addAttribute("orders", orders);
 
@@ -54,6 +54,7 @@ public class OrderController {
 
         Order changedOrder = orderRepository.getById(orderId);
         orderService.sold(changedOrder);
+        orderService.changeOrderStatus(changedOrder, OrderStatus.SOLD);
         return  "redirect:";
     }
 

@@ -18,13 +18,17 @@
 	<link href="album.css" rel="stylesheet">
 
 </head>
+<script type="text/javascript">
+	window.history.forward();
+	function noBack(){window.history.forward();}
+</script>
 <script>
 	function goBack() {
 		window.history.back();
 	}
 </script>
 
-<body>
+<body onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
 	<!-- style="position: sticky; top: 0; z-index: 1;" -->
 	<header class="fixed-top" style="z-index: 2;">
 		<nav class="navbar fixed-top navbar-light bg-none">

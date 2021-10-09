@@ -29,6 +29,8 @@ public class CustomerPaymentController {
 
     @GetMapping("")
     public String paymentHome(HttpServletRequest request, Model model) {
+        log.warn("--------------------------------------");
+
         String user = request.getSession().getId();
         Order order = orderRepository.findWithOrderItemByUser(user);
 
@@ -43,6 +45,12 @@ public class CustomerPaymentController {
     @PostMapping("")
     public String payment(HttpServletRequest request, GetPaymentFormDto getPaymentFormDto) {
         String user = request.getSession().getId();
+        Order order = orderRepository.findWithOrderItemByUser(user);
+
+//        if (order.getOrderStatus() != null){
+//
+//            return "redirect:/customer/customer-alert?doubleCheck=done";
+//        }
 
         // 구매자 구매 확정 상태로 업데이트
         orderService.purchase(user);

@@ -4,8 +4,10 @@ import com.graduate.mobilekiosk.domain.Member;
 import com.graduate.mobilekiosk.domain.Order;
 import com.graduate.mobilekiosk.domain.OrderStatus;
 import com.graduate.mobilekiosk.domain.PurchaseType;
+import net.bytebuddy.TypeCache;
 import org.aspectj.weaver.ast.Or;
 import org.hibernate.annotations.Where;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +33,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("select o from Order o where o.purchase = 'purchase' and o.orderStatus in ('ACCEPT', 'ORDER') and o.member = :member")
     List<Order> findByMemberAndEffectiveOrders(@Param("member") Member member);
+
+    @Query("select o from Order o where o.purchase = 'purchase' and o.orderStatus in ('ACCEPT', 'ORDER') and o.member = :member")
+    List<Order> findByMemberAndEffectiveOrders(@Param("member") Member member, Sort sort);
 }
