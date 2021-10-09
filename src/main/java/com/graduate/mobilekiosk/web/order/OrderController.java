@@ -33,6 +33,7 @@ public class OrderController {
         Member member = memberRepository.findByUserId(principal.getName());
         List<Order> orders = orderRepository.findByMemberAndEffectiveOrders(member, Sort.by(Sort.Direction.DESC, "id"));
 
+
         model.addAttribute("orders", orders);
 
         return "seller/order-management";

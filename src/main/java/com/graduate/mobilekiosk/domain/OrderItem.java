@@ -43,6 +43,6 @@ public class OrderItem extends BaseEntity {
     }
 
     public String toString() {
-        return  item.getName() + ": " + itemCount;
+        return  item.getName() + ": " + itemCount + "개\n";
     }
 }

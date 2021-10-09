@@ -23,7 +23,7 @@
                         <h1 class="text-center" th:text="${order.id}">001</h1>
                         <hr>
                         <h6 class="btn btn-primary" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}" th:onclick="'location.href=\''+ @{/order-management/sold?orderId=} + ${order.id} + '\''" style="text-align: center; width: 100%;">판매하기</h6>
-                        <h6 class="btn btn-primary disabled" style="text-align: center; width: 100%;" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}">판매하기</h6>
+                        <h6 class="btn btn-primary disabled" style="text-align: center; width: 100%; margin-top: 2ch" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}">판매하기</h6>
                      </div>
                   </div>
                </div>
@@ -34,25 +34,29 @@
                         <span th:text="'&#40' + ${orderItem.itemCount}" style="font-size: 1.7em"></span><span style="font-size: 1.7em">개)</span><span style="font-size: 1.7em">&nbsp;&nbsp;</span>
                      </span>
                      <hr>
-                     <p class="card-text" th:text="${order.requirements}" style="font-size: 1.2em; overflow:hidden; width: 70%; height: 1.2em;">치킨 무 많이 주세요</p>
-                     <button class="btn" th:text="${order.totalPrice} + '원'" style="font-size: 1.5em; font-weight: bolder; width: 25%"></button>
-                     <button class="btn" th:text="${order.purchaseType.description}" style="font-size: 1.5em; font-weight: bolder; width: 25%; float: right">매장식사 or 포장</button>
-                     <button class="btn" th:text="${order.whichPayment.description}" style="font-size: 1.5em; font-weight: bolder; width: 25%; float: right">결제 상태</button>
+                     <p th:if="${order.requirements.length() > 25}" class="card-text" th:text="|${order.requirements.substring(0,25)}...|" style="font-size: 1.2em; height: 1.2em;">치킨 무 많이 주세요</p>
+                     <p th:if="${order.requirements.length() <= 25}" class="card-text" th:text="${order.requirements}" style="font-size: 1.2em; height: 1.2em;">치킨 무 많이 주세요</p>
+                     <span class="card-text" th:text="${order.totalPrice} + '원'" style="font-size: 1.2em; font-weight: bolder"></span>
+                     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                     <span class="card-text" th:text="${order.purchaseType.description}" style="font-size: 1.2em; font-weight: bolder;">매장식사 or 포장</span>
+                     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                     <span class="card-text" th:text="${order.whichPayment.description}" style="font-size: 1.2em; font-weight: bolder;">결제 상태</span>
                   </div>
                </div>
+
                <div class="col-sm-2">
                   <div class="card-body text-left">
                      <h5 class="text-end" type="button" data-bs-toggle="modal" data-bs-target="#orderDetailModal"  style="margin-bottom: 18%"
-                         th:data-id="${order.id}" th:data-totalprice="${order.totalPrice}" th:data-orderitems="${order.orderItems}"
-                     th:data-whichpayment="${order.whichPayment}" th:data-purchasetype="${order.purchaseType}" th:data-orderstatus="${order.orderStatus}"
+                         th:data-id="${order.id}" th:data-totalprice="${order.totalPrice}" th:data-orderitems="${order.orderItems}" th:data-option="${order.orderItems}"
+                     th:data-whichpayment="${order.whichPayment.getDescription()}" th:data-purchasetype="${order.purchaseType.getDescription()}" th:data-orderstatus="${order.orderStatus.getDescription()}"
                      th:data-requirements="${order.requirements}" th:data-createat="${order.createAt}">자세히</h5>
                      <hr>
                   </div>
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                      <!-- <p th:for="${#ids.prev('regions')} /p> -->
-                     <button class="btn btn-primary disabled" style="margin-bottom: 2ch;" th:id="${order.id}" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
-                     <button class="btn btn-primary" th:onclick="'location.href=\''+ @{/order-management/agree?orderId=} + ${order.id} + '\''" style="margin-bottom: 2ch;" th:id="${order.id}" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
-                     <button type="button" style="margin-right: 2ch; margin-bottom: 2ch;" class="btn btn-danger" data-bs-target="#rejectModal" data-bs-toggle="modal" id="rejectBtn" th:data-rejectbtn="${order.id}">거절</button>
+                     <button class="btn btn-primary disabled" style="margin-bottom: 1ch;" th:id="${order.id}" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
+                     <button class="btn btn-primary" th:onclick="'location.href=\''+ @{/order-management/agree?orderId=} + ${order.id} + '\''" style="margin-bottom: 1ch;" th:id="${order.id}" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
+                     <button type="button" style="margin-right: 2ch; margin-bottom: 1ch;" class="btn btn-danger" data-bs-target="#rejectModal" data-bs-toggle="modal" id="rejectBtn" th:data-rejectbtn="${order.id}">거절</button>
                   </div>
                </div>
             </div>
@@ -69,23 +73,85 @@
                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-               <span style="font-size: 1.4em; font-weight: bold">주문 번호:<span> <span id="dataId" style="font-size: 1em; font-weight: bold"></span>
+               <div class="row">
+                  <div class="col">
+                     <span style="font-size: 1.5em; font-weight: bold">주문 번호<span>
+                  </div>
+                  <div class="col text-end">
+                     <span id="dataId" style="font-size: 1.5em; font-weight: bold"></span>
+                  </div>
+               </div>
                <hr>
+               <div class="row">
+                  <div class="col">
+                     <p style="font-size: 1.5em; font-weight: bold">주문 상품<span>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col">
+                     <p id="dataOrderItems" style="font-size: 1.5em; font-weight: bold"></p>
+                     <span style="font-size: 1.5em; font-weight: bold">옵션 상품</span>
+                  </div>
+               </div>
 <!--               <th:block id="dataOrderItems">-->
-               <span id="dataOrderItems"></span>
+               <span id="dataOrderItems" style="font-size: 1.5em; font-weight: bold"></span>
 <!--               </th:block>>-->
                <hr>
-               <span style="font-size: 1em; font-weight: bold">주문 총액:<span> <span id="dataTotalPrice" style="font-size: 1em; font-weight: bold"></span>
+               <div class="row">
+                  <div class="col">
+                     <span style="font-size: 1.5em; font-weight: bold">주문 총액<span>
+                  </div>
+                  <div class="col text-end">
+                     <span id="dataTotalPrice" style="font-size: 1.5em; font-weight: bold"></span>
+                  </div>
+               </div>
                <hr>
-               <span style="font-size: 1em; font-weight: bold">결제 수단:<span> <span id="dataWhichPayment" style="font-size: 1em; font-weight: bold"></span>
+               <div class="row">
+                  <div class="col">
+                     <span style="font-size: 1.5em; font-weight: bold">결제 수단<span>
+                  </div>
+                  <div class="col text-end">
+                     <span id="dataWhichPayment" style="font-size: 1.5em; font-weight: bold"></span>
+                  </div>
+               </div>
                <hr>
-               <span style="font-size: 1em; font-weight: bold">식사 형태:<span> <span id="dataPurchaseType" style="font-size: 1em; font-weight: bold"></span>
+               <div class="row">
+                  <div class="col">
+                     <span style="font-size: 1.5em; font-weight: bold">식사 형태<span>
+                  </div>
+                  <div class="col text-end">
+                     <span id="dataPurchaseType" style="font-size: 1.5em; font-weight: bold"></span>
+                  </div>
+               </div>
                <hr>
-               <span style="font-size: 1em; font-weight: bold">주문 상태:<span> <span id="dataOrderStatus" style="font-size: 1em; font-weight: bold"></span>
+               <div class="row">
+                  <div class="col">
+                     <span style="font-size: 1.5em; font-weight: bold">주문 상태<span>
+                  </div>
+                  <div class="col text-end">
+                     <span id="dataOrderStatus" style="font-size: 1.5em; font-weight: bold"></span>
+                  </div>
+               </div>
                <hr>
-               <span style="font-size: 1em; font-weight: bold">요구 사항:<span><br> <span id="dataRequirements" style="font-size: 1em; font-weight: bold; word-wrap: break-word"></span>
+               <div class="row">
+                  <div class="col">
+                     <span style="font-size: 1.5em; font-weight: bold">요구 사항<span>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col">
+                     <span id="dataRequirements" style="font-size: 1.5em; font-weight: bold; word-wrap: break-word"></span>
+                  </div>
+               </div>
                <hr>
-               <span style="font-size: 1em; font-weight: bold">주문 시간:<span> <span id="dataCreateAt" style="font-size: 1em; font-weight: bold"></span>
+               <div class="row">
+                  <div class="col">
+                     <span style="font-size: 1.5em; font-weight: bold">주문 시간<span>
+                  </div>
+                  <div class="col text-end">
+                     <span id="dataCreateAt" style="font-size: 1.5em; font-weight: bold"></span>
+                  </div>
+               </div>
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
@@ -123,6 +189,7 @@
             </div>
          </div>
       </div>
+<!--      <div th:value="${orders.}"></div>-->
    </div>
 
    <!-- JavaScript Bundle with Popper -->
