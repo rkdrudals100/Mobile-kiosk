@@ -1,5 +1,9 @@
 package com.graduate.mobilekiosk.web.customer;
 
+import com.graduate.mobilekiosk.domain.OrderStatus;
+import com.graduate.mobilekiosk.web.order.OrderRepository;
+import com.graduate.mobilekiosk.web.order.OrderService;
+import com.graduate.mobilekiosk.domain.Order;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -14,11 +18,17 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/customer/customer-alert")
 @RequiredArgsConstructor
 public class CustomerAlertController {
+    private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
     @GetMapping("")
-    public String Alert(HttpServletRequest request, Model model) {
+    public String payment(HttpServletRequest request, Model model) {
         String user = request.getSession().getId();
+
+        Order order = orderRepository.findByUser(user);
+        model.addAttribute("order", order);
 
         return "customer/customer-alert";
     }
+
 }
