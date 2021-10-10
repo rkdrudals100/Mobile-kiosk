@@ -29,10 +29,6 @@ public class CustomerAlertController {
     public String payment(HttpServletRequest request, Model model) {
         String user = request.getSession().getId();
 
-//        if (doubleCheck.equals("done")){
-//
-//        }
-
         Order order = orderRepository.findByUser(user);
         model.addAttribute("order", order);
 
