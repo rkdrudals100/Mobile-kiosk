@@ -32,9 +32,11 @@ spring:
       activate:
           on-profile: prod
     datasource:
-        url: jdbc:mysql://database-1.cxq5ylgufayl.ap-northeast-2.rds.amazonaws.com/board?serverTimezone=UTC&characterEncoding=UTF-8
-        username: root
-        password: worjs2964
+#        url: jdbc:mysql://database-1.cxq5ylgufayl.ap-northeast-2.rds.amazonaws.com/board?serverTimezone=UTC&characterEncoding=UTF-8
+        url: jdbc:mysql://database-1.ccncyab48rrd.ap-northeast-2.rds.amazonaws.com/board?serverTimezone=UTC&characterEncoding=UTF-8
+
+        username: admin
+        password: rootroot
         driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
         database: mysql

@@ -47,9 +47,16 @@ public class CustomerStoreController {
         String user = request.getSession().getId();
         Order order = orderRepository.findWithOrderItemByUser(user);
 
+        //이미 처리되었던 주문인지 검사
+        if (order.getOrderStatus() != null) {
+            log.warn("이미 완료된 주문입니다.");
+
+            return "redirect:/customer/customer-alert";
+        }
+
         // 주문의 수량 업데이트
         List<OrderItem> orderItems = order.getOrderItems();
-        for (OrderItem orderItem: orderItems) {
+        for (OrderItem orderItem : orderItems) {
             String nameOfOrderItem = "orderItemQuantity" + orderItem.getId();
             orderItem.setItemCount(Integer.parseInt(request.getParameter(nameOfOrderItem)));
             orderService.updateOrderItem(user, orderItem);
@@ -60,7 +67,8 @@ public class CustomerStoreController {
 
         // 주문의 매장식사, 포장 여부 업데이트
         PurchaseType purchaseType = orderService.convertTypeOfOrderType(request.getParameter("purchaseTypeCheck"));
-        orderService.selectPurchaseType(user,purchaseType);
+        orderService.selectPurchaseType(user, purchaseType);
+
 
         return "redirect:/customer/payment";
 

@@ -43,6 +43,14 @@ public class CustomerPaymentController {
     @PostMapping("")
     public String payment(HttpServletRequest request, GetPaymentFormDto getPaymentFormDto) {
         String user = request.getSession().getId();
+        Order order = orderRepository.findByUser(user);
+
+        //이미 처리되었던 주문인지 검사
+        if (order.getOrderStatus() != null) {
+            log.warn("이미 완료된 주문입니다.");
+
+            return "redirect:/customer/customer-alert";
+        }
 
         // 구매자 구매 확정 상태로 업데이트
         orderService.purchase(user);

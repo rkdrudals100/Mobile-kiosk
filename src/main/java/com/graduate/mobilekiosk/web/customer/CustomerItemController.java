@@ -1,9 +1,6 @@
 package com.graduate.mobilekiosk.web.customer;
 
-import com.graduate.mobilekiosk.domain.Category;
-import com.graduate.mobilekiosk.domain.Item;
-import com.graduate.mobilekiosk.domain.Order;
-import com.graduate.mobilekiosk.domain.OrderItem;
+import com.graduate.mobilekiosk.domain.*;
 import com.graduate.mobilekiosk.web.item.ItemRepository;
 import com.graduate.mobilekiosk.web.order.OrderItemService;
 import com.graduate.mobilekiosk.web.order.OrderRepository;
@@ -43,6 +40,15 @@ public class CustomerItemController {
     public String customerAdd(@PathVariable Long itemId, Model model, HttpServletRequest request, @RequestParam String url, @RequestParam String options) {
         String user = request.getSession().getId();
 
+        Order order = orderService.createOrder(user, url);
+
+        //이미 처리되었던 주문인지 검사
+        if (order.getOrderStatus() != null) {
+            log.warn("이미 완료된 주문입니다.");
+
+            return "redirect:/customer/customer-alert";
+        }
+
         List<Long> ops = new ArrayList<>();
 
         if (!options.equals("")) {
@@ -51,14 +57,14 @@ public class CustomerItemController {
                 ops.add(Long.parseLong(op));
             });
         }
-        Order order = orderService.createOrder(user, url);
 
+        // Order안에 아이템 ID, 옵션까지 같은 OrderItem이 있는지 있는지 검사
         if (order.getOrderItems() != null) {
             for (OrderItem each : order.getOrderItems()) {
                 log.warn("아이디: {}", each.getItem().getId());
-                if(each.getItem().getId() == itemId){
+                if (each.getItem().getId() == itemId) {
                     log.warn("같은 아이디의 아이템 있음");
-                    if(each.getOptions().equals(orderItemService.makeStringOption(ops))){
+                    if (each.getOptions().equals(orderItemService.makeStringOption(ops))) {
                         log.warn("같은 옵션 있음");
                         return "redirect:/customer/" + url;
                     }
