@@ -29,13 +29,15 @@ public class CustomerStoreController {
 
 
     @GetMapping("")
-    public String shoppingBasket(HttpServletRequest request, Model model) {
+    public String shoppingBasket(HttpServletRequest request, Model model, @RequestParam String delete) {
         String user = request.getSession().getId();
 
+        log.warn(delete);
         Order order = orderRepository.findWithOrderItemByUser(user);
 
         model.addAttribute("order", order);
         model.addAttribute("purchaseTypes", PurchaseType.values());
+        model.addAttribute("delete", delete);
 
         return "customer/customer-store";
     }
@@ -78,6 +80,6 @@ public class CustomerStoreController {
     public String shoppingBasket(HttpServletRequest request, Model model, @PathVariable Long orderItemId) {
         orderItemService.deleteOrderItem(orderItemId);
 
-        return "redirect:";
+        return "redirect:/customer/shopping-basket?delete=true";
     }
 }

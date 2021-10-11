@@ -152,6 +152,8 @@
 </script>
 <script th:inline="javascript">
 	window.onload = function () {
+
+		// 로딩이 완료되었을 때 첫 총액 계산
 		const totalPrice = document.getElementById('totalPrice');
 		const totalPrice2 = document.getElementById('totalPrice2');
 		let elements = document.querySelectorAll('.total');
@@ -161,11 +163,15 @@
 			totalPrice.innerText = parseInt(totalPrice.innerText) + parseInt(elem.innerText);
 		}
 		totalPrice2.innerText = parseInt(totalPrice.innerText);
-	}
 
 
-	function goBack() {
-		window.history.back();
+
+		// 상품을 삭제했을 떄 호출
+		/*<![CDATA[*/ var goBack = /*[[ ${delete} ]]*/; /*]]*/
+		console.log(goBack);
+		if (goBack == "true"){
+			window.history.back();
+		}
 	}
 
 	function purchaseTypeChecking() {
