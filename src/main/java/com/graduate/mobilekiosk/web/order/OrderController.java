@@ -28,13 +28,14 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public String moveOrder(Model model, Principal principal) {
+    public String moveOrder(Model model, Principal principal, @RequestParam String refresh) {
 
         Member member = memberRepository.findByUserId(principal.getName());
         List<Order> orders = orderRepository.findByMemberAndEffectiveOrders(member, Sort.by(Sort.Direction.DESC, "id"));
 
 
         model.addAttribute("orders", orders);
+        model.addAttribute("refresh", refresh);
 
         return "seller/order-management";
     }
@@ -47,7 +48,7 @@ public class OrderController {
         Order changedOrder = orderRepository.getById(orderId);
         orderService.changeOrderStatus(changedOrder, OrderStatus.ACCEPT);
 
-        return "redirect:";
+        return "redirect:/order-management?refresh=true";
     }
 
     @GetMapping("/sold")
@@ -56,7 +57,7 @@ public class OrderController {
         Order changedOrder = orderRepository.getById(orderId);
         orderService.sold(changedOrder);
         orderService.changeOrderStatus(changedOrder, OrderStatus.SOLD);
-        return  "redirect:";
+        return  "redirect:/order-management?refresh=true";
     }
 
     @GetMapping("/refuse")
@@ -67,7 +68,7 @@ public class OrderController {
         orderService.changeReasonOfRefuse(order, selbox, selboxDirect);
         orderService.changeOrderStatus(order, OrderStatus.REFUSE);
 
-        return "redirect:";
+        return "redirect:/order-management?refresh=true";
     }
 
 

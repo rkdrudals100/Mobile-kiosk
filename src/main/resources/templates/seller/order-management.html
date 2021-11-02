@@ -189,6 +189,16 @@
    </div>
 
    <!-- JavaScript Bundle with Popper -->
+   <script th:inline="javascript">
+      window.onload = function () {
+         /*<![CDATA[*/ var goBack = /*[[ ${refresh} ]]*/; /*]]*/
+
+         if (goBack == "true"){
+            window.history.back();
+         }
+      }
+   </script>
+
    <script>
       $(function () {
          $("#getOrderId").hide();
