@@ -16,7 +16,7 @@ public class OptionGroupService {
     private final ItemRepository itemRepository;
     private final OptionGroupRepository optionGroupRepository;
 
-    public void save(OptionGroupDto optionGroupDto) {
+    public OptionGroup save(OptionGroupDto optionGroupDto) {
         Item item = itemRepository.findById(optionGroupDto.getItemId()).get();
 
         OptionGroup optionGroup = OptionGroup.builder()
@@ -26,7 +26,8 @@ public class OptionGroupService {
                 .multiple(optionGroupDto.isMultiple())
                 .build();
 
-        optionGroupRepository.save(optionGroup);
+        return optionGroupRepository.save(optionGroup);
+
     }
 
     public void delete(Long optionGroupId) {

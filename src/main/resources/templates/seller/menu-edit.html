@@ -37,6 +37,9 @@
 			<div th:if="${param.delete_option}" class="alert alert-success text-center timeout">
 				옵션이 삭제되었습니다.
 			</div>
+			<div th:if="${param.menu}" class="alert alert-error field-error text-center timeout">
+				메뉴 수정에 문제가 있습니다.
+			</div>
 			<div class="row mt-5 justify-content-center">
 				<div class="col-md-5">
 					<div class="container">
@@ -53,9 +56,10 @@
 							</div>
 							<div class="tab-content col-md-7" id="pills-tabContent">
 								<th:block th:each="optionGroup : ${item.getOptionGroups()}">
-									<div class="tab-pane fade" th:id="|God${optionGroup.id}|" role="tabpanel" th:aria-labelledby="|God${optionGroup.id}|">
+									<div class="tab-pane fade" th:id="|God${optionGroup.id}|" th:classappend="${current.toString()} == ${optionGroup.getId().toString()} ? 'show active'" role="tabpanel" th:aria-labelledby="|God${optionGroup.id}|">
 										<div class="row">
 											<div class="col-md-6">
+												현재: [[${optionGroup.name}]]
 											</div>
 											<div class="col-md-6">
 												<form th:id="${optionGroup.id}" th:method="delete" th:action="|/menus/options/${optionGroup.id}|">
@@ -71,13 +75,13 @@
 													<p th:each="option : ${optionGroup.getOptions()}">
 														[[${option.name}]]: [[${option.price}]]원
 														<span type="button" class="btn-close" style="CURSOR:hand; float: right;" title="옵션 삭제"
-															  th:id="${option.id}" onclick="delete_option(this.id)"></span>
+															  th:id="${option.id}" th:value="${optionGroup.id}" onclick="delete_option(this);"></span>
 													</p>
 												</div>
 												<input type="text" th:value="${optionGroup.id}" name="optionGroup" hidden="true">
 												<input type="text" th:value="${item.id}" name="itemId" hidden="true">
-												<input type="text" name="optionName" class="d-inline" placeholder="옵션 이름">
-												<input type="text" name="optionPrice" class="d-inline" placeholder="옵션 가격">
+												<input autocomplete='off' type="text" name="optionName" class="d-inline" placeholder="옵션 이름">
+												<input autocomplete='off' type="text" name="optionPrice" class="d-inline" placeholder="옵션 가격">
 												<button type="submit" style="width: 100%;">생성</button>
 											</form>
 										</div>
@@ -89,6 +93,7 @@
 				</div>
 				<div class="col-md-7">
 					<form id="menuDelete" th:method="delete" th:action>
+						<input type="text" hidden="true" name="categoryId" th:value="${item.getCategory().id}">
 						<button type="button" class="btn-close" style="CURSOR:hand; float: right;" title="메뉴 삭제"
 						onclick="delete_menu()"></button>
 					</form>
@@ -98,12 +103,13 @@
 								<input type="text" class="form-control" hidden="true" th:field="*{id}">
 								<div class="mb-3">
 									<label for="name" class="col-form-label">제품명</label>
-									<input type="text" class="form-control" id="name" th:field="*{name}">
+									<input autocomplete='off' type="text" class="form-control" id="name" th:field="*{name}">
 								</div>
 								<div class="mb-3">
-									<label for="price" class="col-form-label">가격</label>
-									<input type="text" class="form-control" id="price" th:field="*{price}">
+									<label for="price" class="col-form-label">가격 [[${item.getCategory().name}]]</label>
+									<input autocomplete='off' type="text" class="form-control" id="price" th:field="*{price}">
 								</div>
+								<input type="text" hidden="true" name="categoryId" th:value="${item.getCategory().id}">
 							</div>
 							<div class="col-md-1"></div>
 							<div class="col-md-2">
@@ -120,7 +126,7 @@
 						</div>
 						<div class="mb-3">
 							<label for="shortDescription" class="col-form-label">짧은 메뉴 소개</label>
-							<input type="text" class="form-control" id="shortDescription" th:field="*{shortDescription}">
+							<input autocomplete='off' type="text" class="form-control" id="shortDescription" th:field="*{shortDescription}">
 						</div>
 						<div class="mb-3">
 							<label for="description" class="col-form-label">메뉴 설명</label>
@@ -157,7 +163,7 @@
 						<form id="category" method="post" th:action="@{/menus/options}">
 							<div class="mb-3">
 								<label for="optionGroupName" class="col-form-label">옵션 그룹명</label>
-								<input type="text" class="form-control" id="optionGroupName" name="optionGroupName" placeholder="카테고리명을 입력해주세요.">
+								<input autocomplete='off' type="text" class="form-control" id="optionGroupName" name="optionGroupName" placeholder="카테고리명을 입력해주세요.">
 								<label class="col-form-label d-block">필수옵션 여부
 									<input type="checkbox" name="essential" id="essential" onclick="select_essential();">
 								</label>
@@ -177,6 +183,7 @@
 		</div>
 
 		<form id="deleteOption" th:method="delete">
+			<input type="text" hidden="true" id="current-optionGroupId" name="currentOptionGroupId">
 			<input type="text" hidden="true" name="itemId" th:value="${item.id}">
 		</form>
 	</section>
@@ -223,11 +230,12 @@
 		}
 	}
 
-	function delete_option(value){
+	function delete_option(element){
 		if (confirm("해당 옵션을 삭제하시겠습니까?") == true){
-			let element = document.getElementById('deleteOption');
-			element.action = "/menus/options/option/" + value;
-			element.submit();
+			let form = document.getElementById('deleteOption');
+			document.getElementById('current-optionGroupId').value = element.getAttribute('value');
+			form.action = "/menus/options/option/" + element.id;
+			form.submit();
 		}else{
 			return;
 		}

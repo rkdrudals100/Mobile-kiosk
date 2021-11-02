@@ -30,6 +30,9 @@
 		<div th:if="${param.fail_category}" class="alert alert-error field-error text-center timeout">
 			카테고리명에 문제가 있습니다.
 		</div>
+		<div th:if="${param.authorize}" class="alert alert-error field-error text-center timeout">
+			권한이 없습니다.
+		</div>
 		<div th:if="${param.add_category}" class="alert alert-success text-center timeout">
 			카테고리가 생성되었습니다.
 		</div>
@@ -42,6 +45,9 @@
 		<div th:if="${param.change}" class="alert alert-success text-center timeout">
 			메뉴가 수정되었습니다.
 		</div>
+		<div th:if="${param.menu}" class="alert alert-error field-error text-center timeout">
+			메뉴 수정에 문제가 있습니다.
+		</div>
 		<div th:if="${param.delete}" class="alert alert-success text-center timeout">
 			메뉴가 삭제되었습니다.
 		</div>
@@ -52,7 +58,9 @@
 			</li>
 			<li th:each="category : ${categories}">
 				<button class="btn btn-outline-secondary m-1" th:field="|${category.name}|" data-bs-toggle="pill" th:data-bs-target="|#God${category.id}|"
-						type="button" role="tab" th:aria-controls="|God${category.id}|">[[${category.name}]]</button>
+						type="button" role="tab" th:aria-controls="|God${category.id}|"
+						th:classappend="${current.toString()} == ${category.id.toString()} ? 'active'"
+						th:attrprepend="class = ${current.toString()} == ${category.name} ? 'show active '">[[${category.name}]]</button>
 			</li>
 		</ul>
 
@@ -60,11 +68,12 @@
 		<!-- 카테고리 탭 컨텐츠(카테고리별 음식 메뉴)-->
 		<div class="tab-content" id="pills-tabContent">
 			<th:block th:each="category : ${categories}">
-				<div class="tab-pane fade" th:id="|God${category.id}|" role="tabpanel" th:aria-labelledby="|God${category.id}|">
+				<div class="tab-pane fade" th:classappend="${current.toString()} == ${category.id.toString()} ? 'show active'", th:attrprepend="class = ${current.toString()} == ${category.name} ? 'show active '" th:id="|God${category.id}|" role="tabpanel" th:aria-labelledby="|God${category.id}|">
 					<div class="row">
 						<div class="col-md-4">
 							<form method="get" th:action="@{/menus/menu}">
 								<input type="text" th:value="${category.name}" name="category" hidden="true">
+								<input type="text" th:value="${category.id}" name="categoryId" hidden="true">
 								<button class="text-center btn" type="submit" style="width: 100%;">
 									메뉴 추가
 								</button>
@@ -74,7 +83,7 @@
 						<div class="col-md-2">
 							<form id="categoryDelete" th:method="delete" th:action="|/menus/category/${category.id}|">
 								<button type="button" class="text-right btn" style="CURSOR:hand; width: 100%;"
-										th:title="|${category.name} 카테고리 삭제|" onclick="delete_category()">카테고리 삭제</button>
+										th:title="|${category.name} 카테고리 삭제|" th:value="${category.id}" onclick="delete_category(this.value)">카테고리 삭제</button>
 							</form>
 						</div>
 					</div>
@@ -130,7 +139,7 @@
 							</div>
 
 							<form id="edit-form" method="get" class="edit-form">
-								<button class="btn btn-primary text-center" type="submit" style="width: 100%;">수정하로 가기</button>
+								<button class="btn btn-primary text-center goEdit" id="goEdit" disabled type="submit" style="width: 100%;">수정하로 가기</button>
 							</form>
 						</div>
 					</div>
@@ -151,7 +160,7 @@
 					<form id="category" method="post" th:action="@{/menus/category}">
 						<div class="mb-3">
 							<label for="categoryName" class="col-form-label">카테고리명</label>
-							<input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="카테고리명을 입력해주세요.">
+							<input autocomplete='off' type="text" class="form-control" id="categoryName" name="categoryName" placeholder="카테고리명을 입력해주세요.">
 						</div>
 					</form>
 				</div>
@@ -169,8 +178,9 @@
 		$(".timeout").hide();
 	}, 3000);
 
-	function delete_category(){
+	function delete_category(id){
 		if (confirm("카테고리를 삭제하시겠습니까?") == true){
+			document.getElementById('categoryDelete').action = "/menus/category/" + id;
 			document.getElementById('categoryDelete').submit();
 		}else{
 			return;
@@ -218,6 +228,10 @@
 
 		for (const elementsByClassNameElement of document.getElementsByClassName('edit-form')) {
 			elementsByClassNameElement.setAttribute("action", "/menus/" + click_id);
+		}
+
+		for (const elementsByClassNameElement of document.getElementsByClassName('goEdit')) {
+			elementsByClassNameElement.removeAttribute('disabled');
 		}
 	}
 </script>

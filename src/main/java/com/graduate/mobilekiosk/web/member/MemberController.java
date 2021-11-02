@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @Controller
@@ -19,6 +20,7 @@ import java.security.Principal;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("sign-up")
     public String sighUpForm(Model model, Principal principal) {
@@ -29,12 +31,22 @@ public class MemberController {
         return "seller/sign-up.html";
     }
 
+    @DeleteMapping("leave")
+    public String leave(@RequestParam String userName, HttpServletRequest request) {
+        memberRepository.deleteByUserId(userName);
+        request.getSession().invalidate();
+
+        return "redirect:/login?leave";
+    }
+
     @PostMapping("sign-up")
     public String sighUp(@Validated @ModelAttribute("member") MemberSaveDto memberSaveDto, BindingResult bindingResult) {
 
         if (memberService.findMember(memberSaveDto.getUsername()) != null) {
             bindingResult.reject("exist", "아이디가 이미 존재합니다.");
-        } else if (!memberSaveDto.getPassword().equals(memberSaveDto.getCheckPassword())) {
+        }  else if (memberRepository.findByStoreName(memberSaveDto.getStoreName()) != null) {
+            bindingResult.reject("exist2", "지점명이 이미 존재합니다.");
+        }  else if (!memberSaveDto.getPassword().equals(memberSaveDto.getCheckPassword())) {
             bindingResult.reject("differentPassword", "패스워드가 일치하지 않습니다.");
         }
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
 
@@ -43,4 +43,7 @@ public class MemberService implements UserDetailsService {
         return memberRepository.findByUserId(userId);
     }
 
+    public String findStoreNameByUserId(String url) {
+        return memberRepository.findByUserId(url).getStoreName();
+    }
 }

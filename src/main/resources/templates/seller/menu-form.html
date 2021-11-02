@@ -25,11 +25,11 @@
 							<div class="col-md-8">
 								<div class="mb-3">
 									<label for="name" class="col-form-label">제품명</label>
-									<input type="text" class="form-control" id="name" th:field="*{name}">
+									<input autocomplete='off' type="text" class="form-control" id="name" th:field="*{name}">
 								</div>
 								<div class="mb-3">
 									<label for="price" class="col-form-label">가격</label>
-									<input type="text" class="form-control" id="price" th:field="*{price}">
+									<input autocomplete='off' type="text" class="form-control" id="price" th:field="*{price}">
 								</div>
 							</div>
 							<div class="col-md-1"></div>
@@ -46,13 +46,14 @@
 						</div>
 						<div class="mb-3">
 							<label for="shortDescription" class="col-form-label">짧은 메뉴 소개</label>
-							<input type="text" class="form-control" id="shortDescription" th:field="*{shortDescription}">
+							<input autocomplete='off' type="text" class="form-control" id="shortDescription" th:field="*{shortDescription}">
 						</div>
 						<div class="mb-3">
 							<label for="description" class="col-form-label">메뉴 설명</label>
 							<textarea class="form-control" id="description" th:field="*{description}"></textarea>
 						</div>
-						<input type="text" hidden="true" name="categoryName" th:value="${category}">
+						<input type="text" hidden="true" name="categoryId" th:value="|${categoryId}|">
+						<input type="text" hidden="true" name="categoryName" th:value="|${category}|">
 						<input type="file" th:field="*{image}" accept="image/*" onchange="setThumbnail(event);"/>
 					</form>
 

@@ -83,6 +83,16 @@
                 <button type="submit" class="dropdown-item" style="color: white;">로그아웃</button>
             </form>
         </li>
+        <li>
+            <hr>
+        </li>
+        <li>
+            <form th:id="${#authentication.name}" th:method="delete" th:action="@{/leave}">
+                <input type="text" hidden="true" name="userName" th:value="${#authentication.name}">
+                <button type="button" class="dropdown-item" style="color: white;"
+                        th:value="${#authentication.name}" onclick="leave(this.value)">회원탈퇴</button>
+            </form>
+        </li>
     </ul>
 </div>
 
@@ -125,6 +135,16 @@
 <div th:replace="${script}">
     <p>스크립트</p>
 </div>
+
+<script>
+    function leave(value){
+        if (confirm("회원 탈퇴 시 복구할 수 없습니다.\n탈퇴하시겠습니까?") == true){
+            document.getElementById(value).submit();
+        }else{
+            return;
+        }
+    }
+</script>
 </body>
 
 </html>

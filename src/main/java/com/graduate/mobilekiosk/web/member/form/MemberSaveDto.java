@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Getter @Setter
 public class MemberSaveDto {
     @NotBlank
-    @Pattern(regexp="[a-zA-Z1-9]{4,20}", message = "영어나 숫자로 4~20자리 이내로 입력해주세요.")
+    @Pattern(regexp="[a-z|A-Z|0-9]{4,20}", message = "영어나 숫자로 4~20자리 이내로 입력해주세요.")
     private String username;
 
     @NotBlank
@@ -22,6 +22,6 @@ public class MemberSaveDto {
     private String checkPassword;
 
     @NotBlank
-    @Pattern(regexp="[ㄱ-ㅎ|가-힣|a-z|A-Z|1-9| ]{1,10}", message = "특수문자는 사용할 수 없습니다.")
+    @Pattern(regexp="[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9| ]{1,10}", message = "특수문자는 사용할 수 없습니다.")
     private String storeName;
 }

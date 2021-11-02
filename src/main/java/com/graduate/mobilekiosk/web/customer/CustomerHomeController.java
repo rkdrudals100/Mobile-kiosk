@@ -7,6 +7,7 @@ import com.graduate.mobilekiosk.domain.Member;
 import com.graduate.mobilekiosk.web.item.CategoryRepository;
 import com.graduate.mobilekiosk.web.item.ItemRepository;
 import com.graduate.mobilekiosk.web.member.MemberRepository;
+import com.graduate.mobilekiosk.web.member.MemberService;
 import com.graduate.mobilekiosk.web.order.OrderItemService;
 import com.graduate.mobilekiosk.web.order.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -28,14 +29,15 @@ import java.util.List;
 public class CustomerHomeController {
 
     private final CategoryRepository categoryRepository;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @GetMapping("/{url}")
     public String CustomerHome(@PathVariable String url, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
 
-        Member member = memberRepository.findByUserId(url);
-        String storeName = member.getStoreName();
+
+
+        String storeName = memberService.findStoreNameByUserId(url);
         List<Category> categories = categoryRepository.findVisibleByUserName(url);
         model.addAttribute("categories", categories);
         model.addAttribute("storeName", storeName);

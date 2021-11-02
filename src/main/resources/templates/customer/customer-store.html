@@ -50,9 +50,12 @@
 					<div class="form-check">
 						<input th:if="${#strings.equals(type, 'EAT')}" type="radio" class="form-check-input" th:id='EAT' name='purchasetype' value='0' checked="checked" onclick="purchaseTypeChecking()">
 						<input th:unless="${#strings.equals(type, 'EAT')}" type="radio" class="form-check-input" th:id="${type}" name='purchasetype' value='1' onclick="purchaseTypeChecking()">
-							<label class="form-check-label" th:text="${type.description}">
+						<label class="form-check-label" th:if="${#strings.equals(type, 'EAT')}" th:for='EAT' th:text="${type.description}">
 							매장에서 식사
-							</label>
+						</label>
+						<label class="form-check-label" th:unless="${#strings.equals(type, 'EAT')}" th:for="${type}" th:text="${type.description}">
+							매장에서 식사
+						</label>
 					</div>
 				</div>
 			</div>

@@ -54,8 +54,8 @@
                   </div>
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                      <!-- <p th:for="${#ids.prev('regions')} /p> -->
-                     <button class="btn btn-primary disabled" style="margin-bottom: 1ch;" th:id="${order.id}" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
-                     <button class="btn btn-primary" th:onclick="'location.href=\''+ @{/order-management/agree?orderId=} + ${order.id} + '\''" style="margin-bottom: 1ch;" th:id="${order.id}" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
+                     <button class="btn btn-primary disabled sendBtn" style="margin-bottom: 1ch;" th:id="${order.id}" th:if="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
+                     <button class="btn btn-primary sendBtn" th:onclick="'location.href=\''+ @{/order-management/agree?orderId=} + ${order.id} + '\''" style="margin-bottom: 1ch;" th:id="${order.id}" th:unless="${#strings.equals(order.orderStatus, 'ACCEPT')}" type="button">수락</button>
                      <button type="button" style="margin-right: 2ch; margin-bottom: 1ch;" class="btn btn-danger" data-bs-target="#rejectModal" data-bs-toggle="modal" id="rejectBtn" th:data-rejectbtn="${order.id}">거절</button>
                   </div>
                </div>

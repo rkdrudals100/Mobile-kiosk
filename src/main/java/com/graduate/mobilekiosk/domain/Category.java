@@ -33,7 +33,6 @@ public class Category extends BaseEntity {
 
     private String userName;
 
-    private int sort;
 
 
 

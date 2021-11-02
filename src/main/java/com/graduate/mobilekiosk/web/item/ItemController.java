@@ -42,8 +42,9 @@ public class ItemController {
     private final FileStore fileStore;
 
     @GetMapping("")
-    public String menu(Model model, Principal principal) {
+    public String menu(Model model, Principal principal, @RequestParam(required = true, defaultValue = "") String current) {
         List<Category> categories = categoryRepository.findByUserName(principal.getName());
+        model.addAttribute("current", current);
         model.addAttribute("categories", categories);
         return "seller/menu-management.html";
     }
@@ -64,12 +65,15 @@ public class ItemController {
                 .build();
 
         try {
-            categoryRepository.save(category);
+            Category save = categoryRepository.save(category);
+            if (save.getId() != null) {
+                return "redirect:/menus?add_category&current=" + save.getId();
+            }
         }catch (Exception e) {
             return "redirect:/menus?overlap";
         }
 
-        return "redirect:/menus?add_category";
+        return "redirect:/menus?add_category&current=" + categoryDto.getCategoryName();
     }
 
     @DeleteMapping("/category/{categoryID}")
@@ -79,17 +83,18 @@ public class ItemController {
     }
 
     @GetMapping("/menu")
-    public String menuForm(Model model, @RequestParam String category) {
+    public String menuForm(Model model, @RequestParam String category, @RequestParam String categoryId) {
         model.addAttribute("category", category);
+        model.addAttribute("categoryId", categoryId);
         model.addAttribute("item", new MenuSaveDto());
         return "seller/menu-form";
     }
 
 
     @PostMapping("/menu")
-    public String menuAdd(@Validated @ModelAttribute MenuSaveDto menuSaveDto, BindingResult bindingResult) throws IOException {
+    public String menuAdd(@Validated @ModelAttribute MenuSaveDto menuSaveDto, BindingResult bindingResult, @RequestParam String categoryId) throws IOException {
         if (bindingResult.hasErrors()) {
-            return "redirect:/menus/menu?fail&category=" + menuSaveDto.getCategoryName();
+            return "redirect:/menus/menu?fail&category=" + menuSaveDto.getCategoryName()+"&categoryId="+categoryId;
         }
 
         Category findCategory = categoryService.findByCategoryName(menuSaveDto.getCategoryName());
@@ -105,35 +110,41 @@ public class ItemController {
                 .build();
 
         itemRepository.save(item);
-        return "redirect:/menus";
+        return "redirect:/menus?current=" + categoryId;
     }
 
     @GetMapping("/{menuId}")
-    public String editMenuForm(@PathVariable Long menuId, Model model, Principal principal) {
+    public String editMenuForm(@PathVariable Long menuId, Model model, Principal principal, @RequestParam(defaultValue = "") String current) {
         Item item = itemRepository.findWithOptionById(menuId);
 
         if (!item.getCategory().getUserName().equals(principal.getName())) {
-            return "redirect:/menus";
+            return "redirect:/menus?authorize";
         }
         model.addAttribute("item", item);
+        model.addAttribute("current", current);
         return "seller/menu-edit";
     }
 
 
     @PostMapping("/{menuId}")
-    public String editMenu(@PathVariable Long menuId, @Validated @ModelAttribute MenuEditDto menuEditDto, Model model) throws IOException {
-        if (menuId != menuEditDto.getId()) {
-            return "redirect:/menus?menu";
+    public String editMenu(@PathVariable Long menuId, @Validated @ModelAttribute MenuEditDto menuEditDto, BindingResult bindingResult, Model model
+    , @RequestParam String categoryId) throws IOException {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/menus/"+menuId+"?menu";
+        }
+
+        if (menuId != menuEditDto.getId() ) {
+            return "redirect:/menus?menu&current=" + categoryId;
         }
 
         itemService.save(menuEditDto);
-        return "redirect:/menus?change";
+        return "redirect:/menus?change&current=" + categoryId;
     }
 
     @DeleteMapping("/{menuId}")
-    public String deleteMenu(@PathVariable Long menuId) {
+    public String deleteMenu(@PathVariable Long menuId, @RequestParam String categoryId) {
         itemRepository.deleteById(menuId);
-        return "redirect:/menus?delete";
+        return "redirect:/menus?delete&current=" + categoryId;
     }
 
     @DeleteMapping("/{menuId}/image")
@@ -157,27 +168,27 @@ public class ItemController {
             return "redirect:/menus/" + optionGroupDto.getItemId() + "?fail_options";
         }
 
-        optionGroupService.save(optionGroupDto);
+        OptionGroup save = optionGroupService.save(optionGroupDto);
 
-        return "redirect:/menus/" + optionGroupDto.getItemId() + "?success_options";
+        return "redirect:/menus/" + optionGroupDto.getItemId() + "?success_options&current=" + save.getId();
     }
 
     @PostMapping("/options/option")
     public String optionAdd(@Validated @ModelAttribute OptionDto optionDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/menus/" + optionDto.getItemId() + "?fail_option";
+            return "redirect:/menus/" + optionDto.getItemId() + "?fail_option&current=" + optionDto.getOptionGroup();
         }
 
         optionService.save(optionDto);
 
-        return "redirect:/menus/" + optionDto.getItemId() + "?success_option";
+        return "redirect:/menus/" + optionDto.getItemId() + "?success_option&current=" + optionDto.getOptionGroup();
     }
 
     @DeleteMapping("/options/option/{optionId}")
-    public String optionDelete(@PathVariable Long optionId, @RequestParam String itemId) {
+    public String optionDelete(@PathVariable Long optionId, @RequestParam String itemId, @RequestParam String currentOptionGroupId) {
         optionService.delete(optionId);
 
-        return "redirect:/menus/" + itemId + "?delete_option";
+        return "redirect:/menus/" + itemId + "?delete_option&current=" + currentOptionGroupId;
     }
 
     @DeleteMapping("/options/{optionGroupId}")
