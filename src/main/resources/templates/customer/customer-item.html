@@ -166,7 +166,7 @@ th:each="optionGroup: ${item.getOptionGroups()}">
 		</div>
 	</div>
 
-	<div class="row mt-2" th:each="option : ${optionGroup.getOptions}">
+	<div class="row mt-2" th:each="option: ${optionGroup.getOptions}">
 		<div class="col">
 			<div class="form-check">
 				<th:block th:if="${optionGroup.isMultiple() && !optionGroup.isEssential()}">
@@ -183,7 +183,7 @@ th:each="optionGroup: ${item.getOptionGroups()}">
 				</th:block>
 				<th:block th:if="${optionGroup.isEssential()}">
 					<label class="form-check-label">
-						<input class="form-check-input" type="checkbox" th:id="${option.id}" th:value="${option.price}"  th:checked="${optionStat.first}" th:name="${optionGroup.name}" onclick='check_radio(this.name, this);'>
+						<input class="form-check-input" type="checkbox" th:id="${option.id}" th:value="${option.price}" th:checked="${optionStat.first}" th:name="${optionGroup.name}" onclick='check_radio(this.name, this);'>
 						[[${option.name}]]
 					</label>
 				</th:block>

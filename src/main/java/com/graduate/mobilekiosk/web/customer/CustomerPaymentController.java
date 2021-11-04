@@ -29,8 +29,13 @@ public class CustomerPaymentController {
 
     @GetMapping("")
     public String paymentHome(HttpServletRequest request, Model model) {
+
         String user = request.getSession().getId();
         Order order = orderRepository.findWithOrderItemByUser(user);
+
+        if(order.getOrderItems().isEmpty()){
+            return "redirect:/customer/" + order.getMember().getUserId();
+        }
 
         model.addAttribute("GetPaymentFormDto", new GetPaymentFormDto());
         model.addAttribute("order", order);

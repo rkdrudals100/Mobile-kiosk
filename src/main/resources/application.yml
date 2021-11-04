@@ -15,15 +15,12 @@ spring:
 
 servlet:
     multipart:
-        max-file-size: 1MB
+        max-file-size: 5MB
 
 #file.dir: /Users/jaegeon/IdeaProjects/img/
 file.dir: C:\Users\kkm\Documents\The_Graduate_Project_c\file
 ---
 
-servlet:
-    multipart:
-        max-file-size: 10MB
 
 server:
     port: 8080
@@ -44,5 +41,8 @@ spring:
         generate-ddl: true
         hibernate:
             ddl-auto: none
+    servlet:
+        multipart:
+            max-file-size: 5MB
 
 file.dir: /home/ec2-user/img/
