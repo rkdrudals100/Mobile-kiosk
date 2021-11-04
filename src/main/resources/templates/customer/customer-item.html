@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<meta name="description" content="">
 	<meta name="author" content="">
+	<meta http-equiv="Cache-Control" content="No-Store">
 	<link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
 	<script src="https://kit.fontawesome.com/a4bdcbdc63.js" crossorigin="anonymous"></script>
 
@@ -25,6 +26,15 @@
 
 
 		totalPrice.innerText = parseInt(totalPrice.innerText) + parseInt(_price1.innerText);
+
+
+		for (const elementsByClassNameElement of document.getElementsByClassName('form-check-input')) {
+			console.log(elementsByClassNameElement)
+			if(elementsByClassNameElement.checked){
+				options.add(elementsByClassNameElement.id);
+				totalPrice.innerText = parseInt(totalPrice.innerText) + parseInt(elementsByClassNameElement.value);
+			}
+		}
 
 
 	}
@@ -147,7 +157,7 @@
 	</div>
 	<div>
 		<div id='_price1' class="total" style="display:none;">10000</div>
-		<div th:field="description + ${item.id}" style="font-size:large; word-break:break-all" th:text="${item.description}">상품 설명</div>
+		<div th:field="description + ${item.id}" style="word-break:break-all" th:text="${item.description}">상품 설명</div>
 	</div>
 </div>
 
@@ -183,7 +193,7 @@ th:each="optionGroup: ${item.getOptionGroups()}">
 				</th:block>
 				<th:block th:if="${optionGroup.isEssential()}">
 					<label class="form-check-label">
-						<input class="form-check-input" type="checkbox" th:id="${option.id}" th:value="${option.price}" th:checked="${optionStat.first}" th:name="${optionGroup.name}" onclick='check_radio(this.name, this);'>
+						<input class="form-check-input" type="checkbox" th:id="${option.id}" th:value="${option.price}"  th:checked="${optionStat.first}" th:name="${optionGroup.name}" onclick='check_radio(this.name, this);'>
 						[[${option.name}]]
 					</label>
 				</th:block>
