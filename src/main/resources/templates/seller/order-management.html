@@ -188,13 +188,21 @@
    </div>
 
    <!-- JavaScript Bundle with Popper -->
+   <script>
+      window.onpageshow =  function(event) { // BFCahe
+         if (event.persisted) {
+            window.location.reload();
+         }else{} //새로운페이지
+      }
+   </script>
+
    <script th:inline="javascript">
       window.onload = function () {
          /*<![CDATA[*/ var goBack = /*[[ ${refresh} ]]*/; /*]]*/
 
          if (goBack == "true"){
             window.history.back();
-            document.location.replace("http://3.38.39.166:8080/order-management?refresh=false");
+            // document.location.replace("http://3.38.39.166:8080/order-management?refresh=false");
             // document.location.replace("http://localhost:8080/order-management?refresh=false");
          }
       }
