@@ -56,11 +56,11 @@
                 <h1><strong>[[${category.name}]]</strong></h1>
             </div>
             <div th:each="menu : ${category.items}">
-                    <div class="container row" style="height: 12vh;">
+                    <div class="container row" style="height: 15vh;">
                         <a th:href="|items/${menu.id}|" style="text-decoration: none; position: relative; color: black;" class="row">
                             <div class="col-9">
                                 <h5><strong>[[${menu.name}]]</strong></h5>
-                                <p style="color: gray; font-size: 15px; line-height: 50%;">[[${menu.shortDescription}]]</p>
+                                <p style="color: gray; font-size: 15px; line-height: 130%;">[[${menu.shortDescription}]]</p>
                                 <h6 style="line-height: 50%;">[[${menu.price}]]원</h6>
                             </div>
                             <div class="col-3">
