@@ -56,7 +56,7 @@
                 <h1><strong>[[${category.name}]]</strong></h1>
             </div>
             <div th:each="menu : ${category.items}">
-                    <div class="container row" style="height: 15vh;">
+                    <div class="container row" style="min-height: 12vh;">
                         <a th:href="|items/${menu.id}|" style="text-decoration: none; position: relative; color: black;" class="row">
                             <div class="col-9">
                                 <h5><strong>[[${menu.name}]]</strong></h5>

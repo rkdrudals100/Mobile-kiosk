@@ -171,8 +171,8 @@ th:each="optionGroup: ${item.getOptionGroups()}">
 			<h4><strong>[[${optionGroup.name}]]</strong></h4>
 		</div>
 		<div class="col" style="margin-right: 1vh;">
-			<h4 th:if="${optionGroup.isMultiple() && !optionGroup.isEssential()}" class="text-end"><strong>다중 선택 가능</strong></h4>
-			<h4 th:if="${!optionGroup.isMultiple() && !optionGroup.isEssential()}" class="text-end"><strong>하나만 선택 가능</strong></h4>
+			<h5 th:if="${optionGroup.isMultiple() && !optionGroup.isEssential()}" class="text-end"><strong>다중 선택 가능</strong></h5>
+			<h5 th:if="${!optionGroup.isMultiple() && !optionGroup.isEssential()}" class="text-end"><strong>하나 선택 가능</strong></h5>
 			<h4 th:if="${optionGroup.isEssential()}" class="text-end"><strong>필수 선택</strong></h4>
 		</div>
 	</div>
